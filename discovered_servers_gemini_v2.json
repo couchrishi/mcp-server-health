@@ -1,0 +1,1858 @@
+{
+  "reference_servers": [
+    {
+      "name": "AWS KB Retrieval",
+      "repo_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/aws-kb-retrieval-server",
+      "type": "reference"
+    },
+    {
+      "name": "Brave Search",
+      "repo_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/brave-search",
+      "type": "reference"
+    },
+    {
+      "name": "EverArt",
+      "repo_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/everart",
+      "type": "reference"
+    },
+    {
+      "name": "Everything",
+      "repo_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/everything",
+      "type": "reference"
+    },
+    {
+      "name": "Fetch",
+      "repo_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/fetch",
+      "type": "reference"
+    },
+    {
+      "name": "Filesystem",
+      "repo_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem",
+      "type": "reference"
+    },
+    {
+      "name": "Git",
+      "repo_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/git",
+      "type": "reference"
+    },
+    {
+      "name": "GitHub",
+      "repo_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/github",
+      "type": "reference"
+    },
+    {
+      "name": "GitLab",
+      "repo_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/gitlab",
+      "type": "reference"
+    },
+    {
+      "name": "Google Drive",
+      "repo_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/gdrive",
+      "type": "reference"
+    },
+    {
+      "name": "Google Maps",
+      "repo_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/google-maps",
+      "type": "reference"
+    },
+    {
+      "name": "Memory",
+      "repo_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/memory",
+      "type": "reference"
+    },
+    {
+      "name": "PostgreSQL",
+      "repo_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/postgres",
+      "type": "reference"
+    },
+    {
+      "name": "Puppeteer",
+      "repo_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/puppeteer",
+      "type": "reference"
+    },
+    {
+      "name": "Redis",
+      "repo_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/redis",
+      "type": "reference"
+    },
+    {
+      "name": "Sentry",
+      "repo_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/sentry",
+      "type": "reference"
+    },
+    {
+      "name": "Sequential Thinking",
+      "repo_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/sequentialthinking",
+      "type": "reference"
+    },
+    {
+      "name": "Slack",
+      "repo_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/slack",
+      "type": "reference"
+    },
+    {
+      "name": "Sqlite",
+      "repo_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/sqlite",
+      "type": "reference"
+    },
+    {
+      "name": "Time",
+      "repo_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/time",
+      "type": "reference"
+    }
+  ],
+  "official_integrations": [
+    {
+      "name": "21st.dev Magic",
+      "repo_url": "https://github.com/21st-dev/magic-mcp",
+      "type": "official"
+    },
+    {
+      "name": "Adfin",
+      "repo_url": "https://github.com/Adfin-Engineering/mcp-server-adfin",
+      "type": "official"
+    },
+    {
+      "name": "AgentQL",
+      "repo_url": "https://github.com/tinyfish-io/agentql-mcp",
+      "type": "official"
+    },
+    {
+      "name": "AgentRPC",
+      "repo_url": "https://github.com/agentrpc/agentrpc",
+      "type": "official"
+    },
+    {
+      "name": "Aiven",
+      "repo_url": "https://github.com/Aiven-Open/mcp-aiven",
+      "type": "official"
+    },
+    {
+      "name": "Apify",
+      "repo_url": "https://github.com/apify/actors-mcp-server",
+      "type": "official"
+    },
+    {
+      "name": "APIMatic MCP",
+      "repo_url": "https://github.com/apimatic/apimatic-validator-mcp",
+      "type": "official"
+    },
+    {
+      "name": "Audiense Insights",
+      "repo_url": "https://github.com/AudienseCo/mcp-audiense-insights",
+      "type": "official"
+    },
+    {
+      "name": "Axiom",
+      "repo_url": "https://github.com/axiomhq/mcp-server-axiom",
+      "type": "official"
+    },
+    {
+      "name": "Bankless Onchain",
+      "repo_url": "https://github.com/bankless/onchain-mcp",
+      "type": "official"
+    },
+    {
+      "name": "Box",
+      "repo_url": "https://github.com/box-community/mcp-server-box",
+      "type": "official"
+    },
+    {
+      "name": "Browserbase",
+      "repo_url": "https://github.com/browserbase/mcp-server-browserbase",
+      "type": "official"
+    },
+    {
+      "name": "Chargebee",
+      "repo_url": "https://github.com/chargebee/agentkit/tree/main/modelcontextprotocol",
+      "type": "official"
+    },
+    {
+      "name": "Chroma",
+      "repo_url": "https://github.com/chroma-core/chroma-mcp",
+      "type": "official"
+    },
+    {
+      "name": "Chronulus AI",
+      "repo_url": "https://github.com/ChronulusAI/chronulus-mcp",
+      "type": "official"
+    },
+    {
+      "name": "ClickHouse",
+      "repo_url": "https://github.com/ClickHouse/mcp-clickhouse",
+      "type": "official"
+    },
+    {
+      "name": "Cloudflare",
+      "repo_url": "https://github.com/cloudflare/mcp-server-cloudflare",
+      "type": "official"
+    },
+    {
+      "name": "Comet Opik",
+      "repo_url": "https://github.com/comet-ml/opik-mcp",
+      "type": "official"
+    },
+    {
+      "name": "Convex",
+      "repo_url": "https://stack.convex.dev/convex-mcp-server",
+      "type": "official"
+    },
+    {
+      "name": "Dart",
+      "repo_url": "https://github.com/its-dart/dart-mcp-server",
+      "type": "official"
+    },
+    {
+      "name": "DevHub",
+      "repo_url": "https://github.com/devhub/devhub-cms-mcp",
+      "type": "official"
+    },
+    {
+      "name": "E2B",
+      "repo_url": "https://github.com/e2b-dev/mcp-server",
+      "type": "official"
+    },
+    {
+      "name": "EduBase",
+      "repo_url": "https://github.com/EduBase/MCP",
+      "type": "official"
+    },
+    {
+      "name": "eSignatures",
+      "repo_url": "https://github.com/esignaturescom/mcp-server-esignatures",
+      "type": "official"
+    },
+    {
+      "name": "Exa",
+      "repo_url": "https://github.com/exa-labs/exa-mcp-server",
+      "type": "official"
+    },
+    {
+      "name": "Fewsats",
+      "repo_url": "https://github.com/Fewsats/fewsats-mcp",
+      "type": "official"
+    },
+    {
+      "name": "Fibery",
+      "repo_url": "https://github.com/Fibery-inc/fibery-mcp-server",
+      "type": "official"
+    },
+    {
+      "name": "Financial Datasets",
+      "repo_url": "https://github.com/financial-datasets/mcp-server",
+      "type": "official"
+    },
+    {
+      "name": "Firecrawl",
+      "repo_url": "https://github.com/mendableai/firecrawl-mcp-server",
+      "type": "official"
+    },
+    {
+      "name": "Fireproof",
+      "repo_url": "https://github.com/fireproof-storage/mcp-database-server",
+      "type": "official"
+    },
+    {
+      "name": "ForeverVM",
+      "repo_url": "https://github.com/jamsocket/forevervm/tree/main/javascript/mcp-server",
+      "type": "official"
+    },
+    {
+      "name": "Gitee",
+      "repo_url": "https://github.com/oschina/mcp-gitee",
+      "type": "official"
+    },
+    {
+      "name": "gotoHuman",
+      "repo_url": "https://github.com/gotohuman/gotohuman-mcp-server",
+      "type": "official"
+    },
+    {
+      "name": "Grafana",
+      "repo_url": "https://github.com/grafana/mcp-grafana",
+      "type": "official"
+    },
+    {
+      "name": "Graphlit",
+      "repo_url": "https://github.com/graphlit/graphlit-mcp-server",
+      "type": "official"
+    },
+    {
+      "name": "GreptimeDB",
+      "repo_url": "https://github.com/GreptimeTeam/greptimedb-mcp-server",
+      "type": "official"
+    },
+    {
+      "name": "Hologres",
+      "repo_url": "https://github.com/aliyun/alibabacloud-hologres-mcp-server",
+      "type": "official"
+    },
+    {
+      "name": "Hyperbrowser",
+      "repo_url": "https://github.com/hyperbrowserai/mcp",
+      "type": "official"
+    },
+    {
+      "name": "IBM wxflows",
+      "repo_url": "https://github.com/IBM/wxflows/tree/main/examples/mcp/javascript",
+      "type": "official"
+    },
+    {
+      "name": "Inbox Zero",
+      "repo_url": "https://github.com/elie222/inbox-zero/tree/main/apps/mcp-server",
+      "type": "official"
+    },
+    {
+      "name": "Inkeep",
+      "repo_url": "https://github.com/inkeep/mcp-server-python",
+      "type": "official"
+    },
+    {
+      "name": "Integration App",
+      "repo_url": "https://github.com/integration-app/mcp-server",
+      "type": "official"
+    },
+    {
+      "name": "JetBrains",
+      "repo_url": "https://github.com/JetBrains/mcp-jetbrains",
+      "type": "official"
+    },
+    {
+      "name": "Kagi Search",
+      "repo_url": "https://github.com/kagisearch/kagimcp",
+      "type": "official"
+    },
+    {
+      "name": "Keboola",
+      "repo_url": "https://github.com/keboola/keboola-mcp-server",
+      "type": "official"
+    },
+    {
+      "name": "Langfuse Prompt Management",
+      "repo_url": "https://github.com/langfuse/mcp-server-langfuse",
+      "type": "official"
+    },
+    {
+      "name": "Lingo.dev",
+      "repo_url": "https://github.com/lingodotdev/lingo.dev/blob/main/mcp.md",
+      "type": "official"
+    },
+    {
+      "name": "Logfire",
+      "repo_url": "https://github.com/pydantic/logfire-mcp",
+      "type": "official"
+    },
+    {
+      "name": "Mailgun",
+      "repo_url": "https://github.com/mailgun/mailgun-mcp-server",
+      "type": "official"
+    },
+    {
+      "name": "Make",
+      "repo_url": "https://github.com/integromat/make-mcp-server",
+      "type": "official"
+    },
+    {
+      "name": "Meilisearch",
+      "repo_url": "https://github.com/meilisearch/meilisearch-mcp",
+      "type": "official"
+    },
+    {
+      "name": "Metoro",
+      "repo_url": "https://github.com/metoro-io/metoro-mcp-server",
+      "type": "official"
+    },
+    {
+      "name": "Milvus",
+      "repo_url": "https://github.com/zilliztech/mcp-server-milvus",
+      "type": "official"
+    },
+    {
+      "name": "MotherDuck",
+      "repo_url": "https://github.com/motherduckdb/mcp-server-motherduck",
+      "type": "official"
+    },
+    {
+      "name": "Needle",
+      "repo_url": "https://github.com/needle-ai/needle-mcp",
+      "type": "official"
+    },
+    {
+      "name": "Neo4j",
+      "repo_url": "https://github.com/neo4j-contrib/mcp-neo4j/",
+      "type": "official"
+    },
+    {
+      "name": "Neon",
+      "repo_url": "https://github.com/neondatabase/mcp-server-neon",
+      "type": "official"
+    },
+    {
+      "name": "OceanBase",
+      "repo_url": "https://github.com/oceanbase/mcp-oceanbase",
+      "type": "official"
+    },
+    {
+      "name": "Octagon",
+      "repo_url": "https://github.com/OctagonAI/octagon-mcp-server",
+      "type": "official"
+    },
+    {
+      "name": "Oxylabs",
+      "repo_url": "https://github.com/oxylabs/oxylabs-mcp",
+      "type": "official"
+    },
+    {
+      "name": "Perplexity",
+      "repo_url": "https://github.com/ppl-ai/modelcontextprotocol",
+      "type": "official"
+    },
+    {
+      "name": "Qdrant",
+      "repo_url": "https://github.com/qdrant/mcp-server-qdrant/",
+      "type": "official"
+    },
+    {
+      "name": "Ramp",
+      "repo_url": "https://github.com/ramp-public/ramp-mcp",
+      "type": "official"
+    },
+    {
+      "name": "Raygun",
+      "repo_url": "https://github.com/MindscapeHQ/mcp-server-raygun",
+      "type": "official"
+    },
+    {
+      "name": "Rember",
+      "repo_url": "https://github.com/rember/rember-mcp",
+      "type": "official"
+    },
+    {
+      "name": "Riza",
+      "repo_url": "https://github.com/riza-io/riza-mcp",
+      "type": "official"
+    },
+    {
+      "name": "ScreenshotOne",
+      "repo_url": "https://github.com/screenshotone/mcp/",
+      "type": "official"
+    },
+    {
+      "name": "Search1API",
+      "repo_url": "https://github.com/fatwang2/search1api-mcp",
+      "type": "official"
+    },
+    {
+      "name": "Semgrep",
+      "repo_url": "https://github.com/semgrep/mcp",
+      "type": "official"
+    },
+    {
+      "name": "SingleStore",
+      "repo_url": "https://github.com/singlestore-labs/mcp-server-singlestore",
+      "type": "official"
+    },
+    {
+      "name": "StarRocks",
+      "repo_url": "https://github.com/StarRocks/mcp-server-starrocks",
+      "type": "official"
+    },
+    {
+      "name": "Stripe",
+      "repo_url": "https://github.com/stripe/agent-toolkit",
+      "type": "official"
+    },
+    {
+      "name": "Tavily",
+      "repo_url": "https://github.com/tavily-ai/tavily-mcp",
+      "type": "official"
+    },
+    {
+      "name": "Thirdweb",
+      "repo_url": "https://github.com/thirdweb-dev/ai/tree/main/python/thirdweb-mcp",
+      "type": "official"
+    },
+    {
+      "name": "Tinybird",
+      "repo_url": "https://github.com/tinybirdco/mcp-tinybird",
+      "type": "official"
+    },
+    {
+      "name": "UnifAI",
+      "repo_url": "https://github.com/unifai-network/unifai-mcp-server",
+      "type": "official"
+    },
+    {
+      "name": "Unstructured",
+      "repo_url": "https://github.com/Unstructured-IO/UNS-MCP",
+      "type": "official"
+    },
+    {
+      "name": "Vectorize",
+      "repo_url": "https://github.com/vectorize-io/vectorize-mcp-server/",
+      "type": "official"
+    },
+    {
+      "name": "Verodat",
+      "repo_url": "https://github.com/Verodat/verodat-mcp-server",
+      "type": "official"
+    },
+    {
+      "name": "VeyraX",
+      "repo_url": "https://github.com/VeyraX/veyrax-mcp",
+      "type": "official"
+    },
+    {
+      "name": "Xero",
+      "repo_url": "https://github.com/XeroAPI/xero-mcp-server",
+      "type": "official"
+    },
+    {
+      "name": "Zapier",
+      "repo_url": "https://zapier.com/mcp",
+      "type": "official"
+    },
+    {
+      "name": "ZenML",
+      "repo_url": "https://github.com/zenml-io/mcp-zenml",
+      "type": "official"
+    }
+  ],
+  "community_servers": [
+    {
+      "name": "Ableton Live",
+      "repo_url": "https://github.com/Simon-Kansara/ableton-live-mcp-server",
+      "type": "community"
+    },
+    {
+      "name": "Airbnb",
+      "repo_url": "https://github.com/openbnb-org/mcp-server-airbnb",
+      "type": "community"
+    },
+    {
+      "name": "Airflow",
+      "repo_url": "https://github.com/yangkyeongmo/mcp-server-apache-airflow",
+      "type": "community"
+    },
+    {
+      "name": "Airtable",
+      "repo_url": "https://github.com/domdomegg/airtable-mcp-server",
+      "type": "community"
+    },
+    {
+      "name": "Airtable",
+      "repo_url": "https://github.com/felores/airtable-mcp",
+      "type": "community"
+    },
+    {
+      "name": "Algorand",
+      "repo_url": "https://github.com/GoPlausible/algorand-mcp",
+      "type": "community"
+    },
+    {
+      "name": "AlphaVantage",
+      "repo_url": "https://github.com/calvernaz/alphavantage",
+      "type": "community"
+    },
+    {
+      "name": "Anki",
+      "repo_url": "https://github.com/scorzeth/anki-mcp-server",
+      "type": "community"
+    },
+    {
+      "name": "Any Chat Completions",
+      "repo_url": "https://github.com/pyroprompts/any-chat-completions-mcp",
+      "type": "community"
+    },
+    {
+      "name": "Apple Calendar",
+      "repo_url": "https://github.com/Omar-v2/mcp-ical",
+      "type": "community"
+    },
+    {
+      "name": "ArangoDB",
+      "repo_url": "https://github.com/ravenwits/mcp-server-arangodb",
+      "type": "community"
+    },
+    {
+      "name": "Arduino",
+      "repo_url": "https://github.com/vishalmysore/choturobo",
+      "type": "community"
+    },
+    {
+      "name": "Atlassian",
+      "repo_url": "https://github.com/sooperset/mcp-atlassian",
+      "type": "community"
+    },
+    {
+      "name": "AWS",
+      "repo_url": "https://github.com/rishikavikondala/mcp-server-aws",
+      "type": "community"
+    },
+    {
+      "name": "AWS Athena",
+      "repo_url": "https://github.com/lishenxydlgzs/aws-athena-mcp",
+      "type": "community"
+    },
+    {
+      "name": "AWS Cost Explorer",
+      "repo_url": "https://github.com/aarora79/aws-cost-explorer-mcp-server",
+      "type": "community"
+    },
+    {
+      "name": "AWS Resources Operations",
+      "repo_url": "https://github.com/baryhuang/mcp-server-aws-resources-python",
+      "type": "community"
+    },
+    {
+      "name": "AWS S3",
+      "repo_url": "https://github.com/aws-samples/sample-mcp-server-s3",
+      "type": "community"
+    },
+    {
+      "name": "Azure ADX",
+      "repo_url": "https://github.com/pab1it0/adx-mcp-server",
+      "type": "community"
+    },
+    {
+      "name": "Azure DevOps",
+      "repo_url": "https://github.com/Vortiago/mcp-azure-devops",
+      "type": "community"
+    },
+    {
+      "name": "Base Free USDC Transfer",
+      "repo_url": "https://github.com/magnetai/mcp-free-usdc-transfer",
+      "type": "community"
+    },
+    {
+      "name": "Basic Memory",
+      "repo_url": "https://github.com/basicmachines-co/basic-memory",
+      "type": "community"
+    },
+    {
+      "name": "BigQuery",
+      "repo_url": "https://github.com/LucasHild/mcp-server-bigquery",
+      "type": "community"
+    },
+    {
+      "name": "BigQuery",
+      "repo_url": "https://github.com/ergut/mcp-bigquery-server",
+      "type": "community"
+    },
+    {
+      "name": "Bing Web Search API",
+      "repo_url": "https://github.com/leehanchung/bing-search-mcp",
+      "type": "community"
+    },
+    {
+      "name": "Bitable MCP",
+      "repo_url": "https://github.com/lloydzhou/bitable-mcp",
+      "type": "community"
+    },
+    {
+      "name": "Blender",
+      "repo_url": "https://github.com/ahujasid/blender-mcp",
+      "type": "community"
+    },
+    {
+      "name": "Bsc-mcp",
+      "repo_url": "https://github.com/TermiX-official/bsc-mcp",
+      "type": "community"
+    },
+    {
+      "name": "Calculator",
+      "repo_url": "https://github.com/githejie/mcp-server-calculator",
+      "type": "community"
+    },
+    {
+      "name": "CFBD API",
+      "repo_url": "https://github.com/lenwood/cfbd-mcp-server",
+      "type": "community"
+    },
+    {
+      "name": "ChatMCP",
+      "repo_url": "https://github.com/AI-QL/chat-mcp",
+      "type": "community"
+    },
+    {
+      "name": "ChatSum",
+      "repo_url": "https://github.com/mcpso/mcp-server-chatsum",
+      "type": "community"
+    },
+    {
+      "name": "Chroma",
+      "repo_url": "https://github.com/privetin/chroma",
+      "type": "community"
+    },
+    {
+      "name": "ClaudePost",
+      "repo_url": "https://github.com/ZilongXue/claude-post",
+      "type": "community"
+    },
+    {
+      "name": "Cloudinary",
+      "repo_url": "https://github.com/felores/cloudinary-mcp-server",
+      "type": "community"
+    },
+    {
+      "name": "code-assistant",
+      "repo_url": "https://github.com/stippi/code-assistant",
+      "type": "community"
+    },
+    {
+      "name": "code-executor",
+      "repo_url": "https://github.com/bazinga012/mcp_code_executor",
+      "type": "community"
+    },
+    {
+      "name": "code-sandbox-mcp",
+      "repo_url": "https://github.com/Automata-Labs-team/code-sandbox-mcp",
+      "type": "community"
+    },
+    {
+      "name": "cognee-mcp",
+      "repo_url": "https://github.com/topoteretes/cognee/tree/main/cognee-mcp",
+      "type": "community"
+    },
+    {
+      "name": "coin_api_mcp",
+      "repo_url": "https://github.com/longmans/coin_api_mcp",
+      "type": "community"
+    },
+    {
+      "name": "Contentful-mcp",
+      "repo_url": "https://github.com/ivo-toby/contentful-mcp",
+      "type": "community"
+    },
+    {
+      "name": "crypto-feargreed-mcp",
+      "repo_url": "https://github.com/kukapay/crypto-feargreed-mcp",
+      "type": "community"
+    },
+    {
+      "name": "cryptopanic-mcp-server",
+      "repo_url": "https://github.com/kukapay/cryptopanic-mcp-server",
+      "type": "community"
+    },
+    {
+      "name": "Dappier",
+      "repo_url": "https://github.com/DappierAI/dappier-mcp",
+      "type": "community"
+    },
+    {
+      "name": "Data Exploration",
+      "repo_url": "https://github.com/reading-plus-ai/mcp-server-data-exploration",
+      "type": "community"
+    },
+    {
+      "name": "Databricks",
+      "repo_url": "https://github.com/JordiNeil/mcp-databricks-server",
+      "type": "community"
+    },
+    {
+      "name": "Dataset Viewer",
+      "repo_url": "https://github.com/privetin/dataset-viewer",
+      "type": "community"
+    },
+    {
+      "name": "DBHub",
+      "repo_url": "https://github.com/bytebase/dbhub/",
+      "type": "community"
+    },
+    {
+      "name": "DeepSeek MCP Server",
+      "repo_url": "https://github.com/DMontgomery40/deepseek-mcp-server",
+      "type": "community"
+    },
+    {
+      "name": "deepseek-thinker-mcp",
+      "repo_url": "https://github.com/ruixingshi/deepseek-thinker-mcp",
+      "type": "community"
+    },
+    {
+      "name": "Deepseek_R1",
+      "repo_url": "https://github.com/66julienmartin/MCP-server-Deepseek_R1",
+      "type": "community"
+    },
+    {
+      "name": "Descope",
+      "repo_url": "https://github.com/descope-sample-apps/descope-mcp-server",
+      "type": "community"
+    },
+    {
+      "name": "DevRev",
+      "repo_url": "https://github.com/kpsunil97/devrev-mcp-server",
+      "type": "community"
+    },
+    {
+      "name": "Dicom",
+      "repo_url": "https://github.com/ChristianHinge/dicom-mcp",
+      "type": "community"
+    },
+    {
+      "name": "Dify",
+      "repo_url": "https://github.com/YanxingLiu/dify-mcp-server",
+      "type": "community"
+    },
+    {
+      "name": "Discord",
+      "repo_url": "https://github.com/v-3/discordmcp",
+      "type": "community"
+    },
+    {
+      "name": "Discord",
+      "repo_url": "https://github.com/SaseQ/discord-mcp",
+      "type": "community"
+    },
+    {
+      "name": "Discourse",
+      "repo_url": "https://github.com/AshDevFr/discourse-mcp-server",
+      "type": "community"
+    },
+    {
+      "name": "Docker",
+      "repo_url": "https://github.com/ckreiling/mcp-server-docker",
+      "type": "community"
+    },
+    {
+      "name": "Drupal",
+      "repo_url": "https://github.com/Omedia/mcp-server-drupal",
+      "type": "community"
+    },
+    {
+      "name": "dune-analytics-mcp",
+      "repo_url": "https://github.com/kukapay/dune-analytics-mcp",
+      "type": "community"
+    },
+    {
+      "name": "Elasticsearch",
+      "repo_url": "https://github.com/cr7258/elasticsearch-mcp-server",
+      "type": "community"
+    },
+    {
+      "name": "ElevenLabs",
+      "repo_url": "https://github.com/mamertofabian/elevenlabs-mcp-server",
+      "type": "community"
+    },
+    {
+      "name": "Ergo Blockchain MCP",
+      "repo_url": "https://github.com/marctheshark3/ergo-mcp",
+      "type": "community"
+    },
+    {
+      "name": "Eunomia",
+      "repo_url": "https://github.com/whataboutyou-ai/eunomia-MCP-server",
+      "type": "community"
+    },
+    {
+      "name": "Everything Search",
+      "repo_url": "https://github.com/mamertofabian/mcp-everything-search",
+      "type": "community"
+    },
+    {
+      "name": "EVM MCP Server",
+      "repo_url": "https://github.com/mcpdotdirect/evm-mcp-server",
+      "type": "community"
+    },
+    {
+      "name": "Excel",
+      "repo_url": "https://github.com/haris-musa/excel-mcp-server",
+      "type": "community"
+    },
+    {
+      "name": "Fantasy PL",
+      "repo_url": "https://github.com/rishijatia/fantasy-pl-mcp",
+      "type": "community"
+    },
+    {
+      "name": "fastn.ai – Unified API MCP Server",
+      "repo_url": "https://github.com/fastnai/mcp-fastn",
+      "type": "community"
+    },
+    {
+      "name": "Fetch",
+      "repo_url": "https://github.com/zcaceres/fetch-mcp",
+      "type": "community"
+    },
+    {
+      "name": "Figma",
+      "repo_url": "https://github.com/GLips/Figma-Context-MCP",
+      "type": "community"
+    },
+    {
+      "name": "Fingertip",
+      "repo_url": "https://github.com/fingertip-com/fingertip-mcp",
+      "type": "community"
+    },
+    {
+      "name": "Firebase",
+      "repo_url": "https://github.com/gannonh/firebase-mcp",
+      "type": "community"
+    },
+    {
+      "name": "FireCrawl",
+      "repo_url": "https://github.com/vrknetha/mcp-server-firecrawl",
+      "type": "community"
+    },
+    {
+      "name": "FlightRadar24",
+      "repo_url": "https://github.com/sunsetcoder/flightradar24-mcp-server",
+      "type": "community"
+    },
+    {
+      "name": "Ghost",
+      "repo_url": "https://github.com/MFYDev/ghost-mcp",
+      "type": "community"
+    },
+    {
+      "name": "Github Actions",
+      "repo_url": "https://github.com/ko1ynnky/github-actions-mcp-server",
+      "type": "community"
+    },
+    {
+      "name": "Glean",
+      "repo_url": "https://github.com/longyi1207/glean-mcp-server",
+      "type": "community"
+    },
+    {
+      "name": "Gmail",
+      "repo_url": "https://github.com/GongRzhe/Gmail-MCP-Server",
+      "type": "community"
+    },
+    {
+      "name": "Gmail Headless",
+      "repo_url": "https://github.com/baryhuang/mcp-headless-gmail",
+      "type": "community"
+    },
+    {
+      "name": "Goal Story",
+      "repo_url": "https://github.com/hichana/goalstory-mcp",
+      "type": "community"
+    },
+    {
+      "name": "GOAT",
+      "repo_url": "https://github.com/goat-sdk/goat/tree/main/typescript/examples/by-framework/model-context-protocol",
+      "type": "community"
+    },
+    {
+      "name": "Godot",
+      "repo_url": "https://github.com/Coding-Solo/godot-mcp",
+      "type": "community"
+    },
+    {
+      "name": "Golang Filesystem Server",
+      "repo_url": "https://github.com/mark3labs/mcp-filesystem-server",
+      "type": "community"
+    },
+    {
+      "name": "Goodnews",
+      "repo_url": "https://github.com/VectorInstitute/mcp-goodnews",
+      "type": "community"
+    },
+    {
+      "name": "Google Calendar",
+      "repo_url": "https://github.com/v-3/google-calendar",
+      "type": "community"
+    },
+    {
+      "name": "Google Calendar",
+      "repo_url": "https://github.com/nspady/google-calendar-mcp",
+      "type": "community"
+    },
+    {
+      "name": "Google Custom Search",
+      "repo_url": "https://github.com/adenot/mcp-google-search",
+      "type": "community"
+    },
+    {
+      "name": "Google Tasks",
+      "repo_url": "https://github.com/zcaceres/gtasks-mcp",
+      "type": "community"
+    },
+    {
+      "name": "GraphQL Schema",
+      "repo_url": "https://github.com/hannesj/mcp-graphql-schema",
+      "type": "community"
+    },
+    {
+      "name": "HDW LinkedIn",
+      "repo_url": "https://github.com/horizondatawave/hdw-mcp-server",
+      "type": "community"
+    },
+    {
+      "name": "Heurist Mesh Agent",
+      "repo_url": "https://github.com/heurist-network/heurist-mesh-mcp-server",
+      "type": "community"
+    },
+    {
+      "name": "Holaspirit",
+      "repo_url": "https://github.com/syucream/holaspirit-mcp-server",
+      "type": "community"
+    },
+    {
+      "name": "Home Assistant",
+      "repo_url": "https://github.com/tevonsb/homeassistant-mcp",
+      "type": "community"
+    },
+    {
+      "name": "Home Assistant",
+      "repo_url": "https://github.com/voska/hass-mcp",
+      "type": "community"
+    },
+    {
+      "name": "HubSpot",
+      "repo_url": "https://github.com/buryhuang/mcp-hubspot",
+      "type": "community"
+    },
+    {
+      "name": "HuggingFace Spaces",
+      "repo_url": "https://github.com/evalstate/mcp-hfspace",
+      "type": "community"
+    },
+    {
+      "name": "Hyperliquid",
+      "repo_url": "https://github.com/mektigboy/server-hyperliquid",
+      "type": "community"
+    },
+    {
+      "name": "iFlytek Workflow",
+      "repo_url": "https://github.com/iflytek/ifly-workflow-mcp-server",
+      "type": "community"
+    },
+    {
+      "name": "Image Generation",
+      "repo_url": "https://github.com/GongRzhe/Image-Generation-MCP-Server",
+      "type": "community"
+    },
+    {
+      "name": "InfluxDB",
+      "repo_url": "https://github.com/idoru/influxdb-mcp-server",
+      "type": "community"
+    },
+    {
+      "name": "Inoyu",
+      "repo_url": "https://github.com/sergehuber/inoyu-mcp-unomi-server",
+      "type": "community"
+    },
+    {
+      "name": "Intercom",
+      "repo_url": "https://github.com/raoulbia-ai/mcp-server-for-intercom",
+      "type": "community"
+    },
+    {
+      "name": "iTerm MCP",
+      "repo_url": "https://github.com/ferrislucas/iterm-mcp",
+      "type": "community"
+    },
+    {
+      "name": "JavaFX",
+      "repo_url": "https://github.com/mcpso/mcp-server-javafx",
+      "type": "community"
+    },
+    {
+      "name": "JDBC",
+      "repo_url": "https://github.com/quarkiverse/quarkus-mcp-servers/tree/main/jdbc",
+      "type": "community"
+    },
+    {
+      "name": "JSON",
+      "repo_url": "https://github.com/GongRzhe/JSON-MCP-Server",
+      "type": "community"
+    },
+    {
+      "name": "Keycloak MCP",
+      "repo_url": "https://github.com/ChristophEnglisch/keycloak-model-context-protocol",
+      "type": "community"
+    },
+    {
+      "name": "Kibela",
+      "repo_url": "https://github.com/kiwamizamurai/mcp-kibela-server",
+      "type": "community"
+    },
+    {
+      "name": "KiCad MCP",
+      "repo_url": "https://github.com/lamaalrajih/kicad-mcp",
+      "type": "community"
+    },
+    {
+      "name": "kintone",
+      "repo_url": "https://github.com/macrat/mcp-server-kintone",
+      "type": "community"
+    },
+    {
+      "name": "Kubernetes",
+      "repo_url": "https://github.com/Flux159/mcp-server-kubernetes",
+      "type": "community"
+    },
+    {
+      "name": "Kubernetes and OpenShift",
+      "repo_url": "https://github.com/manusa/kubernetes-mcp-server",
+      "type": "community"
+    },
+    {
+      "name": "Langflow-DOC-QA-SERVER",
+      "repo_url": "https://github.com/GongRzhe/Langflow-DOC-QA-SERVER",
+      "type": "community"
+    },
+    {
+      "name": "Lightdash",
+      "repo_url": "https://github.com/syucream/lightdash-mcp-server",
+      "type": "community"
+    },
+    {
+      "name": "LINE",
+      "repo_url": "https://github.com/amornpan/py-mcp-line",
+      "type": "community"
+    },
+    {
+      "name": "Linear",
+      "repo_url": "https://github.com/jerhadf/linear-mcp-server",
+      "type": "community"
+    },
+    {
+      "name": "Linear",
+      "repo_url": "https://github.com/geropl/linear-mcp-go",
+      "type": "community"
+    },
+    {
+      "name": "LlamaCloud",
+      "repo_url": "https://github.com/run-llama/mcp-server-llamacloud",
+      "type": "community"
+    },
+    {
+      "name": "llm-context",
+      "repo_url": "https://github.com/cyberchitta/llm-context.py",
+      "type": "community"
+    },
+    {
+      "name": "mac-messages-mcp",
+      "repo_url": "https://github.com/carterlasalle/mac_messages_mcp",
+      "type": "community"
+    },
+    {
+      "name": "MariaDB",
+      "repo_url": "https://github.com/abel9851/mcp-server-mariadb",
+      "type": "community"
+    },
+    {
+      "name": "Markdownify",
+      "repo_url": "https://github.com/zcaceres/mcp-markdownify-server",
+      "type": "community"
+    },
+    {
+      "name": "Maton",
+      "repo_url": "https://github.com/maton-ai/agent-toolkit/tree/main/modelcontextprotocol",
+      "type": "community"
+    },
+    {
+      "name": "MCP Compass",
+      "repo_url": "https://github.com/liuyoshio/mcp-compass",
+      "type": "community"
+    },
+    {
+      "name": "MCP Create",
+      "repo_url": "https://github.com/tesla0225/mcp-create",
+      "type": "community"
+    },
+    {
+      "name": "MCP Installer",
+      "repo_url": "https://github.com/anaisbetts/mcp-installer",
+      "type": "community"
+    },
+    {
+      "name": "mcp-k8s-go",
+      "repo_url": "https://github.com/strowk/mcp-k8s-go",
+      "type": "community"
+    },
+    {
+      "name": "mcp-local-rag",
+      "repo_url": "https://github.com/nkapila6/mcp-local-rag",
+      "type": "community"
+    },
+    {
+      "name": "mcp-proxy",
+      "repo_url": "https://github.com/sparfenyuk/mcp-proxy",
+      "type": "community"
+    },
+    {
+      "name": "mem0-mcp",
+      "repo_url": "https://github.com/mem0ai/mem0-mcp",
+      "type": "community"
+    },
+    {
+      "name": "Mindmap",
+      "repo_url": "https://github.com/YuChenSSR/mindmap-mcp-server",
+      "type": "community"
+    },
+    {
+      "name": "Minima",
+      "repo_url": "https://github.com/dmayboroda/minima",
+      "type": "community"
+    },
+    {
+      "name": "Monday.com",
+      "repo_url": "https://github.com/sakce/mcp-server-monday",
+      "type": "community"
+    },
+    {
+      "name": "MongoDB",
+      "repo_url": "https://github.com/kiliczsh/mcp-mongo-server",
+      "type": "community"
+    },
+    {
+      "name": "MongoDB Lens",
+      "repo_url": "https://github.com/furey/mongodb-lens",
+      "type": "community"
+    },
+    {
+      "name": "MSSQL",
+      "repo_url": "https://github.com/aekanun2020/mcp-server/",
+      "type": "community"
+    },
+    {
+      "name": "MSSQL",
+      "repo_url": "https://github.com/JexinSam/mssql_mcp_server",
+      "type": "community"
+    },
+    {
+      "name": "MSSQL-MCP",
+      "repo_url": "https://github.com/daobataotie/mssql-mcp",
+      "type": "community"
+    },
+    {
+      "name": "MSSQL-Python",
+      "repo_url": "https://github.com/amornpan/py-mcp-mssql",
+      "type": "community"
+    },
+    {
+      "name": "Multicluster-MCP-Sever",
+      "repo_url": "https://github.com/yanmxa/multicluster-mcp-server",
+      "type": "community"
+    },
+    {
+      "name": "MySQL",
+      "repo_url": "https://github.com/benborla/mcp-server-mysql",
+      "type": "community"
+    },
+    {
+      "name": "MySQL",
+      "repo_url": "https://github.com/designcomputer/mysql_mcp_server",
+      "type": "community"
+    },
+    {
+      "name": "n8n",
+      "repo_url": "https://github.com/leonardsellem/n8n-mcp-server",
+      "type": "community"
+    },
+    {
+      "name": "NASA",
+      "repo_url": "https://github.com/ProgramComputer/NASA-MCP-server",
+      "type": "community"
+    },
+    {
+      "name": "National Parks",
+      "repo_url": "https://github.com/KyrieTangSheng/mcp-server-nationalparks",
+      "type": "community"
+    },
+    {
+      "name": "NAVER",
+      "repo_url": "https://github.com/pfldy2850/py-mcp-naver",
+      "type": "community"
+    },
+    {
+      "name": "Neo4j",
+      "repo_url": "https://github.com/da-okazaki/mcp-neo4j-server",
+      "type": "community"
+    },
+    {
+      "name": "Neovim",
+      "repo_url": "https://github.com/bigcodegen/mcp-neovim-server",
+      "type": "community"
+    },
+    {
+      "name": "Notion",
+      "repo_url": "https://github.com/suekou/mcp-notion-server",
+      "type": "community"
+    },
+    {
+      "name": "Notion",
+      "repo_url": "https://github.com/v-3/notion-server",
+      "type": "community"
+    },
+    {
+      "name": "NS Travel Information",
+      "repo_url": "https://github.com/r-huijts/ns-mcp-server",
+      "type": "community"
+    },
+    {
+      "name": "ntfy-mcp",
+      "repo_url": "https://github.com/teddyzxcv/ntfy-mcp",
+      "type": "community"
+    },
+    {
+      "name": "oatpp-mcp",
+      "repo_url": "https://github.com/oatpp/oatpp-mcp",
+      "type": "community"
+    },
+    {
+      "name": "Obsidian Markdown Notes",
+      "repo_url": "https://github.com/calclavia/mcp-obsidian",
+      "type": "community"
+    },
+    {
+      "name": "obsidian-mcp",
+      "repo_url": "https://github.com/StevenStavrakis/obsidian-mcp",
+      "type": "community"
+    },
+    {
+      "name": "OceanBase",
+      "repo_url": "https://github.com/yuanoOo/oceanbase_mcp_server",
+      "type": "community"
+    },
+    {
+      "name": "Okta",
+      "repo_url": "https://github.com/kapilduraphe/okta-mcp-server",
+      "type": "community"
+    },
+    {
+      "name": "OneNote",
+      "repo_url": "https://github.com/rajvirtual/MCP-Servers/tree/master/onenote",
+      "type": "community"
+    },
+    {
+      "name": "Open Strategy Partners Marketing Tools",
+      "repo_url": "https://github.com/open-strategy-partners/osp_marketing_tools",
+      "type": "community"
+    },
+    {
+      "name": "OpenAI WebSearch MCP",
+      "repo_url": "https://github.com/ConechoAI/openai-websearch-mcp",
+      "type": "community"
+    },
+    {
+      "name": "OpenAPI",
+      "repo_url": "https://github.com/snaggle-ai/openapi-mcp-server",
+      "type": "community"
+    },
+    {
+      "name": "OpenAPI AnyApi",
+      "repo_url": "https://github.com/baryhuang/mcp-server-any-openapi",
+      "type": "community"
+    },
+    {
+      "name": "OpenAPI Schema",
+      "repo_url": "https://github.com/hannesj/mcp-openapi-schema",
+      "type": "community"
+    },
+    {
+      "name": "OpenCTI",
+      "repo_url": "https://github.com/Spathodea-Network/opencti-mcp",
+      "type": "community"
+    },
+    {
+      "name": "OpenDota",
+      "repo_url": "https://github.com/asusevski/opendota-mcp-server",
+      "type": "community"
+    },
+    {
+      "name": "OpenRPC",
+      "repo_url": "https://github.com/shanejonas/openrpc-mpc-server",
+      "type": "community"
+    },
+    {
+      "name": "Pandoc",
+      "repo_url": "https://github.com/vivekVells/mcp-pandoc",
+      "type": "community"
+    },
+    {
+      "name": "PIF",
+      "repo_url": "https://github.com/hungryrobot1/MCP-PIF",
+      "type": "community"
+    },
+    {
+      "name": "Pinecone",
+      "repo_url": "https://github.com/sirmews/mcp-pinecone",
+      "type": "community"
+    },
+    {
+      "name": "Placid.app",
+      "repo_url": "https://github.com/felores/placid-mcp-server",
+      "type": "community"
+    },
+    {
+      "name": "Playwright",
+      "repo_url": "https://github.com/executeautomation/mcp-playwright",
+      "type": "community"
+    },
+    {
+      "name": "Postman",
+      "repo_url": "https://github.com/shannonlal/mcp-postman",
+      "type": "community"
+    },
+    {
+      "name": "Productboard",
+      "repo_url": "https://github.com/kenjihikmatullah/productboard-mcp",
+      "type": "community"
+    },
+    {
+      "name": "Prometheus",
+      "repo_url": "https://github.com/pab1it0/prometheus-mcp-server",
+      "type": "community"
+    },
+    {
+      "name": "Pulumi",
+      "repo_url": "https://github.com/dogukanakkaya/pulumi-mcp-server",
+      "type": "community"
+    },
+    {
+      "name": "Pushover",
+      "repo_url": "https://github.com/ashiknesin/pushover-mcp",
+      "type": "community"
+    },
+    {
+      "name": "QGIS",
+      "repo_url": "https://github.com/jjsantos01/qgis_mcp",
+      "type": "community"
+    },
+    {
+      "name": "QuickChart",
+      "repo_url": "https://github.com/GongRzhe/Quickchart-MCP-Server",
+      "type": "community"
+    },
+    {
+      "name": "Qwen_Max",
+      "repo_url": "https://github.com/66julienmartin/MCP-server-Qwen_Max",
+      "type": "community"
+    },
+    {
+      "name": "RabbitMQ",
+      "repo_url": "https://github.com/kenliao94/mcp-server-rabbitmq",
+      "type": "community"
+    },
+    {
+      "name": "RAG Web Browser",
+      "repo_url": "https://github.com/apify/mcp-server-rag-web-browser",
+      "type": "community"
+    },
+    {
+      "name": "Reaper",
+      "repo_url": "https://github.com/dschuler36/reaper-mcp-server",
+      "type": "community"
+    },
+    {
+      "name": "Redis",
+      "repo_url": "https://github.com/GongRzhe/REDIS-MCP-Server",
+      "type": "community"
+    },
+    {
+      "name": "Redis",
+      "repo_url": "https://github.com/prajwalnayak7/mcp-server-redis",
+      "type": "community"
+    },
+    {
+      "name": "Rememberizer AI",
+      "repo_url": "https://github.com/skydeckai/mcp-server-rememberizer",
+      "type": "community"
+    },
+    {
+      "name": "Replicate",
+      "repo_url": "https://github.com/deepfates/mcp-replicate",
+      "type": "community"
+    },
+    {
+      "name": "Rijksmuseum",
+      "repo_url": "https://github.com/r-huijts/rijksmuseum-mcp",
+      "type": "community"
+    },
+    {
+      "name": "Rquest",
+      "repo_url": "https://github.com/xxxbrian/mcp-rquest",
+      "type": "community"
+    },
+    {
+      "name": "Salesforce MCP",
+      "repo_url": "https://github.com/smn2gnt/MCP-Salesforce",
+      "type": "community"
+    },
+    {
+      "name": "Scholarly",
+      "repo_url": "https://github.com/adityak74/mcp-scholarly",
+      "type": "community"
+    },
+    {
+      "name": "scrapling-fetch",
+      "repo_url": "https://github.com/cyberchitta/scrapling-fetch-mcp",
+      "type": "community"
+    },
+    {
+      "name": "SearXNG",
+      "repo_url": "https://github.com/ihor-sokoliuk/mcp-searxng",
+      "type": "community"
+    },
+    {
+      "name": "ServiceNow",
+      "repo_url": "https://github.com/osomai/servicenow-mcp",
+      "type": "community"
+    },
+    {
+      "name": "Siri Shortcuts",
+      "repo_url": "https://github.com/dvcrn/mcp-server-siri-shortcuts",
+      "type": "community"
+    },
+    {
+      "name": "Snowflake",
+      "repo_url": "https://github.com/isaacwasserman/mcp-snowflake-server",
+      "type": "community"
+    },
+    {
+      "name": "Solana Agent Kit",
+      "repo_url": "https://github.com/sendaifun/solana-agent-kit/tree/main/examples/agent-kit-mcp-server",
+      "type": "community"
+    },
+    {
+      "name": "Spotify",
+      "repo_url": "https://github.com/varunneal/spotify-mcp",
+      "type": "community"
+    },
+    {
+      "name": "Starwind UI",
+      "repo_url": "https://github.com/Boston343/starwind-ui-mcp/",
+      "type": "community"
+    },
+    {
+      "name": "Stripe",
+      "repo_url": "https://github.com/atharvagupta2003/mcp-stripe",
+      "type": "community"
+    },
+    {
+      "name": "Tavily search",
+      "repo_url": "https://github.com/RamXX/mcp-tavily",
+      "type": "community"
+    },
+    {
+      "name": "Telegram",
+      "repo_url": "https://github.com/chigwell/telegram-mcp",
+      "type": "community"
+    },
+    {
+      "name": "Terminal-Control",
+      "repo_url": "https://github.com/GongRzhe/terminal-controller-mcp",
+      "type": "community"
+    },
+    {
+      "name": "Ticketmaster",
+      "repo_url": "https://github.com/delorenj/mcp-server-ticketmaster",
+      "type": "community"
+    },
+    {
+      "name": "TMDB",
+      "repo_url": "https://github.com/Laksh-star/mcp-server-tmdb",
+      "type": "community"
+    },
+    {
+      "name": "Todoist",
+      "repo_url": "https://github.com/abhiz123/todoist-mcp-server",
+      "type": "community"
+    },
+    {
+      "name": "Travel Planner",
+      "repo_url": "https://github.com/GongRzhe/TRAVEL-PLANNER-MCP-Server",
+      "type": "community"
+    },
+    {
+      "name": "Typesense",
+      "repo_url": "https://github.com/suhail-ak-s/mcp-typesense-server",
+      "type": "community"
+    },
+    {
+      "name": "Unity Catalog",
+      "repo_url": "https://github.com/ognis1205/mcp-server-unitycatalog",
+      "type": "community"
+    },
+    {
+      "name": "Unity Integration (Advanced)",
+      "repo_url": "https://github.com/quazaai/UnityMCPIntegration",
+      "type": "community"
+    },
+    {
+      "name": "Unity3d Game Engine",
+      "repo_url": "https://github.com/CoderGamester/mcp-unity",
+      "type": "community"
+    },
+    {
+      "name": "Vega-Lite",
+      "repo_url": "https://github.com/isaacwasserman/mcp-vegalite-server",
+      "type": "community"
+    },
+    {
+      "name": "Video Editor",
+      "repo_url": "https://github.com/burningion/video-editing-mcp",
+      "type": "community"
+    },
+    {
+      "name": "Virtual location (Google Street View,etc.)",
+      "repo_url": "https://github.com/mfukushim/map-traveler-mcp",
+      "type": "community"
+    },
+    {
+      "name": "VolcEngine TOS",
+      "repo_url": "https://github.com/dinghuazhou/sample-mcp-server-tos",
+      "type": "community"
+    },
+    {
+      "name": "Wanaku MCP Router",
+      "repo_url": "https://github.com/wanaku-ai/wanaku/",
+      "type": "community"
+    },
+    {
+      "name": "Webflow",
+      "repo_url": "https://github.com/kapilduraphe/webflow-mcp-server",
+      "type": "community"
+    },
+    {
+      "name": "whale-tracker-mcp",
+      "repo_url": "https://github.com/kukapay/whale-tracker-mcp",
+      "type": "community"
+    },
+    {
+      "name": "Whois MCP",
+      "repo_url": "https://github.com/bharathvaj-ganesan/whois-mcp",
+      "type": "community"
+    },
+    {
+      "name": "WildFly MCP",
+      "repo_url": "https://github.com/wildfly-extras/wildfly-mcp",
+      "type": "community"
+    },
+    {
+      "name": "Windows CLI",
+      "repo_url": "https://github.com/SimonB97/win-cli-mcp-server",
+      "type": "community"
+    },
+    {
+      "name": "World Bank data API",
+      "repo_url": "https://github.com/anshumax/world_bank_mcp_server",
+      "type": "community"
+    },
+    {
+      "name": "X (Twitter)",
+      "repo_url": "https://github.com/EnesCinr/twitter-mcp",
+      "type": "community"
+    },
+    {
+      "name": "X (Twitter)",
+      "repo_url": "https://github.com/vidhupv/x-mcp",
+      "type": "community"
+    },
+    {
+      "name": "xcodebuild",
+      "repo_url": "https://github.com/ShenghaiWang/xcodebuild",
+      "type": "community"
+    },
+    {
+      "name": "Xero-mcp-server",
+      "repo_url": "https://github.com/john-zhang-dev/xero-mcp",
+      "type": "community"
+    },
+    {
+      "name": "XiYan",
+      "repo_url": "https://github.com/XGenerationLab/xiyan_mcp_server",
+      "type": "community"
+    },
+    {
+      "name": "XMind",
+      "repo_url": "https://github.com/apeyroux/mcp-xmind",
+      "type": "community"
+    },
+    {
+      "name": "YouTube",
+      "repo_url": "https://github.com/ZubeidHendricks/youtube-mcp-server",
+      "type": "community"
+    }
+  ],
+  "frameworks": [
+    {
+      "name": "codemirror-mcp",
+      "repo_url": "https://github.com/marimo-team/codemirror-mcp",
+      "type": "framework"
+    },
+    {
+      "name": "EasyMCP",
+      "repo_url": "https://github.com/zcaceres/easy-mcp/",
+      "type": "framework"
+    },
+    {
+      "name": "FastAPI to MCP auto generator",
+      "repo_url": "https://github.com/tadata-org/fastapi_mcp",
+      "type": "framework"
+    },
+    {
+      "name": "FastMCP",
+      "repo_url": "https://github.com/punkpeye/fastmcp",
+      "type": "framework"
+    },
+    {
+      "name": "Foxy Contexts",
+      "repo_url": "https://github.com/strowk/foxy-contexts",
+      "type": "framework"
+    },
+    {
+      "name": "Higress MCP Server Hosting",
+      "repo_url": "https://github.com/alibaba/higress/tree/main/plugins/wasm-go/mcp-servers",
+      "type": "framework"
+    },
+    {
+      "name": "MCP-Framework",
+      "repo_url": "https://mcp-framework.com",
+      "type": "framework"
+    },
+    {
+      "name": "Quarkus MCP Server SDK",
+      "repo_url": "https://github.com/quarkiverse/quarkus-mcp-server",
+      "type": "framework"
+    },
+    {
+      "name": "Template MCP Server",
+      "repo_url": "https://github.com/mcpdotdirect/template-mcp-server",
+      "type": "framework"
+    }
+  ],
+  "resources": [
+    {
+      "name": "AiMCP",
+      "repo_url": "https://www.aimcp.info",
+      "type": "resource"
+    },
+    {
+      "name": "Awesome Crypto MCP Servers by badkk",
+      "repo_url": "https://github.com/badkk/awesome-crypto-mcp-servers",
+      "type": "resource"
+    },
+    {
+      "name": "Awesome MCP Servers by appcypher",
+      "repo_url": "https://github.com/appcypher/awesome-mcp-servers",
+      "type": "resource"
+    },
+    {
+      "name": "Awesome MCP Servers by punkpeye",
+      "repo_url": "https://github.com/punkpeye/awesome-mcp-servers",
+      "type": "resource"
+    },
+    {
+      "name": "Awesome MCP Servers by wong2",
+      "repo_url": "https://github.com/wong2/awesome-mcp-servers",
+      "type": "resource"
+    },
+    {
+      "name": "Discord Server",
+      "repo_url": "https://glama.ai/mcp/discord",
+      "type": "resource"
+    },
+    {
+      "name": "Discord Server (ModelContextProtocol)",
+      "repo_url": "https://discord.gg/jHEGxQu2a5",
+      "type": "resource"
+    },
+    {
+      "name": "MCP Badges",
+      "repo_url": "https://github.com/mcpx-dev/mcp-badges",
+      "type": "resource"
+    },
+    {
+      "name": "MCP Servers Hub",
+      "repo_url": "https://github.com/apappascs/mcp-servers-hub",
+      "type": "resource"
+    },
+    {
+      "name": "MCP X Community",
+      "repo_url": "https://x.com/i/communities/1861891349609603310",
+      "type": "resource"
+    },
+    {
+      "name": "mcp-cli",
+      "repo_url": "https://github.com/wong2/mcp-cli",
+      "type": "resource"
+    },
+    {
+      "name": "mcp-dockmaster",
+      "repo_url": "https://mcp-dockmaster.com",
+      "type": "resource"
+    },
+    {
+      "name": "mcp-get",
+      "repo_url": "https://mcp-get.com",
+      "type": "resource"
+    },
+    {
+      "name": "mcp-guardian",
+      "repo_url": "https://github.com/eqtylab/mcp-guardian",
+      "type": "resource"
+    },
+    {
+      "name": "mcp-manager",
+      "repo_url": "https://github.com/zueai/mcp-manager",
+      "type": "resource"
+    },
+    {
+      "name": "mcp.run",
+      "repo_url": "https://mcp.run",
+      "type": "resource"
+    },
+    {
+      "name": "MCPHub",
+      "repo_url": "https://github.com/Jeamee/MCPHub-Desktop",
+      "type": "resource"
+    },
+    {
+      "name": "mkinf",
+      "repo_url": "https://mkinf.io",
+      "type": "resource"
+    },
+    {
+      "name": "Open-Sourced MCP Servers Directory",
+      "repo_url": "https://github.com/chatmcp/mcp-directory",
+      "type": "resource"
+    },
+    {
+      "name": "OpenTools",
+      "repo_url": "https://opentools.com",
+      "type": "resource"
+    },
+    {
+      "name": "PulseMCP",
+      "repo_url": "https://www.pulsemcp.com",
+      "type": "resource"
+    },
+    {
+      "name": "r/mcp",
+      "repo_url": "https://www.reddit.com/r/mcp",
+      "type": "resource"
+    },
+    {
+      "name": "r/modelcontextprotocol",
+      "repo_url": "https://www.reddit.com/r/modelcontextprotocol",
+      "type": "resource"
+    },
+    {
+      "name": "Smithery",
+      "repo_url": "https://smithery.ai/",
+      "type": "resource"
+    },
+    {
+      "name": "Toolbase",
+      "repo_url": "https://gettoolbase.ai",
+      "type": "resource"
+    }
+  ],
+  "metadata": {
+    "total_servers": {
+      "reference_servers": 20,
+      "official_integrations": 83,
+      "community_servers": 230,
+      "frameworks": 9,
+      "resources": 25
+    },
+    "mcp_main_repo": "https://github.com/modelcontextprotocol/servers",
+    "last_updated": "2025-04-01T02:55:51Z"
+  }
+}

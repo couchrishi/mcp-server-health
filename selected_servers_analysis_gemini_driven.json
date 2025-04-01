@@ -1,0 +1,237 @@
+{
+  "Filesystem": {
+    "name": "Filesystem",
+    "repo_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem",
+    "type": "reference",
+    "language_stack": [
+      "TypeScript",
+      "Node.js"
+    ],
+    "package_manager": [
+      "npm"
+    ],
+    "dependencies_file": "package.json",
+    "packages": {
+      "dependencies": {
+        "@modelcontextprotocol/sdk": "0.5.0",
+        "diff": "^5.1.0",
+        "glob": "^10.3.10",
+        "minimatch": "^10.0.1",
+        "zod-to-json-schema": "^3.23.5"
+      },
+      "devDependencies": {
+        "@types/diff": "^5.0.9",
+        "@types/minimatch": "^5.1.2",
+        "@types/node": "^22",
+        "shx": "^0.3.4",
+        "typescript": "^5.3.3"
+      }
+    },
+    "has_dockerfile": true,
+    "dockerfile_content": "FROM node:22.12-alpine AS builder\n\nWORKDIR /app\n\nCOPY src/filesystem /app\nCOPY tsconfig.json /tsconfig.json\n\nRUN --mount=type=cache,target=/root/.npm npm install\n\nRUN --mount=type=cache,target=/root/.npm-production npm ci --ignore-scripts --omit-dev\n\n\nFROM node:22-alpine AS release\n\nWORKDIR /app\n\nCOPY --from=builder /app/dist /app/dist\nCOPY --from=builder /app/package.json /app/package.json\nCOPY --from=builder /app/package-lock.json /app/package-lock.json\n\nENV NODE_ENV=production\n\nRUN npm ci --ignore-scripts --omit-dev\n\nENTRYPOINT [\"node\", \"/app/dist/index.js\"]",
+    "base_docker_image": "node:22.12-alpine",
+    "forks": 2981,
+    "stars": 28723,
+    "watchers": 208,
+    "open_issues": null,
+    "closed_issues": null,
+    "total_issues": null,
+    "last_commit": "2025-03-31T15:41:32Z",
+    "has_docs": false,
+    "has_readme": true,
+    "has_examples": false,
+    "has_tests": false,
+    "error": "OpenIssuesError: API returned 422 for open issue search; ClosedIssuesError: API returned 422 for closed issue search"
+  },
+  "Git": {
+    "name": "Git",
+    "repo_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/git",
+    "type": "reference",
+    "language_stack": [
+      "Python"
+    ],
+    "package_manager": [
+      "pip"
+    ],
+    "dependencies_file": "pyproject.toml",
+    "packages": {
+      "dependencies": [
+        "click>=8.1.7",
+        "gitpython>=3.1.43",
+        "mcp>=1.0.0",
+        "pydantic>=2.0.0"
+      ],
+      "devDependencies": [
+        "pyright>=1.1.389",
+        "ruff>=0.7.3",
+        "pytest>=8.0.0"
+      ]
+    },
+    "has_dockerfile": true,
+    "dockerfile_content": "# Use a Python image with uv pre-installed\nFROM ghcr.io/astral-sh/uv:python3.12-bookworm-slim AS uv\n\n# Install the project into `/app`\nWORKDIR /app\n\n# Enable bytecode compilation\nENV UV_COMPILE_BYTECODE=1\n\n# Copy from the cache instead of linking since it's a mounted volume\nENV UV_LINK_MODE=copy\n\n# Install the project's dependencies using the lockfile and settings\nRUN --mount=type=cache,target=/root/.cache/uv \\\n    --mount=type=bind,source=uv.lock,target=uv.lock \\\n    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \\\n    uv sync --frozen --no-install-project --no-dev --no-editable\n\n# Then, add the rest of the project source code and install it\n# Installing separately from its dependencies allows optimal layer caching\nADD . /app\nRUN --mount=type=cache,target=/root/.cache/uv \\\n    uv sync --frozen --no-dev --no-editable\n\nFROM python:3.12-slim-bookworm\n\nRUN apt-get update && apt-get install -y git && rm -rf /var/lib/apt/lists/*\n\nWORKDIR /app\n \nCOPY --from=uv /root/.local /root/.local\nCOPY --from=uv --chown=app:app /app/.venv /app/.venv\n\n# Place executables in the environment at the front of the path\nENV PATH=\"/app/.venv/bin:$PATH\"\n\n# when running the container, add --db-path and a bind mount to the host's db file\nENTRYPOINT [\"mcp-server-git\"]\n",
+    "base_docker_image": "ghcr.io/astral-sh/uv:python3.12-bookworm-slim",
+    "forks": 2981,
+    "stars": 28723,
+    "watchers": 208,
+    "open_issues": null,
+    "closed_issues": null,
+    "total_issues": null,
+    "last_commit": "2025-03-31T15:41:32Z",
+    "has_docs": false,
+    "has_readme": true,
+    "has_examples": false,
+    "has_tests": true,
+    "error": "OpenIssuesError: API returned 422 for open issue search; ClosedIssuesError: API returned 422 for closed issue search"
+  },
+  "Langfuse Prompt Management": {
+    "name": "Langfuse Prompt Management",
+    "repo_url": "https://github.com/langfuse/mcp-server-langfuse",
+    "type": "official",
+    "language_stack": [
+      "TypeScript",
+      "Node.js"
+    ],
+    "package_manager": [
+      "npm"
+    ],
+    "dependencies_file": "package.json",
+    "packages": {
+      "dependencies": {
+        "@modelcontextprotocol/sdk": "^1.5.0",
+        "langfuse": "^3.35.2",
+        "zod": "^3.24.2"
+      },
+      "devDependencies": {
+        "@types/node": "^22.13.4",
+        "typescript": "^5.7.3"
+      }
+    },
+    "has_dockerfile": false,
+    "dockerfile_content": null,
+    "base_docker_image": null,
+    "forks": 6,
+    "stars": 38,
+    "watchers": 2,
+    "open_issues": null,
+    "closed_issues": null,
+    "total_issues": null,
+    "last_commit": "2025-02-16T14:03:25Z",
+    "has_docs": false,
+    "has_readme": true,
+    "has_examples": false,
+    "has_tests": false,
+    "error": "OpenIssuesError: API returned 422 for open issue search; ClosedIssuesError: API returned 422 for closed issue search"
+  },
+  "Semgrep": {
+    "name": "Semgrep",
+    "repo_url": "https://github.com/semgrep/mcp",
+    "type": "official",
+    "language_stack": [
+      "Python"
+    ],
+    "package_manager": [
+      "pip"
+    ],
+    "dependencies_file": "pyproject.toml",
+    "packages": {
+      "dependencies": [
+        "mcp[cli]>=1.3.0",
+        "semgrep>=1.10.0",
+        "fastapi>=0.115.11"
+      ],
+      "devDependencies": []
+    },
+    "has_dockerfile": true,
+    "dockerfile_content": "# Base image with Python and uv\nFROM ghcr.io/astral-sh/uv:python3.13-bookworm-slim AS base\n\n# Create a non-root user and set proper permissions\nRUN groupadd -r app && useradd --no-log-init -r -g app app \\\n    && mkdir -p /home/app/.cache/uv /app \\\n    && chown -R app:app /home/app /app\n\n# Switch to non-root user before doing anything\nUSER app\n\n# Set working directory\nWORKDIR /app\n\n# Enable bytecode compilation and optimize caching\nENV UV_COMPILE_BYTECODE=1 UV_LINK_MODE=copy PATH=\"/app/.venv/bin:$PATH\"\n\n# Copy the entire application source code\nCOPY --chown=app:app . .\n\n# Create a virtual environment and install dependencies **as non-root**\nRUN python -m venv /app/.venv \\\n    && uv pip install --no-cache .\n\n# Default command to run the application\nCMD [\"uv\", \"run\", \"--with\", \"fastmcp\", \"fastmcp\", \"run\", \"server.py\", \"-t\", \"sse\"]",
+    "base_docker_image": "ghcr.io/astral-sh/uv:python3.13-bookworm-slim",
+    "forks": 4,
+    "stars": 28,
+    "watchers": 4,
+    "open_issues": null,
+    "closed_issues": null,
+    "total_issues": null,
+    "last_commit": "2025-03-28T23:08:52Z",
+    "has_docs": false,
+    "has_readme": true,
+    "has_examples": false,
+    "has_tests": false,
+    "error": "OpenIssuesError: API returned 422 for open issue search; ClosedIssuesError: API returned 422 for closed issue search"
+  },
+  "SearXNG": {
+    "name": "SearXNG",
+    "repo_url": "https://github.com/ihor-sokoliuk/mcp-searxng",
+    "type": "community",
+    "language_stack": [
+      "TypeScript"
+    ],
+    "package_manager": [
+      "npm"
+    ],
+    "dependencies_file": "package.json",
+    "packages": {
+      "dependencies": {
+        "@modelcontextprotocol/sdk": "1.0.1",
+        "node-html-markdown": "^1.3.0"
+      },
+      "devDependencies": {
+        "@types/node": "^22.10.2",
+        "shx": "^0.3.4",
+        "typescript": "^5.7.2"
+      }
+    },
+    "has_dockerfile": true,
+    "dockerfile_content": "FROM node:22.12-alpine AS builder\n\n# Must be entire project because `prepare` script is run during `npm install` and requires all files.\nCOPY ./ /app\nCOPY tsconfig.json /tsconfig.json\n\nWORKDIR /app\n\nRUN --mount=type=cache,target=/root/.npm npm install\n\nFROM node:22-alpine AS release\n\nWORKDIR /app\n\nCOPY --from=builder /app/dist /app/dist\nCOPY --from=builder /app/package.json /app/package.json\nCOPY --from=builder /app/package-lock.json /app/package-lock.json\n\nENV NODE_ENV=production\n\nRUN npm ci --ignore-scripts --omit-dev\n\nENTRYPOINT [\"node\", \"dist/index.js\"]",
+    "base_docker_image": "node:22.12-alpine",
+    "forks": 8,
+    "stars": 38,
+    "watchers": 1,
+    "open_issues": null,
+    "closed_issues": null,
+    "total_issues": null,
+    "last_commit": "2025-02-17T18:52:11Z",
+    "has_docs": false,
+    "has_readme": true,
+    "has_examples": false,
+    "has_tests": false,
+    "error": "OpenIssuesError: API returned 422 for open issue search; ClosedIssuesError: API returned 422 for closed issue search"
+  },
+  "Google Custom Search": {
+    "name": "Google Custom Search",
+    "repo_url": "https://github.com/adenot/mcp-google-search",
+    "type": "community",
+    "language_stack": [
+      "TypeScript",
+      "Node.js"
+    ],
+    "package_manager": [
+      "npm"
+    ],
+    "dependencies_file": "package.json",
+    "packages": {
+      "dependencies": {
+        "@modelcontextprotocol/sdk": "0.6.0",
+        "axios": "^1.7.9",
+        "cheerio": "^1.0.0"
+      },
+      "devDependencies": {
+        "@types/node": "^20.11.24",
+        "typescript": "^5.3.3"
+      }
+    },
+    "has_dockerfile": true,
+    "dockerfile_content": "# Generated by https://smithery.ai. See: https://smithery.ai/docs/config#dockerfile\n# Use an official Node.js image as a parent image\nFROM node:18-alpine AS builder\n\n# Set the working directory\nWORKDIR /app\n\n# Copy package.json and package-lock.json\nCOPY package.json package-lock.json ./\n\n# Install dependencies\nRUN npm install --ignore-scripts\n\n# Copy the TypeScript source code\nCOPY src ./src\nCOPY tsconfig.json ./\n\n# Build the TypeScript code\nRUN npm run build\n\n# Use a lightweight image for the final build\nFROM node:18-alpine\n\n# Set the working directory\nWORKDIR /app\n\n# Copy the build files from the builder stage\nCOPY --from=builder /app/build ./build\nCOPY package.json ./\n\n# Install only production dependencies\nRUN npm ci --omit=dev\n\n# Expose the port on which the server will run (if required)\n# EXPOSE 8080\n\n# Define environment variables\nENV GOOGLE_API_KEY=your-api-key-here\nENV GOOGLE_SEARCH_ENGINE_ID=your-search-engine-id-here\n\n# Run the application\nENTRYPOINT [\"node\", \"build/index.js\"]\n",
+    "base_docker_image": "node:18-alpine",
+    "forks": 4,
+    "stars": 9,
+    "watchers": 1,
+    "open_issues": null,
+    "closed_issues": null,
+    "total_issues": null,
+    "last_commit": "2025-02-08T03:57:22Z",
+    "has_docs": false,
+    "has_readme": true,
+    "has_examples": false,
+    "has_tests": false,
+    "error": "OpenIssuesError: API returned 422 for open issue search; ClosedIssuesError: API returned 422 for closed issue search"
+  }
+}
