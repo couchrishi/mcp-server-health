@@ -4,25 +4,13 @@ import re
 import sys
 
 # --- Vertex AI Imports ---
-try:
-    import vertexai
-    from vertexai.generative_models import (
-        GenerativeModel, Part, GenerationConfig
-    )
-    VERTEX_AI_AVAILABLE = True
-except ImportError:
-    print("ERROR: google-cloud-aiplatform library not found. This script requires Gemini.")
-    print('Install using: pip install google-cloud-aiplatform')
-    VERTEX_AI_AVAILABLE = False
-    # Define dummy class only if needed for type hinting, but script should exit if not available
-    class GenerativeModel: pass
+# The main script should handle import errors and SDK initialization.
+# This module assumes the SDK is available and the model instance is passed in.
+from vertexai.generative_models import GenerativeModel, GenerationConfig
 
 
 # --- Configuration ---
-# These might be better loaded from env vars or a central config in a real app
-PROJECT_ID = "saib-ai-playground"
-LOCATION = "us-central1"
-MODEL_NAME = "gemini-2.5-pro-exp-03-25"
+# Configuration (Project ID, Location, Model Name) is handled by the calling script.
 
 logger = logging.getLogger(__name__)
 
@@ -30,7 +18,7 @@ logger = logging.getLogger(__name__)
 
 async def analyze_file_list(gemini_model: GenerativeModel, file_list: list) -> dict:
     """Uses Gemini to analyze a list of filenames."""
-    if not VERTEX_AI_AVAILABLE: return {"error": "Vertex AI SDK not available"}
+    # SDK availability check is handled by the calling script.
     logger.info("Analyzing file list with Gemini...")
     analysis_result = {
         "language_stack": ["Unknown"], "package_manager": ["Unknown"], "dependencies_file": None,
@@ -101,7 +89,7 @@ async def analyze_file_list(gemini_model: GenerativeModel, file_list: list) -> d
 
 async def analyze_file_content(gemini_model: GenerativeModel, dep_content: str | None, docker_content: str | None) -> dict:
     """Uses Gemini to analyze dependency file and Dockerfile content."""
-    if not VERTEX_AI_AVAILABLE: return {"error": "Vertex AI SDK not available"}
+    # SDK availability check is handled by the calling script.
     logger.info("Analyzing file content with Gemini...")
     analysis_result = {"packages": {"dependencies": [], "devDependencies": []}, "base_docker_image": None, "error": None}
     if not dep_content and not docker_content:
@@ -169,3 +157,45 @@ async def analyze_file_content(gemini_model: GenerativeModel, dep_content: str |
         logger.exception(f"Error during Gemini file content analysis: {e}")
         analysis_result["error"] = f"Gemini analysis error: {e}"
     return analysis_result
+
+# --- NEW FUNCTION ---
+async def analyze_readme_for_discovery(gemini_model: GenerativeModel, prompt: str, model_name_for_log: str) -> str | None:
+    """Uses Vertex AI Gemini to extract initial discovery data based on the provided prompt."""
+    # SDK availability check is handled by the calling script.
+    logger.info(f"Sending discovery prompt to Gemini model '{model_name_for_log}'...")
+    json_text = None
+    try:
+        generation_config = {"response_mime_type": "application/json"}
+        # Use async version if available and needed, otherwise sync
+        # Assuming the main script uses asyncio, we use async here.
+        response = await gemini_model.generate_content_async(prompt, generation_config=generation_config)
+        logger.debug(f"Gemini discovery call returned. Response object: {response is not None}")
+
+        if not response or not response.candidates:
+            logger.warning("Gemini discovery response was empty or had no candidates.")
+            return None
+
+        first_candidate = response.candidates[0]
+        if hasattr(first_candidate, 'finish_reason'):
+            logger.info(f"Gemini Discovery Finish Reason: {first_candidate.finish_reason.name}")
+        if hasattr(first_candidate, 'safety_ratings'):
+            logger.info(f"Gemini Discovery Safety Ratings: {[f'{r.category.name}: {r.probability.name}' for r in first_candidate.safety_ratings]}")
+
+        if first_candidate.finish_reason.name not in ["STOP", "MAX_TOKENS"]:
+            logger.error(f"Gemini discovery generation stopped due to: {first_candidate.finish_reason.name}")
+            return None
+
+        if first_candidate.content and first_candidate.content.parts:
+            json_text = first_candidate.content.parts[0].text
+            json_text = json_text.strip().strip('```json').strip('```').strip()
+            logger.debug("Extracted JSON text from Gemini discovery response.")
+            return json_text
+        else:
+            logger.warning("Gemini discovery response candidate has no content parts.")
+            return None
+    except Exception as e:
+        logger.exception(f"An error occurred during Gemini discovery interaction: {e}")
+        # Avoid logging the full response object here as it might be large or sensitive
+        # if 'response' in locals() and response: logger.error(f"Gemini Discovery Response (raw on exception): {response}")
+        return None
+# --- END NEW FUNCTION ---
