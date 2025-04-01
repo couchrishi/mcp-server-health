@@ -159,10 +159,10 @@ async def analyze_file_content(gemini_model: GenerativeModel, dep_content: str |
     return analysis_result
 
 # --- NEW FUNCTION ---
-async def analyze_readme_for_discovery(gemini_model: GenerativeModel, prompt: str, model_name_for_log: str) -> str | None:
+async def analyze_readme_for_discovery(gemini_model: GenerativeModel, prompt: str) -> str | None: # Removed model_name_for_log parameter
     """Uses Vertex AI Gemini to extract initial discovery data based on the provided prompt."""
-    # SDK availability check is handled by the calling script.
-    logger.info(f"Sending discovery prompt to Gemini model '{model_name_for_log}'...")
+    # SDK availability check and model logging is handled by the calling script.
+    logger.info(f"Sending discovery prompt to Gemini model...") # Removed model name from log
     json_text = None
     try:
         generation_config = {"response_mime_type": "application/json"}

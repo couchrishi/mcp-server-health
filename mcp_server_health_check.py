@@ -52,7 +52,7 @@ except ImportError:
 
 # --- Local Imports ---
 try:
-    import config
+    import config # Make sure to import the new list
     # Import utility functions directly
     from github_api_utils import get_repo_info, get_issue_count, get_repo_contents, decode_file_content
     from gemini_analysis_utils import analyze_file_list, analyze_file_content, analyze_readme_for_discovery # Added import
@@ -234,7 +234,8 @@ def process_discovery_data(json_string: str) -> tuple[dict | None, dict | None]:
                     item_copy = item.copy(); item_copy['type'] = type_value; item_copy['analysis_status'] = 'pending'; item_copy['analysis_results'] = None; item_copy['analysis_error'] = None; processed_list.append(item_copy)
                 else: logger.warning(f"Skipping malformed item in discovery category '{key}': {item}")
             processed_data[key] = sorted(processed_list, key=lambda x: x.get('name', '').lower()); counts[key] = len(processed_data[key])
-        discovery_metadata = {"discovery_counts": counts, "discovery_time_utc": datetime.datetime.now(datetime.timezone.utc).isoformat(), "readme_source_url": config.GITHUB_README_URL, "gemini_model_discovery": config.MODEL_NAME}
+        # Initial metadata - model name will be updated after successful discovery
+        discovery_metadata = {"discovery_counts": counts, "discovery_time_utc": datetime.datetime.now(datetime.timezone.utc).isoformat(), "readme_source_url": config.GITHUB_README_URL, "gemini_model_discovery": None}
         logger.info(f"Discovery Counts: {counts}"); logger.info("Successfully processed discovery data.")
         return processed_data, discovery_metadata
     except json.JSONDecodeError as e: logger.error(f"Error decoding discovery JSON: {e}"); logger.error(f"--- Raw: {json_string} ---"); return None, None
@@ -291,6 +292,7 @@ async def analyze_single_item(client: httpx.AsyncClient, gemini_model: Generativ
     """Analyzes a single discovered item using imported utils and semaphores."""
     name = item_info.get("name", "Unknown"); repo_url = item_info.get("repo_url"); item_type = item_info.get("type", "unknown")
     logger.info(f"--- Analyzing Item: {name} ({item_type}) ---"); logger.debug(f"URL: {repo_url}")
+    # Use the primary model name for analysis phase metadata, or could use the successful discovery model if needed
     analysis_results = {"analysis_time_utc": datetime.datetime.now(datetime.timezone.utc).isoformat(), "analysis_error": None, "gemini_model_analysis": config.MODEL_NAME}
     all_errors = []
 
@@ -409,27 +411,91 @@ async def main():
     if SENDGRID_AVAILABLE and not sendgrid_api_key: logger.warning("Failed to retrieve SendGrid API key. Email notification will be skipped.")
     GITHUB_HEADERS["Authorization"] = f"Bearer {github_token}"; logger.info("GitHub token loaded and headers updated.")
 
-    # --- Initialize Vertex AI ---
+    # --- Initialize Vertex AI (Project Context Only) ---
     try:
-        logger.info(f"Initializing Vertex AI for project {config.PROJECT_ID} in {config.LOCATION}...")
+        logger.info(f"Initializing Vertex AI project context for {config.PROJECT_ID} in {config.LOCATION}...")
         vertexai.init(project=config.PROJECT_ID, location=config.LOCATION)
-        gemini_model_instance = GenerativeModel(config.MODEL_NAME)
-        logger.info(f"Vertex AI initialized successfully with model {config.MODEL_NAME}.")
-    except Exception as e: logger.critical(f"Failed to initialize Vertex AI: {e}", exc_info=True); sys.exit(1)
+        logger.info("Vertex AI project context initialized.")
+    except Exception as e:
+        logger.critical(f"Failed to initialize Vertex AI project context: {e}", exc_info=True)
+        sys.exit(1)
 
     # --- Phase 1: Discovery ---
     logger.info("--- Starting Discovery Phase ---")
     readme_content = fetch_readme_content(config.GITHUB_README_URL)
     if not readme_content: logger.critical("Failed to fetch README content. Exiting."); sys.exit(1)
     discovery_prompt = generate_discovery_prompt(readme_content)
-    gemini_json_output = await analyze_readme_for_discovery(gemini_model_instance, discovery_prompt, config.MODEL_NAME) # Use imported async function
-    if not gemini_json_output: logger.critical("Failed to get valid discovery response from Gemini. Exiting."); sys.exit(1)
+
+    # --- Fallback & Retry logic for initial Gemini discovery call ---
+    max_retries_per_model = 3
+    initial_delay = 5 # Initial delay in seconds for retries
+    gemini_json_output = None
+    successful_discovery_model = None
+    gemini_model_instance = None # Will be initialized in the loop
+
+    for model_name in config.GEMINI_DISCOVERY_FALLBACK_MODELS:
+        logger.info(f"Attempting Gemini discovery with model: {model_name}")
+        try:
+            # Initialize the model instance for the current attempt
+            gemini_model_instance = GenerativeModel(model_name)
+            logger.info(f"Initialized GenerativeModel for {model_name}")
+        except Exception as e:
+            logger.error(f"Failed to initialize GenerativeModel for {model_name}: {e}. Skipping this model.")
+            continue # Try the next model
+
+        current_delay = initial_delay
+        for attempt in range(max_retries_per_model):
+            try:
+                # Pass the currently initialized model instance
+                gemini_json_output = await analyze_readme_for_discovery(gemini_model_instance, discovery_prompt)
+                if gemini_json_output:
+                    logger.info(f"Successfully received discovery data using model: {model_name}")
+                    successful_discovery_model = model_name
+                    break # Success, break inner retry loop
+                else:
+                    # Handle cases where the function returns None without an exception
+                    logger.warning(f"Gemini discovery with {model_name} returned no output on attempt {attempt + 1}/{max_retries_per_model}.")
+                    # Don't retry immediately for empty output, but let the outer loop handle fallback if needed after all attempts.
+
+            except google_exceptions.ResourceExhausted as e: # Specific retry for 429
+                logger.warning(f"Gemini discovery with {model_name} failed on attempt {attempt + 1}/{max_retries_per_model} with ResourceExhausted (429): {e}")
+                if attempt < max_retries_per_model - 1:
+                    logger.info(f"Retrying with {model_name} in {current_delay} seconds...")
+                    await asyncio.sleep(current_delay)
+                    current_delay *= 2 # Exponential backoff
+                else:
+                    logger.error(f"Gemini discovery with {model_name} failed after {max_retries_per_model} attempts due to ResourceExhausted.")
+                    # Break inner loop to try next model (handled by loop continuation)
+
+            except google_exceptions.ServiceUnavailable as e: # Specific handling for 503
+                 logger.error(f"Gemini discovery with {model_name} failed on attempt {attempt + 1}/{max_retries_per_model} with ServiceUnavailable (503): {e}. Trying next model.")
+                 break # Break inner loop immediately, try next model
+
+            except Exception as e:
+                 logger.error(f"Unexpected error during Gemini discovery call with {model_name}: {e}", exc_info=True)
+                 break # Break inner loop immediately, try next model
+
+        if successful_discovery_model:
+            break # Success, break outer model fallback loop
+    # --- End Fallback & Retry Logic ---
+
+    if not successful_discovery_model or not gemini_json_output:
+        logger.critical("Failed to get valid discovery response from Gemini using any fallback model. Exiting.")
+        sys.exit(1)
+
+    # Process data using the successful output
     discovered_data, discovery_metadata = process_discovery_data(gemini_json_output)
-    if not discovered_data or not discovery_metadata: logger.critical("Failed to process discovery data from Gemini. Exiting."); sys.exit(1)
+    # Update metadata with the model that actually worked
+    if discovery_metadata:
+        discovery_metadata["gemini_model_discovery"] = successful_discovery_model
+    else: # Should not happen if process_discovery_data succeeds, but handle defensively
+        discovery_metadata = {"gemini_model_discovery": successful_discovery_model}
+
 
     # Save intermediate discovery results locally
     try:
-        discovery_output_content = {**discovered_data, "metadata": discovery_metadata}
+        # Ensure metadata exists before merging
+        discovery_output_content = {**discovered_data, "metadata": discovery_metadata or {}}
         logger.info(f"Writing raw discovery results to {config.DISCOVERY_OUTPUT_FILE}...")
         with open(config.DISCOVERY_OUTPUT_FILE, 'w', encoding='utf-8') as f: json.dump(discovery_output_content, f, indent=2, ensure_ascii=False)
         logger.info("Successfully wrote raw discovery results."); discovery_file_written = True
@@ -450,7 +516,12 @@ async def main():
 
             async def guarded_analyze(item_info, gemini_sem): # Accept gemini_semaphore
                 async with server_semaphore:
-                    try: result = await analyze_single_item(client, gemini_model_instance, item_info, api_semaphore, gemini_sem) # Pass gemini_semaphore down
+                    # Ensure the correct gemini_model_instance (the one used for discovery or the primary one if discovery didn't need fallback) is passed
+                    # If discovery succeeded, gemini_model_instance is already set to the successful model.
+                    # If analysis needs a different model (e.g., config.MODEL_NAME), re-initialize here if necessary.
+                    # For now, assume the discovery model is sufficient for analysis too.
+                    # Pass the successfully initialized gemini_model_instance from the discovery phase
+                    try: result = await analyze_single_item(client, gemini_model_instance, item_info, api_semaphore, gemini_sem)
                     except Exception as e: logger.error(f"Unexpected exception during analysis of {item_info.get('name')}: {e}", exc_info=True); result = {"analysis_error": f"Outer analysis exception: {e}"}
                     analysis_part = result if isinstance(result, dict) else {"analysis_error": f"Invalid analysis result type: {type(result)}"}
                     merged_item = item_info.copy(); merged_item['analysis_results'] = analysis_part; merged_item['analysis_status'] = 'completed' if not analysis_part.get('analysis_error') else 'error'; merged_item['analysis_error'] = analysis_part.get('analysis_error')

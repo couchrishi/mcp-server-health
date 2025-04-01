@@ -6,7 +6,13 @@ import os
 # --- Project/API Settings ---
 PROJECT_ID = "saib-ai-playground" # Google Cloud Project ID for Vertex AI
 LOCATION = "us-central1"          # Google Cloud Location for Vertex AI
-MODEL_NAME = "gemini-2.5-pro-exp-03-25" # Gemini model for analysis
+MODEL_NAME = "gemini-2.5-pro-exp-03-25" # Primary Gemini model for analysis
+# Fallback models for initial discovery phase in case of errors/rate limits
+GEMINI_DISCOVERY_FALLBACK_MODELS = [
+    "gemini-2.5-pro-exp-03-25",
+    "gemini-2.0-pro-exp-02-25",
+    "gemini-1.5-pro-002"
+]
 
 GITHUB_API_BASE_URL = "https://api.github.com"
 GITHUB_README_URL = "https://raw.githubusercontent.com/modelcontextprotocol/servers/main/README.md" # Direct URL to raw README
