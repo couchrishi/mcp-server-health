@@ -3,6 +3,7 @@ import os
 import logging
 import sys
 import asyncio
+from asyncio import Semaphore
 import httpx
 import base64
 import random # To select random servers
@@ -45,8 +46,9 @@ else:
     print("CRITICAL ERROR: GITHUB_PERSONAL_ACCESS_TOKEN environment variable not set.")
     sys.exit(1) # Exit if token is missing
 
-REQUEST_TIMEOUT = 20.0 # Timeout for API calls
-
+REQUEST_TIMEOUT = 30.0 # Increased Timeout for API calls
+MAX_CONCURRENT_SERVERS = 10 # Limit concurrent server analyses
+MAX_CONCURRENT_API_CALLS_PER_SERVER = 5 # Limit concurrent API calls per server
 # --- Logging Setup ---
 logging.basicConfig(
     level=logging.INFO,
@@ -325,8 +327,8 @@ async def analyze_file_content(gemini_model: GenerativeModel, dep_content: str |
 
 
 # --- Main Analysis Function ---
-async def analyze_single_server(client: httpx.AsyncClient, gemini_model: GenerativeModel | None, server_info):
-    """Analyzes a single server using Direct API and Gemini."""
+async def analyze_single_server(client: httpx.AsyncClient, gemini_model: GenerativeModel | None, server_info, api_semaphore: Semaphore):
+    """Analyzes a single server using Direct API and Gemini, respecting API concurrency limits."""
     name = server_info.get("name", "Unknown"); repo_url = server_info.get("repo_url"); server_type = server_info.get("type", "unknown")
     logger.info(f"--- Analyzing Server: {name} ({repo_url}) ---")
     # Initialize metadata dict with all requested fields
@@ -335,29 +337,47 @@ async def analyze_single_server(client: httpx.AsyncClient, gemini_model: Generat
     owner, repo, branch, directory_path = parse_github_url(repo_url)
     if not owner or not repo: metadata["error"] = "Could not parse GitHub URL"; logger.warning(f"Could not parse owner/repo from URL: {repo_url}"); return metadata
 
-    # --- Phase 1: Direct API Calls (Concurrent) ---
-    repo_info_task = get_repo_info(client, owner, repo)
-    open_issues_task = get_issue_count(client, owner, repo, "open")
-    closed_issues_task = get_issue_count(client, owner, repo, "closed")
-    # Fetch root contents to get file list for Gemini analysis
-    root_contents_task = get_repo_contents(client, owner, repo, directory_path or "", branch) # Use directory_path if present, else root
+    # --- Phase 1: Direct API Calls (Concurrent & Guarded) ---
+    # Helper to wrap API calls with the semaphore
+    async def guarded_api_call(coro):
+        async with api_semaphore:
+            logger.debug(f"Acquired API semaphore for {name}")
+            try:
+                result = await coro
+            finally:
+                logger.debug(f"Released API semaphore for {name}")
+            return result
 
-    # Fetch specific file contents concurrently
+    api_tasks = []
+
+    # Create guarded tasks for each API call
+    api_tasks.append(asyncio.create_task(guarded_api_call(get_repo_info(client, owner, repo))))
+    api_tasks.append(asyncio.create_task(guarded_api_call(get_issue_count(client, owner, repo, "open"))))
+    api_tasks.append(asyncio.create_task(guarded_api_call(get_issue_count(client, owner, repo, "closed"))))
+    api_tasks.append(asyncio.create_task(guarded_api_call(get_repo_contents(client, owner, repo, directory_path or "", branch)))) # Root contents
+
+    # File content tasks
     dep_files_to_fetch = ['package.json', 'pyproject.toml', 'requirements.txt']
     dockerfile_to_fetch = 'Dockerfile'
-    file_content_tasks = {
-        fname: get_repo_contents(client, owner, repo, f"{directory_path}/{fname}" if directory_path else fname, branch)
-        for fname in dep_files_to_fetch
-    }
-    file_content_tasks[dockerfile_to_fetch] = get_repo_contents(client, owner, repo, f"{directory_path}/{dockerfile_to_fetch}" if directory_path else dockerfile_to_fetch, branch)
+    file_content_task_map = {} # To map filename back to result index
+
+    task_index_offset = len(api_tasks) # Index where file tasks start
+    for i, fname in enumerate(dep_files_to_fetch):
+        path_to_fetch = f"{directory_path}/{fname}" if directory_path else fname
+        api_tasks.append(asyncio.create_task(guarded_api_call(get_repo_contents(client, owner, repo, path_to_fetch, branch))))
+        file_content_task_map[fname] = task_index_offset + i
+
+    path_to_fetch = f"{directory_path}/{dockerfile_to_fetch}" if directory_path else dockerfile_to_fetch
+    api_tasks.append(asyncio.create_task(guarded_api_call(get_repo_contents(client, owner, repo, path_to_fetch, branch))))
+    file_content_task_map[dockerfile_to_fetch] = task_index_offset + len(dep_files_to_fetch)
 
     # Gather all API call results
-    all_tasks = [repo_info_task, open_issues_task, closed_issues_task, root_contents_task] + list(file_content_tasks.values())
-    results = await asyncio.gather(*all_tasks, return_exceptions=True)
+    results = await asyncio.gather(*api_tasks, return_exceptions=True)
 
     # --- Process API Results ---
     repo_info_res = results[0]; open_issues_res = results[1]; closed_issues_res = results[2]; root_contents_res = results[3]
-    file_content_results = dict(zip(file_content_tasks.keys(), results[4:]))
+    # Map results back using the index map
+    file_content_results = {fname: results[idx] for fname, idx in file_content_task_map.items()}
 
     # Populate metadata from direct calls
     if isinstance(repo_info_res, dict):
@@ -481,15 +501,28 @@ async def main():
 
     # Select servers for analysis
     servers_to_analyze = []
-    for category in CATEGORIES_TO_SAMPLE:
-        server_list = discovered_data.get(category, [])
-        sample_size = min(len(server_list), NUM_SERVERS_PER_CATEGORY)
-        if sample_size < NUM_SERVERS_PER_CATEGORY: logger.warning(f"Category '{category}' has only {sample_size} servers. Analyzing all available.")
-        if sample_size > 0:
-             sampled_list = random.sample(server_list, sample_size)
-             type_value = category.replace("_servers", "").replace("_integrations","")
-             for server in sampled_list: server['type'] = server.get('type', type_value) # Ensure type field exists
-             servers_to_analyze.extend(sampled_list)
+    logger.info("Selecting ALL servers from all categories for analysis...")
+    # Iterate through all categories found in the input JSON
+    for category, server_list in discovered_data.items():
+        # Skip metadata fields like 'counts' if they exist
+        if not isinstance(server_list, list):
+            logger.debug(f"Skipping non-list item '{category}' during server selection.")
+            continue
+
+        if not server_list:
+            logger.warning(f"Category '{category}' is empty. Skipping.")
+            continue
+
+        # Determine the type based on the category key
+        type_value = category.replace("_servers", "").replace("_integrations","")
+        logger.info(f"Adding {len(server_list)} servers from category '{category}' (type: {type_value}).")
+
+        # Ensure each server has the 'type' field assigned
+        for server in server_list:
+            server['type'] = server.get('type', type_value)
+
+        # Add all servers from this category to the list
+        servers_to_analyze.extend(server_list)
 
     total_to_analyze = len(servers_to_analyze)
     if total_to_analyze == 0: logger.error("No servers selected for analysis."); sys.exit(1)
@@ -498,32 +531,67 @@ async def main():
 
     # Create a single httpx client for all API calls
     async with httpx.AsyncClient(follow_redirects=True) as client:
-        analysis_tasks = [analyze_single_server(client, gemini_model_instance, s_info) for s_info in servers_to_analyze]
-        logger.info(f"Running analysis concurrently for {len(analysis_tasks)} selected items...")
-        completed_analyses = await asyncio.gather(*analysis_tasks, return_exceptions=True)
+        # Create Semaphores
+        server_semaphore = Semaphore(MAX_CONCURRENT_SERVERS)
+        api_semaphore = Semaphore(MAX_CONCURRENT_API_CALLS_PER_SERVER)
+        logger.info(f"Concurrency limits: {MAX_CONCURRENT_SERVERS} servers, {MAX_CONCURRENT_API_CALLS_PER_SERVER} API calls/server.")
 
-        for i, result_or_exc in enumerate(completed_analyses):
-            original_name = servers_to_analyze[i].get("name", f"Unknown_{i}"); original_url = servers_to_analyze[i].get("repo_url", "N/A")
-            if isinstance(result_or_exc, Exception): logger.error(f"Analysis task for item '{original_name}' ({original_url}) failed: {result_or_exc}", exc_info=False); analysis_results[original_name] = {"name": original_name, "repo_url": original_url, "type": servers_to_analyze[i].get("type"), "error": f"Analysis Task Exception: {result_or_exc}"}
-            elif isinstance(result_or_exc, dict) and 'name' in result_or_exc: analysis_results[result_or_exc['name']] = result_or_exc
-            else: logger.error(f"Unexpected result type for item '{original_name}': {type(result_or_exc)}"); analysis_results[original_name] = {"name": original_name, "repo_url": original_url, "type": servers_to_analyze[i].get("type"), "error": f"Unexpected analysis result type: {type(result_or_exc)}"}
+        # Helper function to run analysis under server semaphore
+        async def guarded_analyze(server_info):
+            async with server_semaphore:
+                logger.debug(f"Acquired server semaphore for {server_info.get('name')}")
+                try:
+                    # Pass the api_semaphore to the analysis function
+                    result = await analyze_single_server(client, gemini_model_instance, server_info, api_semaphore)
+                finally:
+                    logger.debug(f"Released server semaphore for {server_info.get('name')}")
+                return result
 
-    # Write results
-    logger.info(f"Writing analysis results for {len(analysis_results)} selected items to {OUTPUT_JSON_FILE}")
+        # Create tasks using the guarded helper
+        tasks = [
+            asyncio.create_task(guarded_analyze(server))
+            for server in servers_to_analyze
+        ]
+
+        # Run tasks concurrently (respecting server_semaphore) and gather results
+        logger.info(f"Starting analysis of {len(tasks)} servers...")
+        analysis_results_list = await asyncio.gather(*tasks, return_exceptions=True) # Keep return_exceptions=True
+        logger.info("Finished gathering analysis results.")
+
+        # Process results into the final dictionary
+        for i, result_or_exc in enumerate(analysis_results_list):
+            # Get original info for error reporting
+            original_name = servers_to_analyze[i].get("name", f"Unknown_{i}")
+            original_url = servers_to_analyze[i].get("repo_url", "N/A")
+            server_type = servers_to_analyze[i].get("type")
+
+            if isinstance(result_or_exc, Exception):
+                logger.error(f"Analysis task for item '{original_name}' ({original_url}) failed: {result_or_exc}", exc_info=False)
+                analysis_results[original_name] = {"name": original_name, "repo_url": original_url, "type": server_type, "error": f"Analysis Task Exception: {result_or_exc}"}
+            elif isinstance(result_or_exc, dict) and "name" in result_or_exc:
+                # Remove None values before saving for cleaner output
+                cleaned_result = {k: v for k, v in result_or_exc.items() if v is not None}
+                analysis_results[cleaned_result["name"]] = cleaned_result
+            else:
+                logger.warning(f"Received invalid result format for '{original_name}': {result_or_exc}")
+                analysis_results[original_name] = {"name": original_name, "repo_url": original_url, "type": server_type, "error": f"Unexpected analysis result type: {type(result_or_exc)}"}
+
+
+    # Write results to output file
     try:
-        # Ensure packages are lists/dicts for JSON
-        for server_data in analysis_results.values():
-             if isinstance(server_data, dict):
-                 packages_data = server_data.get("packages", {})
-                 if isinstance(packages_data, dict):
-                     # Convert potential dicts from package.json to simple lists for consistency? Or keep as dict? Keeping dict for now.
-                     # if isinstance(packages_data.get("dependencies"), dict): packages_data["dependencies"] = list(packages_data["dependencies"].keys()) # Example conversion
-                     # if isinstance(packages_data.get("devDependencies"), dict): packages_data["devDependencies"] = list(packages_data["devDependencies"].keys()) # Example conversion
-                     pass # No conversion needed if keeping dicts/lists as is from Gemini
-        with open(OUTPUT_JSON_FILE, 'w', encoding='utf-8') as f: json.dump(analysis_results, f, indent=2, ensure_ascii=False)
-        logger.info(f"Successfully wrote analysis results to {OUTPUT_JSON_FILE}")
-    except Exception as e: logger.error(f"Failed to write final output JSON {OUTPUT_JSON_FILE}: {e}", exc_info=True); sys.exit(1)
-    logger.info("--- Analysis Script Finished ---"); sys.exit(0)
+        logger.info(f"Writing analysis results for {len(analysis_results)} servers to {OUTPUT_JSON_FILE}...")
+        # Sort results by server name for consistent output
+        sorted_results = dict(sorted(analysis_results.items()))
+        with open(OUTPUT_JSON_FILE, 'w', encoding='utf-8') as f:
+            json.dump(sorted_results, f, indent=4, ensure_ascii=False) # Use indent=4 for consistency
+        logger.info("Successfully wrote analysis results.")
+    except Exception as e:
+        logger.error(f"Error writing output file {OUTPUT_JSON_FILE}: {e}", exc_info=True) # Keep exc_info=True
+
+    logger.info("--- Finished Selected MCP Server Analysis ---") # Updated log message
+
+# Add line 537 if it doesn't exist
+# Add line 538 if it doesn't exist
 
 if __name__ == "__main__":
     # Initialize Vertex AI SDK before running async main if needed globally
