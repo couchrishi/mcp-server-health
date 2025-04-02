@@ -2,11 +2,20 @@ import logging
 import json
 import re
 import sys
+import asyncio
 
 # --- Vertex AI Imports ---
 # The main script should handle import errors and SDK initialization.
 # This module assumes the SDK is available and the model instance is passed in.
 from vertexai.generative_models import GenerativeModel, GenerationConfig
+# Import Google exceptions for specific error handling
+try:
+    from google.api_core import exceptions as google_exceptions
+except ImportError:
+    # Handle case where google-api-core might not be installed directly
+    # although it's usually a dependency of the vertexai sdk
+    google_exceptions = None
+    print("Warning: google.api_core.exceptions not found. Specific Gemini error handling might be limited.")
 
 
 # --- Configuration ---
@@ -51,39 +60,64 @@ async def analyze_file_list(gemini_model: GenerativeModel, file_list: list) -> d
     """
 
     json_text = "" # Initialize for error logging
-    try:
-        logger.debug("Sending file list analysis prompt to Gemini.")
-        generation_config = {"response_mime_type": "application/json"}
-        response = await gemini_model.generate_content_async(prompt, generation_config=generation_config)
-        logger.debug("Received file list analysis response from Gemini.")
+    max_retries = 3
+    delay = 5 # Initial delay seconds
+    for attempt in range(max_retries):
+        try:
+            logger.debug(f"Sending file list analysis prompt to Gemini (Attempt {attempt + 1}/{max_retries}).")
+            generation_config = {"response_mime_type": "application/json"}
+            response = await gemini_model.generate_content_async(prompt, generation_config=generation_config)
+            logger.debug("Received file list analysis response from Gemini.")
 
-        if response.candidates and response.candidates[0].content.parts:
-            json_text = response.candidates[0].content.parts[0].text
-            json_text = json_text.strip().strip('```json').strip('```').strip()
-            parsed_result = json.loads(json_text)
-            analysis_result.update({k: parsed_result.get(k, v) for k, v in analysis_result.items() if k != "error"})
-            logger.info("Successfully parsed file list analysis from Gemini.")
-        else:
-            logger.warning("Gemini response for file list analysis was empty or malformed.")
-            analysis_result["error"] = "Gemini response empty/malformed"
-
-    except json.JSONDecodeError as e:
-        match = re.search(r'\{.*\}', json_text, re.DOTALL) # Try extracting JSON
-        if match:
-            json_text_extracted = match.group(0)
-            try:
-                parsed_result = json.loads(json_text_extracted)
+            if response.candidates and response.candidates[0].content.parts:
+                json_text = response.candidates[0].content.parts[0].text
+                json_text = json_text.strip().strip('```json').strip('```').strip()
+                parsed_result = json.loads(json_text)
                 analysis_result.update({k: parsed_result.get(k, v) for k, v in analysis_result.items() if k != "error"})
-                logger.info("Successfully parsed file list analysis from Gemini after extraction.")
-            except json.JSONDecodeError:
-                 logger.error(f"Failed to parse Gemini JSON (file list) even after extraction: {e}. Raw: {json_text}")
-                 analysis_result["error"] = f"JSON decode error: {e}"
-        else:
-             logger.error(f"Failed to parse Gemini JSON (file list): {e}. Raw: {json_text}")
-             analysis_result["error"] = f"JSON decode error: {e}"
-    except Exception as e:
-        logger.exception(f"Error during Gemini file list analysis: {e}")
-        analysis_result["error"] = f"Gemini analysis error: {e}"
+                analysis_result["error"] = None # Clear previous error if successful
+                logger.info("Successfully parsed file list analysis from Gemini.")
+                return analysis_result # Success
+            else:
+                logger.warning("Gemini response for file list analysis was empty or malformed.")
+                analysis_result["error"] = "Gemini response empty/malformed"
+                # Consider if we should retry on empty response? For now, no.
+                return analysis_result
+
+        except json.JSONDecodeError as e:
+            logger.error(f"Failed to parse Gemini JSON (file list): {e}. Raw: {json_text}")
+            analysis_result["error"] = f"JSON decode error: {e}"
+            # Don't retry JSON errors immediately, might be malformed response
+            return analysis_result
+
+        except google_exceptions.ResourceExhausted as e:
+            logger.warning(f"Gemini file list analysis failed on attempt {attempt + 1} with ResourceExhausted (429): {e}")
+            if attempt < max_retries - 1:
+                logger.info(f"Retrying file list analysis in {delay} seconds...")
+                await asyncio.sleep(delay)
+                delay *= 2 # Exponential backoff
+            else:
+                logger.error(f"Gemini file list analysis failed after {max_retries} attempts due to ResourceExhausted.")
+                analysis_result["error"] = f"Gemini rate limit error after retries: {e}"
+                return analysis_result # Failed all retries
+
+        except google_exceptions.ServiceUnavailable as e:
+            logger.warning(f"Gemini file list analysis failed on attempt {attempt + 1} with ServiceUnavailable (503): {e}")
+            if attempt < max_retries - 1:
+                logger.info(f"Retrying file list analysis in {delay} seconds...")
+                await asyncio.sleep(delay)
+                delay *= 2 # Exponential backoff
+            else:
+                logger.error(f"Gemini file list analysis failed after {max_retries} attempts due to ServiceUnavailable.")
+                analysis_result["error"] = f"Gemini unavailable error after retries: {e}"
+                return analysis_result # Failed all retries
+
+        except Exception as e:
+            logger.exception(f"Unexpected error during Gemini file list analysis (Attempt {attempt + 1}): {e}")
+            analysis_result["error"] = f"Unexpected Gemini analysis error: {e}"
+            return analysis_result # Don't retry unexpected errors
+
+    # Should not be reached if logic is correct, but as a safeguard
+    return analysis_result
     return analysis_result
 
 
@@ -115,47 +149,67 @@ async def analyze_file_content(gemini_model: GenerativeModel, dep_content: str |
     prompt = "\n".join(prompt_parts)
 
     json_text = "" # Initialize for error logging
-    try:
-        logger.debug("Sending file content analysis prompt to Gemini.")
-        generation_config = {"response_mime_type": "application/json"}
-        response = await gemini_model.generate_content_async(prompt, generation_config=generation_config)
-        logger.debug("Received file content analysis response from Gemini.")
+    max_retries = 3
+    delay = 5 # Initial delay seconds
+    for attempt in range(max_retries):
+        try:
+            logger.debug(f"Sending file content analysis prompt to Gemini (Attempt {attempt + 1}/{max_retries}).")
+            generation_config = {"response_mime_type": "application/json"}
+            response = await gemini_model.generate_content_async(prompt, generation_config=generation_config)
+            logger.debug("Received file content analysis response from Gemini.")
 
-        if response.candidates and response.candidates[0].content.parts:
-            json_text = response.candidates[0].content.parts[0].text
-            json_text = json_text.strip().strip('```json').strip('```').strip()
-            parsed_result = json.loads(json_text)
-            if 'packages' in parsed_result and isinstance(parsed_result['packages'], dict):
-                 analysis_result['packages']['dependencies'] = parsed_result['packages'].get('dependencies', [])
-                 analysis_result['packages']['devDependencies'] = parsed_result['packages'].get('devDependencies', [])
-            if 'base_docker_image' in parsed_result:
-                 analysis_result['base_docker_image'] = parsed_result.get('base_docker_image')
-            logger.info("Successfully parsed file content analysis from Gemini.")
-        else:
-            logger.warning("Gemini response for file content analysis was empty or malformed.")
-            analysis_result["error"] = "Gemini response empty/malformed"
-
-    except json.JSONDecodeError as e:
-        match = re.search(r'\{.*\}', json_text, re.DOTALL) # Try extracting JSON
-        if match:
-            json_text_extracted = match.group(0)
-            try:
-                parsed_result = json.loads(json_text_extracted)
+            if response.candidates and response.candidates[0].content.parts:
+                json_text = response.candidates[0].content.parts[0].text
+                json_text = json_text.strip().strip('```json').strip('```').strip()
+                parsed_result = json.loads(json_text)
                 if 'packages' in parsed_result and isinstance(parsed_result['packages'], dict):
                      analysis_result['packages']['dependencies'] = parsed_result['packages'].get('dependencies', [])
                      analysis_result['packages']['devDependencies'] = parsed_result['packages'].get('devDependencies', [])
                 if 'base_docker_image' in parsed_result:
                      analysis_result['base_docker_image'] = parsed_result.get('base_docker_image')
-                logger.info("Successfully parsed file content analysis from Gemini after extraction.")
-            except json.JSONDecodeError:
-                 logger.error(f"Failed to parse Gemini JSON (file content) even after extraction: {e}. Raw: {json_text}")
-                 analysis_result["error"] = f"JSON decode error: {e}"
-        else:
-             logger.error(f"Failed to parse Gemini JSON (file content): {e}. Raw: {json_text}")
-             analysis_result["error"] = f"JSON decode error: {e}"
-    except Exception as e:
-        logger.exception(f"Error during Gemini file content analysis: {e}")
-        analysis_result["error"] = f"Gemini analysis error: {e}"
+                analysis_result["error"] = None # Clear previous error if successful
+                logger.info("Successfully parsed file content analysis from Gemini.")
+                return analysis_result # Success
+            else:
+                logger.warning("Gemini response for file content analysis was empty or malformed.")
+                analysis_result["error"] = "Gemini response empty/malformed"
+                # Consider if we should retry on empty response? For now, no.
+                return analysis_result
+
+        except json.JSONDecodeError as e:
+            logger.error(f"Failed to parse Gemini JSON (file content): {e}. Raw: {json_text}")
+            analysis_result["error"] = f"JSON decode error: {e}"
+            # Don't retry JSON errors immediately
+            return analysis_result
+
+        except google_exceptions.ResourceExhausted as e:
+            logger.warning(f"Gemini file content analysis failed on attempt {attempt + 1} with ResourceExhausted (429): {e}")
+            if attempt < max_retries - 1:
+                logger.info(f"Retrying file content analysis in {delay} seconds...")
+                await asyncio.sleep(delay)
+                delay *= 2 # Exponential backoff
+            else:
+                logger.error(f"Gemini file content analysis failed after {max_retries} attempts due to ResourceExhausted.")
+                analysis_result["error"] = f"Gemini rate limit error after retries: {e}"
+                return analysis_result # Failed all retries
+
+        except google_exceptions.ServiceUnavailable as e:
+            logger.warning(f"Gemini file content analysis failed on attempt {attempt + 1} with ServiceUnavailable (503): {e}")
+            if attempt < max_retries - 1:
+                logger.info(f"Retrying file content analysis in {delay} seconds...")
+                await asyncio.sleep(delay)
+                delay *= 2 # Exponential backoff
+            else:
+                logger.error(f"Gemini file content analysis failed after {max_retries} attempts due to ServiceUnavailable.")
+                analysis_result["error"] = f"Gemini unavailable error after retries: {e}"
+                return analysis_result # Failed all retries
+
+        except Exception as e:
+            logger.exception(f"Unexpected error during Gemini file content analysis (Attempt {attempt + 1}): {e}")
+            analysis_result["error"] = f"Unexpected Gemini analysis error: {e}"
+            return analysis_result # Don't retry unexpected errors
+
+    # Should not be reached if logic is correct, but as a safeguard
     return analysis_result
 
 # --- NEW FUNCTION ---
@@ -252,45 +306,65 @@ async def analyze_server_readme(gemini_model: GenerativeModel, readme_content: s
     """
 
     json_text = "" # Initialize for error logging
-    try:
-        logger.debug("Sending server README analysis prompt to Gemini.")
-        generation_config = {"response_mime_type": "application/json"}
-        # Assuming the main script uses asyncio, we use async here.
-        response = await gemini_model.generate_content_async(prompt, generation_config=generation_config)
-        logger.debug("Received server README analysis response from Gemini.")
+    max_retries = 3
+    delay = 5 # Initial delay seconds
+    for attempt in range(max_retries):
+        try:
+            logger.debug(f"Sending server README analysis prompt to Gemini (Attempt {attempt + 1}/{max_retries}).")
+            generation_config = {"response_mime_type": "application/json"}
+            response = await gemini_model.generate_content_async(prompt, generation_config=generation_config)
+            logger.debug("Received server README analysis response from Gemini.")
 
-        if response.candidates and response.candidates[0].content.parts:
-            json_text = response.candidates[0].content.parts[0].text
-            json_text = json_text.strip().strip('```json').strip('```').strip()
-            parsed_result = json.loads(json_text)
-            analysis_result["server_description"] = parsed_result.get("server_description")
-            # Ensure tools_exposed is always a list
-            tools = parsed_result.get("tools_exposed", [])
-            analysis_result["tools_exposed"] = tools if isinstance(tools, list) else []
-            logger.info("Successfully parsed server README analysis from Gemini.")
-        else:
-            logger.warning("Gemini response for server README analysis was empty or malformed.")
-            analysis_result["error"] = "Gemini response empty/malformed"
-
-    except json.JSONDecodeError as e:
-        match = re.search(r'\{.*\}', json_text, re.DOTALL) # Try extracting JSON
-        if match:
-            json_text_extracted = match.group(0)
-            try:
-                parsed_result = json.loads(json_text_extracted)
+            if response.candidates and response.candidates[0].content.parts:
+                json_text = response.candidates[0].content.parts[0].text
+                json_text = json_text.strip().strip('```json').strip('```').strip()
+                parsed_result = json.loads(json_text)
                 analysis_result["server_description"] = parsed_result.get("server_description")
                 tools = parsed_result.get("tools_exposed", [])
                 analysis_result["tools_exposed"] = tools if isinstance(tools, list) else []
-                logger.info("Successfully parsed server README analysis from Gemini after extraction.")
-            except json.JSONDecodeError:
-                 logger.error(f"Failed to parse Gemini JSON (server README) even after extraction: {e}. Raw: {json_text}")
-                 analysis_result["error"] = f"JSON decode error: {e}"
-        else:
-             logger.error(f"Failed to parse Gemini JSON (server README): {e}. Raw: {json_text}")
-             analysis_result["error"] = f"JSON decode error: {e}"
-    except Exception as e:
-        logger.exception(f"Error during Gemini server README analysis: {e}")
-        analysis_result["error"] = f"Gemini analysis error: {e}"
+                analysis_result["error"] = None # Clear previous error if successful
+                logger.info("Successfully parsed server README analysis from Gemini.")
+                return analysis_result # Success
+            else:
+                logger.warning("Gemini response for server README analysis was empty or malformed.")
+                analysis_result["error"] = "Gemini response empty/malformed"
+                # Consider if we should retry on empty response? For now, no.
+                return analysis_result
+
+        except json.JSONDecodeError as e:
+            logger.error(f"Failed to parse Gemini JSON (server README): {e}. Raw: {json_text}")
+            analysis_result["error"] = f"JSON decode error: {e}"
+            # Don't retry JSON errors immediately
+            return analysis_result
+
+        except google_exceptions.ResourceExhausted as e:
+            logger.warning(f"Gemini server README analysis failed on attempt {attempt + 1} with ResourceExhausted (429): {e}")
+            if attempt < max_retries - 1:
+                logger.info(f"Retrying server README analysis in {delay} seconds...")
+                await asyncio.sleep(delay)
+                delay *= 2 # Exponential backoff
+            else:
+                logger.error(f"Gemini server README analysis failed after {max_retries} attempts due to ResourceExhausted.")
+                analysis_result["error"] = f"Gemini rate limit error after retries: {e}"
+                return analysis_result # Failed all retries
+
+        except google_exceptions.ServiceUnavailable as e:
+            logger.warning(f"Gemini server README analysis failed on attempt {attempt + 1} with ServiceUnavailable (503): {e}")
+            if attempt < max_retries - 1:
+                logger.info(f"Retrying server README analysis in {delay} seconds...")
+                await asyncio.sleep(delay)
+                delay *= 2 # Exponential backoff
+            else:
+                logger.error(f"Gemini server README analysis failed after {max_retries} attempts due to ServiceUnavailable.")
+                analysis_result["error"] = f"Gemini unavailable error after retries: {e}"
+                return analysis_result # Failed all retries
+
+        except Exception as e:
+            logger.exception(f"Unexpected error during Gemini server README analysis (Attempt {attempt + 1}): {e}")
+            analysis_result["error"] = f"Unexpected Gemini analysis error: {e}"
+            return analysis_result # Don't retry unexpected errors
+
+    # Should not be reached if logic is correct, but as a safeguard
 
     # Ensure defaults if keys are missing after parsing
     if "server_description" not in analysis_result:
