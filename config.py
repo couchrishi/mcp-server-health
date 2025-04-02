@@ -38,5 +38,5 @@ SENDGRID_API_KEY_SECRET_ID = "projects/288406675721/secrets/MCP_SERVER_DISCOVERY
 
 # --- Email Notification Configuration ---
 EMAIL_SENDER = "notifications@mcpresolver.com" # <-- REPLACE with verified SendGrid sender
-EMAIL_RECIPIENTS = ["saibalaji@outlook.com", "saibalaji4@gmail.com"] # <-- REPLACE with actual recipients
+EMAIL_RECIPIENTS = ["saibalaji@outlook.com", "saibalaji4@gmail.com", "k.krishnan.90@gmail.com"] # <-- REPLACE with actual recipients
 # Note: The main script will need permissions to access the secrets.

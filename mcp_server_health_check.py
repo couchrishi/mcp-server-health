@@ -55,7 +55,7 @@ try:
     import config # Make sure to import the new list
     # Import utility functions directly
     from github_api_utils import get_repo_info, get_issue_count, get_repo_contents, decode_file_content
-    from gemini_analysis_utils import analyze_file_list, analyze_file_content, analyze_readme_for_discovery # Added import
+    from gemini_analysis_utils import analyze_file_list, analyze_file_content, analyze_readme_for_discovery, analyze_server_readme # Added analyze_server_readme
 except ImportError as e:
     print(f"ERROR: Failed to import local modules (config.py, github_api_utils.py, gemini_analysis_utils.py): {e}")
     print("Ensure these files exist in the same directory and contain the expected functions.")
@@ -194,25 +194,28 @@ def generate_discovery_prompt(readme_content):
     ```
 
     Your task is to extract the information and format it as a JSON object.
-    The JSON object should have five top-level keys: "reference_servers", "official_integrations", "community_servers", "frameworks", and "resources".
-    Each key should map to a JSON array.
-    Each element in the arrays should be a JSON object with two keys: "name" (the item's name) and "repo_url" (the item's repository URL or primary link).
+    The JSON object should have SIX top-level keys: "project_description", "reference_servers", "official_integrations", "community_servers", "frameworks", and "resources".
+    - "project_description" should be a string containing a brief summary (1-2 sentences) of the overall project based on the introductory text of the document.
+    - The other five keys should map to JSON arrays.
+    - Each element in the arrays should be a JSON object with two keys: "name" (the item's name) and "repo_url" (the item's repository URL or primary link).
 
     Specifically:
-    1. Identify the sections titled "Reference Servers", "Official Integrations", "Community Servers", "Frameworks", and "Resources" (or similar variations like those with emojis). Map these directly to the corresponding JSON keys requested above.
-    2. For each item listed as a bullet point under these sections, extract the name (text within square brackets `[]` or bold text immediately following `* ` or `- ` if no brackets) and the primary URL (link within parentheses `()` if available, otherwise look for a primary link associated with the item). Handle variations like bolding or preceding images gracefully.
-    3. For items listed under "Reference Servers", if the URL is relative (e.g., starts with 'src/'), prepend it with '{mcp_main_repo_url_for_prompt}'. Ensure all final URLs are absolute. For other sections, use the URL as found.
-    4. Structure the output strictly as the following JSON format:
+    1. Extract a brief (1-2 sentence) summary of the project from the introductory paragraph(s) of the document and place it in the "project_description" field.
+    2. Identify the sections titled "Reference Servers", "Official Integrations", "Community Servers", "Frameworks", and "Resources" (or similar variations like those with emojis). Map these directly to the corresponding JSON keys requested above.
+    3. For each item listed as a bullet point under these sections, extract the name (text within square brackets `[]` or bold text immediately following `* ` or `- ` if no brackets) and the primary URL (link within parentheses `()` if available, otherwise look for a primary link associated with the item). Handle variations like bolding or preceding images gracefully.
+    4. For items listed under "Reference Servers", if the URL is relative (e.g., starts with 'src/'), prepend it with '{mcp_main_repo_url_for_prompt}'. Ensure all final URLs are absolute. For other sections, use the URL as found.
+    5. Structure the output strictly as the following JSON format:
     {{
+      "project_description": "A brief summary of the project...",
       "reference_servers": [{{ "name": "ServerName1", "repo_url": "URL1" }}, ...],
       "official_integrations": [{{ "name": "ServerName2", "repo_url": "URL2" }}, ...],
       "community_servers": [{{ "name": "ServerName3", "repo_url": "URL3" }}, ...],
       "frameworks": [{{ "name": "FrameworkName1", "repo_url": "URL4" }}, ...],
       "resources": [{{ "name": "ResourceName1", "repo_url": "URL5" }}, ...]
     }}
-    5. Ensure the output is only the JSON object, with no introductory text, explanations, or markdown formatting.
-    6. If a section is missing or empty in the document, represent it as an empty array `[]` in the JSON.
-    7. Sort the items alphabetically by name within each list.
+    6. Ensure the output is only the JSON object, with no introductory text, explanations, or markdown formatting.
+    7. If a section (like "Frameworks") is missing or empty in the document, represent it as an empty array `[]` in the JSON. If no suitable project description is found, set "project_description" to null or an empty string.
+    8. Sort the items alphabetically by name within each list ("reference_servers", "official_integrations", etc.).
     """
     return prompt
 
@@ -234,8 +237,17 @@ def process_discovery_data(json_string: str) -> tuple[dict | None, dict | None]:
                     item_copy = item.copy(); item_copy['type'] = type_value; item_copy['analysis_status'] = 'pending'; item_copy['analysis_results'] = None; item_copy['analysis_error'] = None; processed_list.append(item_copy)
                 else: logger.warning(f"Skipping malformed item in discovery category '{key}': {item}")
             processed_data[key] = sorted(processed_list, key=lambda x: x.get('name', '').lower()); counts[key] = len(processed_data[key])
+        # Extract project description
+        project_description = data.get("project_description", "No description provided by Gemini.")
+
         # Initial metadata - model name will be updated after successful discovery
-        discovery_metadata = {"discovery_counts": counts, "discovery_time_utc": datetime.datetime.now(datetime.timezone.utc).isoformat(), "readme_source_url": config.GITHUB_README_URL, "gemini_model_discovery": None}
+        discovery_metadata = {
+            "description": project_description, # Added description
+            "discovery_counts": counts,
+            "discovery_time_utc": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+            "readme_source_url": config.GITHUB_README_URL,
+            "gemini_model_discovery": None # Will be updated later
+        }
         logger.info(f"Discovery Counts: {counts}"); logger.info("Successfully processed discovery data.")
         return processed_data, discovery_metadata
     except json.JSONDecodeError as e: logger.error(f"Error decoding discovery JSON: {e}"); logger.error(f"--- Raw: {json_string} ---"); return None, None
@@ -269,7 +281,8 @@ async def _setup_analysis_api_tasks(client: httpx.AsyncClient, owner: str, repo:
     # Dependency Files and Dockerfile Contents
     dep_files_to_fetch = ['package.json', 'pyproject.toml', 'requirements.txt']
     dockerfile_to_fetch = 'Dockerfile'
-    files_to_fetch = dep_files_to_fetch + [dockerfile_to_fetch]
+    readme_to_fetch = 'README.md' # Assuming standard name
+    files_to_fetch = dep_files_to_fetch + [dockerfile_to_fetch] + [readme_to_fetch]
 
     for fname in files_to_fetch:
         path_to_fetch = os.path.join(directory_path, fname) if directory_path else fname
@@ -282,7 +295,8 @@ async def _setup_analysis_api_tasks(client: httpx.AsyncClient, owner: str, repo:
         "open_issues": open_issues_idx,
         "closed_issues": closed_issues_idx,
         "root_contents": root_contents_idx,
-        "file_contents": file_content_task_map # Contains map of filename -> index
+        "file_contents": file_content_task_map, # Contains map of filename -> index
+        "readme_content": file_content_task_map.get(readme_to_fetch, -1) # Add index for README, -1 if not found in map (shouldn't happen)
     }
 
     return api_tasks, task_indices
@@ -355,6 +369,27 @@ async def analyze_single_item(client: httpx.AsyncClient, gemini_model: Generativ
         if file_list_analysis.get("error"): all_errors.append(f"FileListAnalysisError: {file_list_analysis['error']}")
         analysis_results.update({k: file_list_analysis[k] for k in ["language_stack", "package_manager", "dependencies_file", "has_dockerfile", "has_docs", "has_readme", "has_examples", "has_tests"] if k in file_list_analysis})
     else: analysis_results.update({"language_stack": ["Unknown"], "package_manager": ["Unknown"], "dependencies_file": None, "has_dockerfile": False, "has_docs": False, "has_readme": False, "has_examples": False, "has_tests": False})
+
+    # --- Server README Analysis (Description & Tools) ---
+    readme_content_res = file_content_results.get("README.md") # Get result for README.md fetch
+    readme_content_to_analyze = None
+    if readme_content_res and isinstance(readme_content_res.get("data"), dict):
+        readme_content_to_analyze, err = decode_content_local(readme_content_res["data"])
+        if err: all_errors.append(f"ReadmeContentError: {err}")
+    else:
+        logger.info(f"Could not fetch or decode README.md for {name}.")
+
+    if readme_content_to_analyze:
+        async with gemini_semaphore: # Apply Gemini semaphore
+            logger.debug(f"Acquired Gemini semaphore for server README analysis ({name})")
+            readme_analysis = await analyze_server_readme(gemini_model, readme_content_to_analyze)
+        logger.debug(f"Released Gemini semaphore for server README analysis ({name})")
+        if readme_analysis.get("error"): all_errors.append(f"ReadmeAnalysisError: {readme_analysis['error']}")
+        analysis_results["server_description"] = readme_analysis.get("server_description")
+        analysis_results["tools_exposed"] = readme_analysis.get("tools_exposed", [])
+    else:
+        analysis_results["server_description"] = None
+        analysis_results["tools_exposed"] = []
 
     dep_content_to_analyze, docker_content_to_analyze = None, None
     primary_dep_file = analysis_results.get("dependencies_file")

@@ -199,3 +199,104 @@ async def analyze_readme_for_discovery(gemini_model: GenerativeModel, prompt: st
         # if 'response' in locals() and response: logger.error(f"Gemini Discovery Response (raw on exception): {response}")
         return None
 # --- END NEW FUNCTION ---
+
+
+async def analyze_server_readme(gemini_model: GenerativeModel, readme_content: str) -> dict:
+    """
+    Uses Gemini to analyze a server's README content to extract a description
+    and a list of exposed tools.
+    """
+    logger.info("Analyzing server README with Gemini for description and tools...")
+    analysis_result = {"server_description": None, "tools_exposed": [], "error": None}
+    if not readme_content:
+        logger.warning("Empty README content provided for server analysis.")
+        analysis_result["error"] = "Empty README content"
+        return analysis_result
+
+    # Limit content length to avoid exceeding token limits
+    readme_content_truncated = readme_content[:8000]
+
+    prompt = f"""
+    Analyze the following README content from an MCP server repository:
+    ```markdown
+    {readme_content_truncated}
+    ```
+
+    Your tasks are:
+    1.  **Extract Description:** Identify the primary purpose or description of this specific MCP server. Summarize it concisely in 1-2 sentences. If no clear description is found, indicate that.
+    2.  **Extract Tools:** Look for a section explicitly listing tools (e.g., under headings like "Tools", "API", "Commands", "Features"). Extract the names of the tools listed. Tool names are often formatted as code (e.g., `tool_name`) or bold text. List only the tool names themselves. If no tools section or list is found, indicate that.
+
+    Provide the output ONLY as a valid JSON object with the following keys:
+    - "server_description": A string containing the concise server description (or null if none found).
+    - "tools_exposed": A JSON array of strings, where each string is an extracted tool name (e.g., ["tool_one", "tool_two"]). Return an empty array `[]` if no tools are found.
+
+    Example Output 1 (Tools found):
+    {{
+      "server_description": "This server allows searching the web using the Brave Search API.",
+      "tools_exposed": ["brave_web_search", "brave_local_search"]
+    }}
+
+    Example Output 2 (No tools found):
+    {{
+      "server_description": "A server for interacting with the GitHub API.",
+      "tools_exposed": []
+    }}
+
+    Example Output 3 (No description found):
+    {{
+      "server_description": null,
+      "tools_exposed": ["some_tool"]
+    }}
+
+    Output ONLY the JSON object.
+    """
+
+    json_text = "" # Initialize for error logging
+    try:
+        logger.debug("Sending server README analysis prompt to Gemini.")
+        generation_config = {"response_mime_type": "application/json"}
+        # Assuming the main script uses asyncio, we use async here.
+        response = await gemini_model.generate_content_async(prompt, generation_config=generation_config)
+        logger.debug("Received server README analysis response from Gemini.")
+
+        if response.candidates and response.candidates[0].content.parts:
+            json_text = response.candidates[0].content.parts[0].text
+            json_text = json_text.strip().strip('```json').strip('```').strip()
+            parsed_result = json.loads(json_text)
+            analysis_result["server_description"] = parsed_result.get("server_description")
+            # Ensure tools_exposed is always a list
+            tools = parsed_result.get("tools_exposed", [])
+            analysis_result["tools_exposed"] = tools if isinstance(tools, list) else []
+            logger.info("Successfully parsed server README analysis from Gemini.")
+        else:
+            logger.warning("Gemini response for server README analysis was empty or malformed.")
+            analysis_result["error"] = "Gemini response empty/malformed"
+
+    except json.JSONDecodeError as e:
+        match = re.search(r'\{.*\}', json_text, re.DOTALL) # Try extracting JSON
+        if match:
+            json_text_extracted = match.group(0)
+            try:
+                parsed_result = json.loads(json_text_extracted)
+                analysis_result["server_description"] = parsed_result.get("server_description")
+                tools = parsed_result.get("tools_exposed", [])
+                analysis_result["tools_exposed"] = tools if isinstance(tools, list) else []
+                logger.info("Successfully parsed server README analysis from Gemini after extraction.")
+            except json.JSONDecodeError:
+                 logger.error(f"Failed to parse Gemini JSON (server README) even after extraction: {e}. Raw: {json_text}")
+                 analysis_result["error"] = f"JSON decode error: {e}"
+        else:
+             logger.error(f"Failed to parse Gemini JSON (server README): {e}. Raw: {json_text}")
+             analysis_result["error"] = f"JSON decode error: {e}"
+    except Exception as e:
+        logger.exception(f"Error during Gemini server README analysis: {e}")
+        analysis_result["error"] = f"Gemini analysis error: {e}"
+
+    # Ensure defaults if keys are missing after parsing
+    if "server_description" not in analysis_result:
+        analysis_result["server_description"] = None
+    if "tools_exposed" not in analysis_result:
+        analysis_result["tools_exposed"] = []
+
+
+    return analysis_result
