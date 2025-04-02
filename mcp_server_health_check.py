@@ -342,6 +342,12 @@ async def analyze_single_item(client: httpx.AsyncClient, gemini_model: Generativ
         elif isinstance(result, dict) and result.get("error"): error_detail = f"API Error ({task_name}): {result['error']}"; logger.warning(f"API error detail in '{task_name}' for {name}: {result['error']}") if "Path not found" not in result["error"] and "404" not in result["error"] else None
         if error_detail: all_errors.append(error_detail)
         return result if isinstance(result, dict) else None
+    # Use imported decode function (Define helper here for broader scope)
+    def decode_content_local(api_response_data):
+        # This wrapper is needed because decode_file_content is not async
+        content, error = decode_file_content(api_response_data)
+        return content, error
+
 
     # Process results using indices from the helper function
     repo_info_res = process_api_result(results[task_indices["repo_info"]], "Repo Info")
@@ -374,7 +380,7 @@ async def analyze_single_item(client: httpx.AsyncClient, gemini_model: Generativ
     readme_content_res = file_content_results.get("README.md") # Get result for README.md fetch
     readme_content_to_analyze = None
     if readme_content_res and isinstance(readme_content_res.get("data"), dict):
-        readme_content_to_analyze, err = decode_content_local(readme_content_res["data"])
+        readme_content_to_analyze, err = decode_content_local(readme_content_res["data"]) # Now defined
         if err: all_errors.append(f"ReadmeContentError: {err}")
     else:
         logger.info(f"Could not fetch or decode README.md for {name}.")
@@ -394,11 +400,7 @@ async def analyze_single_item(client: httpx.AsyncClient, gemini_model: Generativ
     dep_content_to_analyze, docker_content_to_analyze = None, None
     primary_dep_file = analysis_results.get("dependencies_file")
 
-    # Use imported decode function
-    def decode_content_local(api_response_data):
-        # This wrapper is needed because decode_file_content is not async
-        content, error = decode_file_content(api_response_data)
-        return content, error
+    # Definition moved higher up
 
     if primary_dep_file:
         # Use the exact filename as the key, which is how file_content_results is structured now
@@ -538,7 +540,9 @@ async def main():
 
     # --- Phase 2: Analysis ---
     logger.info("--- Starting Analysis Phase ---")
+    # Process all items
     items_to_analyze = [item for category_list in discovered_data.values() for item in category_list]
+    # Removed item limiting logic for testing
     total_items = len(items_to_analyze); analysis_results_list = []
     if total_items == 0: logger.warning("No items found after discovery phase. Nothing to analyze.")
     else:
