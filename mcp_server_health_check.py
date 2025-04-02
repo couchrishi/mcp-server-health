@@ -302,7 +302,7 @@ async def _setup_analysis_api_tasks(client: httpx.AsyncClient, owner: str, repo:
     return api_tasks, task_indices
 
 
-async def analyze_single_item(client: httpx.AsyncClient, gemini_model: GenerativeModel, item_info: dict, api_semaphore: Semaphore, gemini_semaphore: Semaphore) -> dict:
+async def analyze_single_item(client: httpx.AsyncClient, item_info: dict, api_semaphore: Semaphore, gemini_semaphore: Semaphore) -> dict: # Removed gemini_model parameter
     """Analyzes a single discovered item using imported utils and semaphores."""
     name = item_info.get("name", "Unknown"); repo_url = item_info.get("repo_url"); item_type = item_info.get("type", "unknown")
     logger.info(f"--- Analyzing Item: {name} ({item_type}) ---"); logger.debug(f"URL: {repo_url}")
@@ -347,6 +347,50 @@ async def analyze_single_item(client: httpx.AsyncClient, gemini_model: Generativ
         # This wrapper is needed because decode_file_content is not async
         content, error = decode_file_content(api_response_data)
         return content, error
+    
+        # --- Helper for Gemini calls with Fallback ---
+        async def _call_gemini_analysis_with_fallback(analysis_type: str, utility_func, func_args: dict):
+            """Calls a Gemini analysis utility function with model fallback."""
+            fallback_models = config.GEMINI_DISCOVERY_FALLBACK_MODELS # Use the same fallback list
+            successful_model = None
+            final_result = None
+    
+            for model_name in fallback_models:
+                logger.info(f"Attempting Gemini {analysis_type} analysis for '{name}' with model: {model_name}")
+                local_gemini_model_instance = None
+                try:
+                    # Initialize the model instance for this attempt
+                    local_gemini_model_instance = GenerativeModel(model_name)
+                    logger.debug(f"Initialized GenerativeModel for {model_name} ({analysis_type} analysis)")
+                except Exception as e:
+                    logger.error(f"Failed to initialize GenerativeModel {model_name} for {analysis_type} analysis: {e}. Skipping.")
+                    if final_result is None: # Store first error if no success yet
+                         final_result = {"error": f"Failed to initialize model {model_name}: {e}"}
+                    continue # Try the next model
+    
+                async with gemini_semaphore: # Apply semaphore here
+                     logger.debug(f"Acquired Gemini semaphore for {analysis_type} analysis ({name}, model: {model_name})")
+                     # Call the utility function (which now contains retry logic)
+                     result = await utility_func(local_gemini_model_instance, **func_args)
+                     logger.debug(f"Released Gemini semaphore for {analysis_type} analysis ({name}, model: {model_name})")
+    
+                final_result = result # Store the latest result (could be success or error dict from utility)
+    
+                if not result.get("error"):
+                    logger.info(f"Successfully completed {analysis_type} analysis for '{name}' using model: {model_name}")
+                    successful_model = model_name
+                    break # Success, break fallback loop
+                else:
+                    logger.warning(f"{analysis_type.capitalize()} analysis for '{name}' failed with model {model_name}. Error: {result.get('error')}. Trying next fallback model if available.")
+    
+            # If loop finishes without success, final_result holds the last error dict
+            if not successful_model:
+                 logger.error(f"All fallback models failed for {analysis_type} analysis for '{name}'. Last error: {final_result.get('error')}")
+                 # Ensure a default error structure if final_result is somehow None
+                 if final_result is None: final_result = {"error": f"All fallback models failed for {analysis_type}"}
+    
+            return final_result, successful_model
+        # --- End Helper ---
 
 
     # Process results using indices from the helper function
@@ -366,12 +410,14 @@ async def analyze_single_item(client: httpx.AsyncClient, gemini_model: Generativ
     file_list_for_gemini = [item.get("name") for item in root_contents_res["data"] if item.get("name")] if root_contents_res and isinstance(root_contents_res.get("data"), list) else []
     if not file_list_for_gemini: logger.warning(f"Skipping file list analysis for {name} due to root content fetch error or empty list."); all_errors.append("Root content fetch failed or empty")
 
+    successful_model_filelist = None
     if file_list_for_gemini:
-        async with gemini_semaphore: # Apply Gemini semaphore
-            logger.debug(f"Acquired Gemini semaphore for file list analysis ({name})")
-            # Use imported function
-            file_list_analysis = await analyze_file_list(gemini_model, file_list_for_gemini)
-        logger.debug(f"Released Gemini semaphore for file list analysis ({name})")
+        # Call using the fallback helper
+        file_list_analysis, successful_model_filelist = await _call_gemini_analysis_with_fallback(
+            analysis_type="file_list",
+            utility_func=analyze_file_list,
+            func_args={"file_list": file_list_for_gemini}
+        )
         if file_list_analysis.get("error"): all_errors.append(f"FileListAnalysisError: {file_list_analysis['error']}")
         analysis_results.update({k: file_list_analysis[k] for k in ["language_stack", "package_manager", "dependencies_file", "has_dockerfile", "has_docs", "has_readme", "has_examples", "has_tests"] if k in file_list_analysis})
     else: analysis_results.update({"language_stack": ["Unknown"], "package_manager": ["Unknown"], "dependencies_file": None, "has_dockerfile": False, "has_docs": False, "has_readme": False, "has_examples": False, "has_tests": False})
@@ -385,11 +431,14 @@ async def analyze_single_item(client: httpx.AsyncClient, gemini_model: Generativ
     else:
         logger.info(f"Could not fetch or decode README.md for {name}.")
 
+    successful_model_readme = None
     if readme_content_to_analyze:
-        async with gemini_semaphore: # Apply Gemini semaphore
-            logger.debug(f"Acquired Gemini semaphore for server README analysis ({name})")
-            readme_analysis = await analyze_server_readme(gemini_model, readme_content_to_analyze)
-        logger.debug(f"Released Gemini semaphore for server README analysis ({name})")
+         # Call using the fallback helper
+        readme_analysis, successful_model_readme = await _call_gemini_analysis_with_fallback(
+            analysis_type="server_readme",
+            utility_func=analyze_server_readme,
+            func_args={"readme_content": readme_content_to_analyze}
+        )
         if readme_analysis.get("error"): all_errors.append(f"ReadmeAnalysisError: {readme_analysis['error']}")
         analysis_results["server_description"] = readme_analysis.get("server_description")
         analysis_results["tools_exposed"] = readme_analysis.get("tools_exposed", [])
@@ -415,19 +464,25 @@ async def analyze_single_item(client: httpx.AsyncClient, gemini_model: Generativ
         if docker_res and isinstance(docker_res.get("data"), dict): docker_content_to_analyze, err = decode_content_local(docker_res["data"]); err and all_errors.append(f"DockerFileContentError: {err}"); analysis_results["dockerfile_content"] = docker_content_to_analyze
         else: logger.info(f"Could not fetch or decode Dockerfile for {name}.")
 
+    successful_model_content = None
     if dep_content_to_analyze or docker_content_to_analyze:
-        async with gemini_semaphore: # Apply Gemini semaphore
-            logger.debug(f"Acquired Gemini semaphore for content analysis ({name})")
-            # Use imported function
-            content_analysis = await analyze_file_content(gemini_model, dep_content_to_analyze, docker_content_to_analyze)
-        logger.debug(f"Released Gemini semaphore for content analysis ({name})")
+        # Call using the fallback helper
+        content_analysis, successful_model_content = await _call_gemini_analysis_with_fallback(
+            analysis_type="file_content",
+            utility_func=analyze_file_content,
+            func_args={"dep_content": dep_content_to_analyze, "docker_content": docker_content_to_analyze}
+        )
+        # No separate semaphore release log needed here as it's handled within the helper
         if content_analysis.get("error"): all_errors.append(f"ContentAnalysisError: {content_analysis['error']}")
         if content_analysis.get("packages"): analysis_results["packages"] = content_analysis["packages"]
         if content_analysis.get("base_docker_image"): analysis_results["base_docker_image"] = content_analysis["base_docker_image"]
     else: logger.info(f"No dependency or Dockerfile content found for {name}, skipping Gemini content analysis.")
 
     if all_errors: analysis_results["analysis_error"] = "; ".join(filter(None, all_errors))
-    logger.info(f"--- Finished Analyzing Item: {name} ---")
+    # Determine the overall successful model for metadata (prefer filelist, then readme, then content)
+    final_successful_model = successful_model_filelist or successful_model_readme or successful_model_content or config.MODEL_NAME # Fallback to primary if all failed
+    analysis_results["gemini_model_analysis"] = final_successful_model
+    logger.info(f"--- Finished Analyzing Item: {name} (Used Gemini Model: {final_successful_model}) ---")
     return {k: v for k, v in analysis_results.items() if v is not None or k == "analysis_error"}
 
 
