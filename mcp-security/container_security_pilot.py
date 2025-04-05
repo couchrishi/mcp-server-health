@@ -181,7 +181,7 @@ def main(filename="discovered_mcp_servers_with_metadata.json"):
                 vuln_counts = vulnerability_cache[base_image]
             else:
                 # Run scan (might take time)
-                vuln_counts = assess_image_vulnerabilities(base_image)
+                vuln_counts = assess_image_vulnerabilities(base_image, scanner_type="trivy")
                 vulnerability_cache[base_image] = vuln_counts # Cache the result (even if None)
 
             if vuln_counts:
