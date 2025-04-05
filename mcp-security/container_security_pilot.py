@@ -4,7 +4,7 @@ import re
 import time # Import time for potential rate limiting delays
 
 from assessments.provenance import assess_base_image_provenance # Import the provenance function
-from assessments.vulnerability import scan_image_vulnerabilities # Import the vulnerability function
+from assessments.vulnerability import assess_image_vulnerabilities # Import the vulnerability function
 # --- analyze_dockerfile_content function is not used in this step ---
 # (Previous content removed for clarity)
 
@@ -181,7 +181,7 @@ def main(filename="discovered_mcp_servers_with_metadata.json"):
                 vuln_counts = vulnerability_cache[base_image]
             else:
                 # Run scan (might take time)
-                vuln_counts = scan_image_vulnerabilities(base_image)
+                vuln_counts = assess_image_vulnerabilities(base_image)
                 vulnerability_cache[base_image] = vuln_counts # Cache the result (even if None)
 
             if vuln_counts:
