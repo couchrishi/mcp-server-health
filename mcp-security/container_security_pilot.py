@@ -6,8 +6,12 @@ import subprocess
 from collections import Counter
 from datetime import datetime
 
-from assessments.provenance import assess_base_image_provenance # Import the provenance function
-from assessments.vulnerability import assess_image_vulnerabilities # Import the vulnerability function
+from assessments.provenance import assess_base_image_provenance
+from assessments.vulnerability import assess_image_vulnerabilities
+from assessments.freshness import assess_image_freshness
+from assessments.user_execution import assess_root_usage
+from assessments.tag_specificity import assess_tag_specificity
+
 
 def get_trivy_version():
     """Get the installed Trivy version."""
@@ -145,6 +149,8 @@ def main(filename="discovered_mcp_servers_with_metadata.json", output_file="secu
     # Initialize caches and data structures
     provenance_cache = {} # Cache for provenance results
     vulnerability_cache = {} # Cache for vulnerability scan results
+    freshness_cache = {} # Cache for image freshness results
+    root_usage_cache = {} # Cache for root usage results
     repo_assessment_data = {} # Store results per repo
     
     # Initialize the result structure based on our schema
@@ -159,6 +165,9 @@ def main(filename="discovered_mcp_servers_with_metadata.json", output_file="secu
             "total_repos_scanned": 0,
             "repos_with_critical": 0,
             "repos_with_high": 0,
+            "repos_using_latest_tag": 0,
+            "repos_running_as_root": 0,
+            "avg_image_age_days": 0,
             "most_common_vulnerabilities": [],
             "most_vulnerable_base_images": []
         }
@@ -218,6 +227,26 @@ def main(filename="discovered_mcp_servers_with_metadata.json", output_file="secu
             else:
                 # Run scan (might take time)
                 vuln_counts = assess_image_vulnerabilities(base_image, scanner_type="trivy")
+                
+                # --- Assess Image Freshness ---
+                if base_image in freshness_cache:
+                    freshness = freshness_cache[base_image]
+                else:
+                    freshness = assess_image_freshness(base_image)
+                    freshness_cache[base_image] = freshness
+                print(f"Image Freshness: {freshness.get('freshness_rating', 'Unknown')} (Age: {freshness.get('age_days', 'Unknown')} days)")
+
+                # --- Assess Root Usage ---
+                if base_image in root_usage_cache:
+                    root_usage = root_usage_cache[base_image]
+                else:
+                    root_usage = assess_root_usage(base_image)
+                    root_usage_cache[base_image] = root_usage
+                print(f"Runs as Root: {root_usage.get('runs_as_root', 'Unknown')}")
+
+                # --- Assess Tag Specificity ---
+                tag_specificity = assess_tag_specificity(base_image)
+                print(f"Tag Specificity: {tag_specificity.get('specificity_rating', 'Unknown')} ({tag_specificity.get('tag_type', 'Unknown')})")
                 vulnerability_cache[base_image] = vuln_counts # Cache the result (even if None)
 
             if vuln_counts:
@@ -321,7 +350,14 @@ def main(filename="discovered_mcp_servers_with_metadata.json", output_file="secu
                     "name": base_image,
                     "provenance": provenance,
                     "tag_type": tag_type,
-                    "last_updated": ""  # We don't have this info yet
+                    "last_updated": freshness.get("last_updated"),
+                    "age_days": freshness.get("age_days"),
+                    "freshness_rating": freshness.get("freshness_rating"),
+                    "runs_as_root": root_usage.get("runs_as_root"),
+                    "user": root_usage.get("user"),
+                    "tag": tag_specificity.get("tag"),
+                    "tag_type": tag_specificity.get("tag_type"),
+                    "tag_specificity": tag_specificity.get("specificity_rating")
                 },
                 "vulnerability_summary": {
                     "critical_count": vulnerability_details["critical_count"],
@@ -343,7 +379,10 @@ def main(filename="discovered_mcp_servers_with_metadata.json", output_file="secu
                 "name": name,
                 "base_image": base_image,
                 "provenance": provenance,
-                "vulnerabilities": vuln_counts
+                "vulnerabilities": vuln_counts,
+                "freshness": freshness,
+                "root_usage": root_usage,
+                "tag_specificity": tag_specificity
             })
         # else:
             # Optional: print why an item was skipped
@@ -361,6 +400,21 @@ def main(filename="discovered_mcp_servers_with_metadata.json", output_file="secu
     
     # Calculate aggregated statistics
     assessment_results["aggregated_stats"]["total_repos_scanned"] = len(assessment_results["repositories"])
+    
+    # Count repos with specific characteristics
+    repos_using_latest = sum(1 for repo in assessment_results["repositories"]
+                           if repo["base_image"]["tag_type"] == "latest")
+    repos_running_as_root = sum(1 for repo in assessment_results["repositories"]
+                              if repo["base_image"].get("runs_as_root") is True)
+    
+    # Calculate average image age
+    age_values = [repo["base_image"].get("age_days") for repo in assessment_results["repositories"]]
+    age_values = [age for age in age_values if age is not None]
+    avg_age = sum(age_values) / len(age_values) if age_values else None
+    
+    assessment_results["aggregated_stats"]["repos_using_latest_tag"] = repos_using_latest
+    assessment_results["aggregated_stats"]["repos_running_as_root"] = repos_running_as_root
+    assessment_results["aggregated_stats"]["avg_image_age_days"] = avg_age
     
     # Count repos with critical/high vulnerabilities
     repos_with_critical = sum(1 for repo in assessment_results["repositories"]
@@ -433,6 +487,9 @@ def main(filename="discovered_mcp_servers_with_metadata.json", output_file="secu
         print(f"  - Base Image: {repo['base_image']['name']}")
         print(f"  - Provenance: {repo['base_image']['provenance']}")
         print(f"  - Vulnerabilities (H/C): {repo['vulnerability_summary']['high_count']} / {repo['vulnerability_summary']['critical_count']}")
+        print(f"  - Freshness: {repo['base_image'].get('freshness_rating', 'Unknown')} (Age: {repo['base_image'].get('age_days', 'Unknown')} days)")
+        print(f"  - Runs as Root: {repo['base_image'].get('runs_as_root', 'Unknown')}")
+        print(f"  - Tag Specificity: {repo['base_image'].get('tag_specificity', 'Unknown')} ({repo['base_image'].get('tag_type', 'Unknown')})")
         
         if repo["critical_vulnerabilities"]:
             print(f"  - Top Critical Vulnerabilities:")
