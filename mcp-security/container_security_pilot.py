@@ -1,10 +1,26 @@
 import json
 import requests
 import re
-import time # Import time for potential rate limiting delays
+import time
+import subprocess
+from collections import Counter
+from datetime import datetime
 
 from assessments.provenance import assess_base_image_provenance # Import the provenance function
 from assessments.vulnerability import assess_image_vulnerabilities # Import the vulnerability function
+
+def get_trivy_version():
+    """Get the installed Trivy version."""
+    try:
+        result = subprocess.run(["trivy", "--version"], capture_output=True, text=True)
+        if result.returncode == 0:
+            # Extract version from output like "Version: v0.48.0"
+            match = re.search(r'Version: (v\d+\.\d+\.\d+)', result.stdout)
+            if match:
+                return match.group(1)
+        return "unknown"
+    except:
+        return "unknown"
 # --- analyze_dockerfile_content function is not used in this step ---
 # (Previous content removed for clarity)
 
@@ -119,17 +135,37 @@ def assess_base_image_provenance(base_image_name):
     return check_dockerhub_image(image_name_no_tag)
 
 
-def main(filename="discovered_mcp_servers_with_metadata.json"):
+def main(filename="discovered_mcp_servers_with_metadata.json", output_file="security_assessment_results.json"):
     """
-    Main function to load data and run provenance assessment.
+    Main function to load data, run security assessments, and output results in the new schema.
     """
     # Adjust path to look in the current directory
-    json_file_path = f"{filename}" # Removed ../
-    all_results = [] # Keep for potential future use, but not primary output now
+    json_file_path = f"{filename}"
+    
+    # Initialize caches and data structures
     provenance_cache = {} # Cache for provenance results
     vulnerability_cache = {} # Cache for vulnerability scan results
-    # Store results per repo, including different assessment data
-    repo_assessment_data = {}
+    repo_assessment_data = {} # Store results per repo
+    
+    # Initialize the result structure based on our schema
+    assessment_results = {
+        "scan_metadata": {
+            "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
+            "trivy_version": get_trivy_version(),
+            "scan_duration_seconds": 0
+        },
+        "repositories": [],
+        "aggregated_stats": {
+            "total_repos_scanned": 0,
+            "repos_with_critical": 0,
+            "repos_with_high": 0,
+            "most_common_vulnerabilities": [],
+            "most_vulnerable_base_images": []
+        }
+    }
+    
+    # Track start time for duration calculation
+    start_time = time.time()
 
     try:
         with open(json_file_path, 'r', encoding='utf-8') as f: # Use json_file_path which includes ../
@@ -219,26 +255,95 @@ def main(filename="discovered_mcp_servers_with_metadata.json"):
 
             # --- Other checks will be added later ---
 
-            # Store results (optional for pilot, useful later)
-            all_results.append({
+            # Extract tag type (specific version vs latest)
+            tag_type = "latest" if ":latest" in base_image or ":" not in base_image else "specific_version"
+            
+            # Prepare vulnerability details in the new schema format
+            vulnerability_details = {
+                "critical_count": 0,
+                "high_count": 0,
+                "total_count": 0,
+                "fixable_count": 0,
+                "critical_vulnerabilities": [],
+                "high_vulnerabilities": []
+            }
+            
+            if vuln_counts:
+                if isinstance(vuln_counts, dict) and 'counts' in vuln_counts:
+                    # New format with details
+                    counts = vuln_counts['counts']
+                    details = vuln_counts['details']
+                    
+                    # Set counts
+                    vulnerability_details["critical_count"] = counts.get('CRITICAL', 0)
+                    vulnerability_details["high_count"] = counts.get('HIGH', 0)
+                    vulnerability_details["total_count"] = counts.get('CRITICAL', 0) + counts.get('HIGH', 0)
+                    
+                    # Process critical vulnerabilities
+                    for vuln in details['CRITICAL']:
+                        vulnerability_details["critical_vulnerabilities"].append({
+                            "id": vuln.get('ID', ''),
+                            "package": vuln.get('Package', ''),
+                            "installed_version": vuln.get('Version', ''),
+                            "fixed_version": vuln.get('FixedVersion', ''),
+                            "title": vuln.get('Title', ''),
+                            "description": vuln.get('Description', ''),
+                            "fix_available": bool(vuln.get('FixedVersion', ''))
+                        })
+                        if vuln.get('FixedVersion'):
+                            vulnerability_details["fixable_count"] += 1
+                    
+                    # Process high vulnerabilities
+                    for vuln in details['HIGH']:
+                        vulnerability_details["high_vulnerabilities"].append({
+                            "id": vuln.get('ID', ''),
+                            "package": vuln.get('Package', ''),
+                            "installed_version": vuln.get('Version', ''),
+                            "fixed_version": vuln.get('FixedVersion', ''),
+                            "title": vuln.get('Title', ''),
+                            "description": vuln.get('Description', ''),
+                            "fix_available": bool(vuln.get('FixedVersion', ''))
+                        })
+                        if vuln.get('FixedVersion'):
+                            vulnerability_details["fixable_count"] += 1
+                else:
+                    # Old format (just counts)
+                    vulnerability_details["critical_count"] = vuln_counts.get('CRITICAL', 0)
+                    vulnerability_details["high_count"] = vuln_counts.get('HIGH', 0)
+                    vulnerability_details["total_count"] = vuln_counts.get('CRITICAL', 0) + vuln_counts.get('HIGH', 0)
+            
+            # Create repository entry in our new schema
+            repo_url = item.get('repo_url', 'N/A')
+            repo_entry = {
+                "repo_url": repo_url,
+                "name": name,
+                "base_image": {
+                    "name": base_image,
+                    "provenance": provenance,
+                    "tag_type": tag_type,
+                    "last_updated": ""  # We don't have this info yet
+                },
+                "vulnerability_summary": {
+                    "critical_count": vulnerability_details["critical_count"],
+                    "high_count": vulnerability_details["high_count"],
+                    "total_count": vulnerability_details["total_count"],
+                    "fixable_count": vulnerability_details["fixable_count"]
+                },
+                "critical_vulnerabilities": vulnerability_details["critical_vulnerabilities"],
+                "high_vulnerabilities": vulnerability_details["high_vulnerabilities"]
+            }
+            
+            # Add to our results
+            assessment_results["repositories"].append(repo_entry)
+            
+            # Also maintain the old structure for backward compatibility
+            if repo_url not in repo_assessment_data:
+                repo_assessment_data[repo_url] = []
+            repo_assessment_data[repo_url].append({
                 "name": name,
                 "base_image": base_image,
                 "provenance": provenance,
-                "vulnerabilities": vuln_counts # Store vuln counts (or None)
-                # Other results will be added later
-            })
-
-            # Group repo URL by provenance
-            # Store data grouped by repo URL for final output
-            repo_url = item.get('repo_url', 'N/A')
-            if repo_url not in repo_assessment_data:
-                repo_assessment_data[repo_url] = []
-            # Append assessment details for this specific item/image
-            repo_assessment_data[repo_url].append({
-                 "name": name,
-                 "base_image": base_image,
-                 "provenance": provenance,
-                 "vulnerabilities": vuln_counts
+                "vulnerabilities": vuln_counts
             })
         # else:
             # Optional: print why an item was skipped
@@ -251,22 +356,88 @@ def main(filename="discovered_mcp_servers_with_metadata.json"):
             #      print("Skipping invalid item structure.")
 
 
-    print(f"\n--- Provenance Analysis Complete ---")
-
-    # Print grouped repo URLs
-    # Print grouped results by Repo URL
+    # Calculate scan duration
+    assessment_results["scan_metadata"]["scan_duration_seconds"] = int(time.time() - start_time)
+    
+    # Calculate aggregated statistics
+    assessment_results["aggregated_stats"]["total_repos_scanned"] = len(assessment_results["repositories"])
+    
+    # Count repos with critical/high vulnerabilities
+    repos_with_critical = sum(1 for repo in assessment_results["repositories"]
+                             if repo["vulnerability_summary"]["critical_count"] > 0)
+    repos_with_high = sum(1 for repo in assessment_results["repositories"]
+                         if repo["vulnerability_summary"]["high_count"] > 0)
+    
+    assessment_results["aggregated_stats"]["repos_with_critical"] = repos_with_critical
+    assessment_results["aggregated_stats"]["repos_with_high"] = repos_with_high
+    
+    # Find most common vulnerabilities
+    all_critical_vulns = []
+    all_high_vulns = []
+    
+    for repo in assessment_results["repositories"]:
+        for vuln in repo["critical_vulnerabilities"]:
+            all_critical_vulns.append(vuln["id"])
+        for vuln in repo["high_vulnerabilities"]:
+            all_high_vulns.append(vuln["id"])
+    
+    # Count occurrences
+    from collections import Counter
+    critical_counts = Counter(all_critical_vulns)
+    high_counts = Counter(all_high_vulns)
+    
+    # Get most common vulnerabilities
+    most_common_vulns = []
+    for vuln_id, count in critical_counts.most_common(5):
+        most_common_vulns.append({"id": vuln_id, "count": count, "severity": "CRITICAL"})
+    for vuln_id, count in high_counts.most_common(5):
+        most_common_vulns.append({"id": vuln_id, "count": count, "severity": "HIGH"})
+    
+    assessment_results["aggregated_stats"]["most_common_vulnerabilities"] = most_common_vulns[:5]  # Top 5 overall
+    
+    # Find most vulnerable base images
+    base_image_vulns = {}
+    for repo in assessment_results["repositories"]:
+        base_image = repo["base_image"]["name"]
+        if base_image not in base_image_vulns:
+            base_image_vulns[base_image] = {"name": base_image, "critical_count": 0, "high_count": 0}
+        
+        base_image_vulns[base_image]["critical_count"] += repo["vulnerability_summary"]["critical_count"]
+        base_image_vulns[base_image]["high_count"] += repo["vulnerability_summary"]["high_count"]
+    
+    # Sort by total vulnerabilities
+    sorted_images = sorted(base_image_vulns.values(),
+                          key=lambda x: (x["critical_count"], x["high_count"]),
+                          reverse=True)
+    
+    assessment_results["aggregated_stats"]["most_vulnerable_base_images"] = sorted_images[:5]  # Top 5
+    
+    # Save results to JSON file
+    with open(output_file, 'w', encoding='utf-8') as f:
+        json.dump(assessment_results, f, indent=2)
+    
+    print(f"\n--- Security Assessment Complete ---")
+    print(f"Results saved to: {output_file}")
+    
+    # Print summary for console output
+    print("\n--- Assessment Summary ---")
+    print(f"Total repositories scanned: {assessment_results['aggregated_stats']['total_repos_scanned']}")
+    print(f"Repositories with critical vulnerabilities: {repos_with_critical}")
+    print(f"Repositories with high vulnerabilities: {repos_with_high}")
+    
+    # Print grouped results by Repo URL (simplified version of the old output)
     print("\n--- Assessment Results by Repository ---")
-    for repo_url, assessments in sorted(repo_assessment_data.items()):
-        print(f"\nRepository: {repo_url}")
-        for assessment in assessments:
-            print(f"  - Server: {assessment['name']}")
-            print(f"    Base Image: {assessment['base_image']}")
-            print(f"    Provenance: {assessment['provenance']}")
-            vulns = assessment['vulnerabilities']
-            if vulns:
-                 print(f"    Vulnerabilities (H/C): {vulns.get('HIGH', 0)} / {vulns.get('CRITICAL', 0)}")
-            else:
-                 print(f"    Vulnerabilities: Scan Failed/Timeout")
+    for repo in assessment_results["repositories"]:
+        print(f"\nRepository: {repo['repo_url']}")
+        print(f"  - Server: {repo['name']}")
+        print(f"  - Base Image: {repo['base_image']['name']}")
+        print(f"  - Provenance: {repo['base_image']['provenance']}")
+        print(f"  - Vulnerabilities (H/C): {repo['vulnerability_summary']['high_count']} / {repo['vulnerability_summary']['critical_count']}")
+        
+        if repo["critical_vulnerabilities"]:
+            print(f"  - Top Critical Vulnerabilities:")
+            for i, vuln in enumerate(repo["critical_vulnerabilities"][:3], 1):
+                print(f"    {i}. {vuln['id']} - {vuln['package']} {vuln['installed_version']}")
 
 
 if __name__ == "__main__":
