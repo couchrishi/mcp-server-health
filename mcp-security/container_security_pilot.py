@@ -185,7 +185,35 @@ def main(filename="discovered_mcp_servers_with_metadata.json"):
                 vulnerability_cache[base_image] = vuln_counts # Cache the result (even if None)
 
             if vuln_counts:
-                print(f"Vulnerabilities (High/Crit): {vuln_counts.get('HIGH', 0)} / {vuln_counts.get('CRITICAL', 0)}")
+                if isinstance(vuln_counts, dict) and 'counts' in vuln_counts:
+                    # New format with details
+                    counts = vuln_counts['counts']
+                    details = vuln_counts['details']
+                    print(f"Vulnerabilities (High/Crit): {counts.get('HIGH', 0)} / {counts.get('CRITICAL', 0)}")
+                    
+                    # Print detailed vulnerability information
+                    if details['CRITICAL']:
+                        print("\n  CRITICAL Vulnerabilities:")
+                        for i, vuln in enumerate(details['CRITICAL'][:5], 1):  # Show top 5 critical vulns
+                            print(f"    {i}. {vuln['ID']} - {vuln['Package']} {vuln['Version']}")
+                            print(f"       Title: {vuln['Title']}")
+                            if vuln['FixedVersion']:
+                                print(f"       Fixed in: {vuln['FixedVersion']}")
+                        if len(details['CRITICAL']) > 5:
+                            print(f"       ... and {len(details['CRITICAL']) - 5} more critical vulnerabilities")
+                            
+                    if details['HIGH']:
+                        print("\n  HIGH Vulnerabilities:")
+                        for i, vuln in enumerate(details['HIGH'][:5], 1):  # Show top 5 high vulns
+                            print(f"    {i}. {vuln['ID']} - {vuln['Package']} {vuln['Version']}")
+                            print(f"       Title: {vuln['Title']}")
+                            if vuln['FixedVersion']:
+                                print(f"       Fixed in: {vuln['FixedVersion']}")
+                        if len(details['HIGH']) > 5:
+                            print(f"       ... and {len(details['HIGH']) - 5} more high vulnerabilities")
+                else:
+                    # Old format (just counts)
+                    print(f"Vulnerabilities (High/Crit): {vuln_counts.get('HIGH', 0)} / {vuln_counts.get('CRITICAL', 0)}")
             else:
                 print("Vulnerabilities: Scan failed or timed out.")
 
