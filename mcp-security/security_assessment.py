@@ -237,7 +237,8 @@ def assess_security(input_file="discovered_mcp_servers_with_metadata.json",
                     
                     finally:
                         # Clean up temporary directory
-                        shutil.rmtree(temp_dir)
+                        if os.path.exists(temp_dir):
+                            shutil.rmtree(temp_dir)
                 else:
                     logger.info(f"No repository URL found for {name}, skipping API security assessment")
             
