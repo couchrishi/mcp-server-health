@@ -37,15 +37,26 @@ def clone_repository(repo_url, target_dir=None):
         
         logger.info(f"Starting clone of {owner}/{repo} to {target_dir}")
         
-        # Clone the repository
-        clone_cmd = ['git', 'clone', repo_url, target_dir]
+        # Clone the repository with a timeout to avoid hanging on auth prompts
+        clone_cmd = ['git', 'clone', '--depth', '1', repo_url, target_dir]
         logger.debug(f"Running command: {' '.join(clone_cmd)}")
         
-        result = subprocess.run(clone_cmd, capture_output=True, text=True)
-        
-        if result.returncode != 0:
-            logger.error(f"Failed to clone repository: {repo_url}")
-            logger.error(f"Git error: {result.stderr}")
+        try:
+            # Add timeout to prevent hanging on authentication prompts
+            result = subprocess.run(clone_cmd, capture_output=True, text=True, timeout=30)
+            
+            if result.returncode != 0:
+                if "Authentication failed" in result.stderr or "could not read Username" in result.stderr:
+                    logger.warning(f"Repository requires authentication, skipping: {repo_url}")
+                else:
+                    logger.error(f"Failed to clone repository: {repo_url}")
+                    logger.error(f"Git error: {result.stderr}")
+                return None
+        except subprocess.TimeoutExpired:
+            logger.warning(f"Clone operation timed out for {repo_url}, likely requires authentication. Skipping.")
+            # Clean up the temporary directory if it was created
+            if os.path.exists(target_dir):
+                shutil.rmtree(target_dir, ignore_errors=True)
             return None
         
         logger.info(f"Successfully cloned {owner}/{repo} to {target_dir}")
