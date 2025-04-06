@@ -1,0 +1,253 @@
+{
+  "scan_metadata": {
+    "timestamp": "2025-04-06T17:37:27.861141",
+    "scan_duration_seconds": 62,
+    "assessment_type": "api"
+  },
+  "repositories": [
+    {
+      "repo_url": "https://github.com/21st-dev/magic-mcp",
+      "name": "21st.dev Magic",
+      "api_security": {
+        "overall_score": 0,
+        "file_stats": {
+          "total_files": 96,
+          "server_files": 2,
+          "route_files": 0,
+          "auth_files": 0,
+          "config_files": 3,
+          "middleware_files": 0,
+          "error_handling_files": 1,
+          "input_validation_files": 1,
+          "tls_files": 0
+        },
+        "authentication": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No authentication files found"
+          ],
+          "recommendations": [
+            "Implement proper authentication"
+          ]
+        },
+        "rate_limiting": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No rate limiting implementation found"
+          ],
+          "recommendations": [
+            "Implement rate limiting to protect against abuse"
+          ]
+        },
+        "input_validation": {
+          "score": 9,
+          "mechanism": "The code implements the Zod library, a powerful TypeScript-first schema declaration and validation library. It primarily uses **Schema Validation**. This involves defining a structure (schema) that the input data must conform to. Within this framework, it employs several specific techniques:\n\n1.  **Type Checking:** Core functionality. It rigorously checks if the input data matches the expected JavaScript primitive or complex type (string, number, boolean, object, array, date, bigint, etc.) defined in the schema (e.g., `z.string()`, `z.number()`).\n2.  **Constraint Validation:** Allows defining rules beyond simple types, such as minimum/maximum length for strings/arrays (`min()`, `max()`, `length()`), value ranges for numbers/dates (`min()`, `max()`, `positive()`, `negative()`), specific string formats (email, URL, UUID, CUID, ULID, IP, datetime, regex), enum membership (`enum()`, `nativeEnum()`), and more.\n3.  **Structural Validation:** Validates the shape of objects (expected keys, value types via `z.object()`), the types of elements in arrays (`z.array()`), tuples (`z.tuple()`), maps (`z.map()`), and sets (`z.set()`).\n4.  **Coercion (Optional):** Provides optional mechanisms (`coerce`) to attempt type conversion *before* validation (e.g., converting a string input to a number for a number schema).\n5.  **Transformation/Refinement:** Allows adding custom validation logic (`refine`, `superRefine`) or transforming data *after* successful validation (`transform`).\n6.  **Sanitization (Limited):** Includes methods like `.trim()`, `.toLowerCase()`, `.toUpperCase()` which perform specific string manipulations, acting as a form of sanitization for those specific cases.",
+          "findings": [
+            "The library provides a comprehensive and composable API for defining complex data validation rules.",
+            "Type checking is a fundamental and robust aspect of the library.",
+            "Includes built-in validators for many common string formats (email, URL, UUID, IP, etc.), often using regular expressions.",
+            "Handles constraints like length, range, and cardinality effectively.",
+            "Provides detailed error reporting (`ZodError`) which aids debugging.",
+            "Supports asynchronous validation (`.parseAsync()`, `.safeParseAsync()`).",
+            "The library itself focuses on validating data structure, type, and format against a defined schema.",
+            "**No inherent XSS Protection:** Zod validates if a string *is* a string (and optionally meets format/length criteria), but it does not automatically sanitize strings for safe inclusion in HTML. A schema like `z.string()` will successfully validate input like `<script>alert('XSS')</script>`.",
+            "**No inherent SQL Injection Protection:** Zod validates data types and formats, but it does not prevent SQL injection if the validated data is later concatenated directly into SQL queries. Parameterized queries are still required.",
+            "**No inherent Command Injection Protection:** Similarly, Zod doesn't prevent command injection if validated data is unsafely used in shell commands.",
+            "**Special Character Handling:** Zod allows most special characters in strings by default unless specific format validation (like URL, email) or a custom `.regex()`/`.refine()` check is applied. It doesn't automatically escape characters for specific contexts (HTML, SQL, shell).",
+            "**Completeness:** While built-in regexes (e.g., for email, IP) are generally good, they might not cover 100% of edge cases defined in complex RFCs, but they are suitable for most practical applications. Extensibility via `.refine()` allows for stricter checks if needed."
+          ],
+          "recommendations": [
+            "Utilize Zod schemas to validate *all* untrusted input data (e.g., API request bodies, query parameters, form data) as early as possible.",
+            "Define schemas as strictly as possible, using specific format validators (`.email()`, `.url()`, `.uuid()`, etc.) and constraints (`.min()`, `.max()`, `.length()`) where applicable.",
+            "**Do not rely solely on Zod for security, especially against injection attacks.** Zod ensures data conforms to a schema; it does not guarantee safety in all contexts.",
+            "**Always use context-aware output encoding/escaping** (e.g., HTML entity encoding before rendering data in HTML, proper URL encoding) on data that has passed Zod validation to prevent XSS.",
+            "**Always use parameterized queries or prepared statements** when interacting with databases to prevent SQL injection, regardless of Zod validation.",
+            "**Avoid using validated input directly in system or shell commands.** If absolutely necessary, use safe APIs designed for command execution and rigorously validate/escape any input according to the shell's rules to prevent command injection.",
+            "For string inputs where only specific characters are allowed (e.g., alphanumeric usernames), use `.regex()` or `.refine()` to enforce strict character whitelists.",
+            "Use `.transform()` for data manipulation *after* validation, not as a primary security sanitization step against injection.",
+            "Use `.coerce` judiciously, understanding it changes the type before validation, which might have security implications if not handled carefully downstream."
+          ]
+        },
+        "error_handling": {
+          "score": 7,
+          "mechanism": "The code snippet is part of the Next.js framework's client-side bundle for its built-in error handling page (`_error.js`). This page acts as a centralized handler for rendering errors that occur both during server-side rendering (SSR) and client-side navigation/execution (e.g., 404 Not Found, 500 Internal Server Error, unhandled client-side exceptions). It's a form of global error handling specific to the Next.js application lifecycle.",
+          "findings": [
+            "The provided code is minified and part of a Webpack bundle, making direct analysis of specific error handling logic (like try-catch blocks within the component) impossible from the snippet alone.",
+            "The filename (`_error-f75b3e3a61ee6516.js`) indicates this is the compiled code for Next.js's default or custom error page (`pages/_error.js`).",
+            "Next.js's default `_error.js` behavior differs significantly between development and production modes.",
+            "In **development**, Next.js intentionally shows detailed error messages and stack traces for debugging purposes. This is expected but insecure if exposed publicly.",
+            "In **production**, Next.js's default behavior is to show generic error messages (e.g., 'Internal Server Error', 'Not Found') and hide stack traces and sensitive details from the client. This is a secure default.",
+            "The snippet itself doesn't reveal whether server-side error logging is implemented, which is crucial for diagnosing production issues without exposing details to users.",
+            "The snippet doesn't reveal if the default `_error.js` component has been customized. Custom implementations could potentially introduce vulnerabilities if not handled carefully (e.g., conditionally rendering sensitive data based on environment variables).",
+            "Next.js typically handles setting appropriate HTTP status codes (like 404, 500) correctly before rendering the `_error` page."
+          ],
+          "recommendations": [
+            "**Verify Production Mode:** Ensure the application is always deployed and run in production mode (`NODE_ENV=production`). This is the single most important step to prevent leakage of sensitive error details via the default Next.js error page.",
+            "**Review Custom `_error.js`:** If a custom `pages/_error.js` file exists in the project's source code, audit it thoroughly. Ensure it explicitly checks for the production environment before potentially rendering any detailed error information and never leaks stack traces or sensitive data to the client in production.",
+            "**Implement Robust Server-Side Logging:** Regardless of the front-end error display, implement comprehensive server-side logging for all errors, especially 5xx types. Log detailed error messages, stack traces, request context, and user information (if relevant and permissible) to a secure, centralized logging system for debugging and monitoring.",
+            "**User-Friendly Error Pages:** Ensure the production error page provides a user-friendly experience (consistent design, clear generic message, perhaps links to the homepage or support) without disclosing internal application details.",
+            "**Regular Dependency Updates:** Keep Next.js and other dependencies updated to benefit from security patches, which might include improvements to error handling security."
+          ]
+        },
+        "https_tls": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No HTTPS/TLS implementation found"
+          ],
+          "recommendations": [
+            "Implement HTTPS/TLS to secure communications"
+          ]
+        }
+      }
+    },
+    {
+      "repo_url": "https://github.com/Simon-Kansara/ableton-live-mcp-server",
+      "name": "Ableton Live",
+      "api_security": {
+        "overall_score": 0,
+        "file_stats": {
+          "total_files": 7,
+          "server_files": 1,
+          "route_files": 0,
+          "auth_files": 0,
+          "config_files": 0,
+          "middleware_files": 0,
+          "error_handling_files": 0,
+          "input_validation_files": 0,
+          "tls_files": 0
+        },
+        "authentication": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No authentication files found"
+          ],
+          "recommendations": [
+            "Implement proper authentication"
+          ]
+        },
+        "rate_limiting": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No rate limiting implementation found"
+          ],
+          "recommendations": [
+            "Implement rate limiting to protect against abuse"
+          ]
+        },
+        "input_validation": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No input validation implementation found"
+          ],
+          "recommendations": [
+            "Implement input validation to prevent injection attacks"
+          ]
+        },
+        "error_handling": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No error handling implementation found"
+          ],
+          "recommendations": [
+            "Implement proper error handling to prevent information disclosure"
+          ]
+        },
+        "https_tls": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No HTTPS/TLS implementation found"
+          ],
+          "recommendations": [
+            "Implement HTTPS/TLS to secure communications"
+          ]
+        }
+      }
+    },
+    {
+      "repo_url": "https://github.com/Adfin-Engineering/mcp-server-adfin",
+      "name": "Adfin",
+      "api_security": {
+        "overall_score": 0,
+        "file_stats": {
+          "total_files": 9,
+          "server_files": 0,
+          "route_files": 0,
+          "auth_files": 0,
+          "config_files": 0,
+          "middleware_files": 0,
+          "error_handling_files": 0,
+          "input_validation_files": 0,
+          "tls_files": 0
+        },
+        "authentication": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No authentication files found"
+          ],
+          "recommendations": [
+            "Implement proper authentication"
+          ]
+        },
+        "rate_limiting": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No rate limiting implementation found"
+          ],
+          "recommendations": [
+            "Implement rate limiting to protect against abuse"
+          ]
+        },
+        "input_validation": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No input validation implementation found"
+          ],
+          "recommendations": [
+            "Implement input validation to prevent injection attacks"
+          ]
+        },
+        "error_handling": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No error handling implementation found"
+          ],
+          "recommendations": [
+            "Implement proper error handling to prevent information disclosure"
+          ]
+        },
+        "https_tls": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No HTTPS/TLS implementation found"
+          ],
+          "recommendations": [
+            "Implement HTTPS/TLS to secure communications"
+          ]
+        }
+      }
+    }
+  ],
+  "aggregated_stats": {
+    "total_repos_scanned": 3,
+    "repos_with_critical": 0,
+    "repos_with_high": 0,
+    "repos_using_latest_tag": 0,
+    "repos_running_as_root": 0,
+    "avg_image_age_days": 0,
+    "most_common_vulnerabilities": [],
+    "most_vulnerable_base_images": []
+  }
+}

@@ -1,0 +1,460 @@
+{
+  "scan_metadata": {
+    "timestamp": "2025-04-06T17:28:22.919020",
+    "scan_duration_seconds": 118,
+    "assessment_type": "api"
+  },
+  "repositories": [
+    {
+      "repo_url": "https://github.com/21st-dev/magic-mcp",
+      "name": "21st.dev Magic",
+      "api_security": {
+        "overall_score": 0,
+        "file_stats": {
+          "total_files": 96,
+          "server_files": 2,
+          "route_files": 0,
+          "auth_files": 0,
+          "config_files": 3,
+          "middleware_files": 0,
+          "error_handling_files": 1,
+          "input_validation_files": 1,
+          "tls_files": 0
+        },
+        "authentication": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No authentication files found"
+          ],
+          "recommendations": [
+            "Implement proper authentication"
+          ]
+        },
+        "rate_limiting": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No rate limiting implementation found"
+          ],
+          "recommendations": [
+            "Implement rate limiting to protect against abuse"
+          ]
+        },
+        "input_validation": {
+          "score": 9,
+          "mechanism": "The code implements the Zod library, a powerful TypeScript-first schema declaration and validation library. Its primary mechanisms are:\n1.  **Schema Validation:** Defining expected data structures, types, and constraints against which input data is checked.\n2.  **Type Checking:** Explicitly verifying the JavaScript type of the input data (string, number, object, array, boolean, date, etc.) using internal functions like `_getType` and comparing against expected types (`l.string`, `l.number`, etc.).\n3.  **Constraint Validation:** Applying specific rules beyond basic types, such as minimum/maximum length (strings, arrays), numeric ranges (numbers, bigints), date ranges, specific string formats (email, URL, UUID, CUID, ULID, IP, datetime, regex patterns), enum membership, literal value matching, etc.\n4.  **Transformation/Coercion:** Offering capabilities to transform data during validation (e.g., `trim`, `toLowerCase`, `toUpperCase`, custom `transform` functions) and coerce types (e.g., converting a string input to a number or date if specified via `.coerce()`). While transformation can be used for normalization, it's distinct from security-focused sanitization.",
+          "findings": [
+            "**Comprehensive Type and Structure Validation:** The library provides a very wide range of validators for primitive types, complex objects, arrays, tuples, maps, sets, unions, intersections, enums, literals, etc.",
+            "**Rich Constraint System:** Offers numerous built-in constraints (length, range, specific formats like email, URL, UUID, IP, datetime, base64, JWT structure) and allows custom validation logic via `.refine()` and `.superRefine()`.",
+            "**Detailed Error Reporting:** Generates structured error objects (`ZodError`) with detailed information about validation failures, including the path to the invalid data, the type of error (`ZodIssueCode`), expected vs. received types, and customizable error messages.",
+            "**Type Coercion:** Includes an explicit `coerce` option for schemas like string, number, boolean, bigint, and date, allowing automatic type conversion before validation (e.g., `z.coerce.number()` attempts to convert input to a number).",
+            "**Transformation Capabilities:** The `.transform()` method allows modifying the data after successful validation, and `.preprocess()` allows modification before validation.",
+            "**No Built-in Security Sanitization (XSS/SQLi):** Zod focuses on validating the *structure*, *type*, and *format* of data according to the defined schema. It does *not* automatically sanitize input to prevent injection attacks like XSS or SQL Injection. For example, `z.string()` will validate that the input is a string, but won't remove or escape HTML/SQL special characters.",
+            "**Potential for ReDoS:** While Zod provides regex validation (`.regex()`), the effectiveness and safety (regarding Regular Expression Denial of Service - ReDoS) depend entirely on the user-provided regular expression.",
+            "**No Direct Vulnerabilities Found:** The library code itself doesn't appear to have direct vulnerabilities like SQLi, XSS, or Command Injection. These vulnerabilities typically arise when an application *uses* the validated (or unvalidated) data improperly in sensitive contexts (database queries, HTML output, shell commands).",
+            "**Thoroughness Depends on Usage:** The overall validation thoroughness in an application using Zod depends entirely on how well the developer defines the schemas. Missing or incomplete validation is a risk if the developer fails to apply Zod schemas to all inputs or defines schemas that are too permissive."
+          ],
+          "recommendations": [
+            "**Use Zod for All Untrusted Inputs:** Apply Zod schemas rigorously to validate all data coming from external or untrusted sources (user input, API requests, file uploads, etc.).",
+            "**Define Specific and Strict Schemas:** Be as specific as possible with schemas. Use format validators like `.email()`, `.url()`, `.uuid()`, length constraints (`.min()`, `.max()`, `.length()`), numeric ranges, and regex patterns where applicable, rather than relying on generic types like `z.string()` or `z.number()` alone.",
+            "**Do Not Rely Solely on Zod for Security Sanitization:** Remember that Zod validates structure and format but doesn't inherently sanitize against injection attacks. Implement separate, context-aware security measures:",
+            "   - **Prevent SQL Injection:** Use parameterized queries or prepared statements when interacting with databases. Do not concatenate validated data directly into SQL strings.",
+            "   - **Prevent XSS:** Use appropriate output encoding (e.g., HTML entity encoding) when rendering validated data in web pages. Employ context-aware sanitization libraries if complex HTML input is allowed.",
+            "   - **Prevent Command Injection:** Avoid passing user-controlled input directly to shell commands. If necessary, use safe APIs designed for process execution and meticulously validate/sanitize/escape inputs.",
+            "**Carefully Craft Regular Expressions:** When using `.regex()`, ensure the patterns are efficient and not susceptible to ReDoS.",
+            "**Audit Custom Transformations/Refinements:** Scrutinize the logic within `.transform()`, `.preprocess()`, and `.refine()` functions for any potential security implications or unintended side effects.",
+            "**Use Coercion Judiciously:** Be aware that `.coerce()` changes input types, which might have implications depending on how the data is used later. Validate *after* coercion."
+          ]
+        },
+        "error_handling": {
+          "score": 3,
+          "mechanism": "The code snippet is a minified JavaScript chunk generated by Next.js for its built-in error handling page (`pages/_error.js`). This page acts as a global error handler for rendering errors that occur during page rendering (both server-side and client-side) within the Next.js framework. The specific code shown is part of the Webpack/Next.js runtime responsible for loading this error page component, not the error handling logic itself.",
+          "findings": [
+            "Code Obfuscation: The provided code is minified and bundled, making direct analysis of the error handling logic impossible without the original source code or de-obfuscation.",
+            "Mechanism Identification: The filename (`_error-....js`) and the reference to `/_error` clearly indicate the use of Next.js's standard file-based error handling mechanism.",
+            "Lack of Implementation Details: The snippet only shows the loading mechanism (`webpackChunk_N_E.push`, `window.__NEXT_P.push`). It does not contain the actual implementation of the error page component (presumably module `86218`) which determines how errors are displayed, logged, or processed.",
+            "Information Disclosure Risk (Unknown): Cannot determine if sensitive information (stack traces, detailed error messages) is exposed in production. Default Next.js behavior hides stack traces in production, but custom implementations of `pages/_error.js` could override this.",
+            "Error Logging (Unknown): Cannot determine if errors are being logged. Logging would typically occur within the server-side logic (`getInitialProps` or `getServerSideProps`) of the `pages/_error.js` file or via client-side reporting tools, neither of which is visible here.",
+            "HTTP Status Codes (Assumed): Assumed to be handled correctly by the Next.js framework *before* rendering this component, but cannot be verified from the snippet.",
+            "Error Format Consistency (Unknown): Depends on the implementation within the actual `pages/_error.js` component.",
+            "Graceful Degradation: The `_error.js` page itself *is* the intended mechanism for graceful degradation when page errors occur. Its effectiveness depends on its own implementation (e.g., simplicity, lack of external dependencies)."
+          ],
+          "recommendations": [
+            "Analyze Source Code: The primary recommendation is to review the original source code of the `pages/_error.js` file (corresponding to module `86218` in the bundle) to assess its specific error handling logic.",
+            "Prevent Information Disclosure: Ensure the production implementation of `pages/_error.js` displays only generic, user-friendly error messages and never exposes stack traces or detailed internal error information to the end-user.",
+            "Implement Robust Logging: Implement comprehensive server-side logging within `pages/_error.js` (e.g., in `getInitialProps` or `getServerSideProps`) to capture detailed error context (including stack traces) for debugging purposes. Consider integrating client-side error reporting services (e.g., Sentry, LogRocket).",
+            "Ensure Correct Status Codes: Verify that the Next.js application correctly sets and returns appropriate HTTP status codes (e.g., 404, 500) when rendering the error page.",
+            "Maintain Consistency: Design the `_error.js` page to provide a consistent look and feel for different types of errors.",
+            "Keep Error Page Simple: Ensure the `_error.js` page itself is simple and has minimal dependencies to reduce the chance that it might also fail."
+          ]
+        },
+        "https_tls": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No HTTPS/TLS implementation found"
+          ],
+          "recommendations": [
+            "Implement HTTPS/TLS to secure communications"
+          ]
+        }
+      }
+    },
+    {
+      "repo_url": "https://github.com/Simon-Kansara/ableton-live-mcp-server",
+      "name": "Ableton Live",
+      "api_security": {
+        "overall_score": 0,
+        "file_stats": {
+          "total_files": 7,
+          "server_files": 1,
+          "route_files": 0,
+          "auth_files": 0,
+          "config_files": 0,
+          "middleware_files": 0,
+          "error_handling_files": 0,
+          "input_validation_files": 0,
+          "tls_files": 0
+        },
+        "authentication": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No authentication files found"
+          ],
+          "recommendations": [
+            "Implement proper authentication"
+          ]
+        },
+        "rate_limiting": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No rate limiting implementation found"
+          ],
+          "recommendations": [
+            "Implement rate limiting to protect against abuse"
+          ]
+        },
+        "input_validation": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No input validation implementation found"
+          ],
+          "recommendations": [
+            "Implement input validation to prevent injection attacks"
+          ]
+        },
+        "error_handling": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No error handling implementation found"
+          ],
+          "recommendations": [
+            "Implement proper error handling to prevent information disclosure"
+          ]
+        },
+        "https_tls": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No HTTPS/TLS implementation found"
+          ],
+          "recommendations": [
+            "Implement HTTPS/TLS to secure communications"
+          ]
+        }
+      }
+    },
+    {
+      "repo_url": "https://github.com/Adfin-Engineering/mcp-server-adfin",
+      "name": "Adfin",
+      "api_security": {
+        "overall_score": 0,
+        "file_stats": {
+          "total_files": 9,
+          "server_files": 0,
+          "route_files": 0,
+          "auth_files": 0,
+          "config_files": 0,
+          "middleware_files": 0,
+          "error_handling_files": 0,
+          "input_validation_files": 0,
+          "tls_files": 0
+        },
+        "authentication": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No authentication files found"
+          ],
+          "recommendations": [
+            "Implement proper authentication"
+          ]
+        },
+        "rate_limiting": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No rate limiting implementation found"
+          ],
+          "recommendations": [
+            "Implement rate limiting to protect against abuse"
+          ]
+        },
+        "input_validation": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No input validation implementation found"
+          ],
+          "recommendations": [
+            "Implement input validation to prevent injection attacks"
+          ]
+        },
+        "error_handling": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No error handling implementation found"
+          ],
+          "recommendations": [
+            "Implement proper error handling to prevent information disclosure"
+          ]
+        },
+        "https_tls": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No HTTPS/TLS implementation found"
+          ],
+          "recommendations": [
+            "Implement HTTPS/TLS to secure communications"
+          ]
+        }
+      }
+    },
+    {
+      "repo_url": "https://github.com/tinyfish-io/agentql-mcp",
+      "name": "AgentQL",
+      "api_security": {
+        "overall_score": 0,
+        "file_stats": {
+          "total_files": 21,
+          "server_files": 1,
+          "route_files": 0,
+          "auth_files": 1,
+          "config_files": 1,
+          "middleware_files": 0,
+          "error_handling_files": 0,
+          "input_validation_files": 0,
+          "tls_files": 0
+        },
+        "authentication": {
+          "score": 8,
+          "mechanism": "API Key (SNYK_TOKEN) provided via GitHub Secrets to authenticate with the Snyk service. Implicit GitHub Token (GITHUB_TOKEN) used for repository checkout and artifact upload.",
+          "findings": [
+            "Authentication relies on an API key (SNYK_TOKEN) stored securely in GitHub Secrets.",
+            "No hardcoded credentials found in the workflow file.",
+            "The workflow correctly references the secret using `${{ secrets.SNYK_TOKEN }}` syntax, preventing exposure in logs.",
+            "The security of the authentication depends heavily on the proper management and scoping of the `SNYK_TOKEN` within the Snyk platform and GitHub Secrets.",
+            "The workflow itself does not implement token validation; validation is handled by the external Snyk service.",
+            "There's no information within this file regarding the expiration or rotation policy of the `SNYK_TOKEN`.",
+            "API keys like `SNYK_TOKEN` typically do not use refresh token mechanisms; rotation is usually manual or policy-based.",
+            "The use of `actions/checkout` and `actions/upload-artifact` implicitly uses the `GITHUB_TOKEN`, which is managed securely by GitHub Actions (short-lived, scoped to the repository)."
+          ],
+          "recommendations": [
+            "Ensure the `SNYK_TOKEN` stored in GitHub Secrets follows the principle of least privilege (has only the minimum permissions required within Snyk to perform the code scan).",
+            "Implement and enforce a regular rotation policy for the `SNYK_TOKEN` secret within GitHub Secrets.",
+            "Periodically audit the access granted to the `SNYK_TOKEN` on the Snyk platform.",
+            "Continue using GitHub Secrets for storing sensitive tokens and avoid exposing them directly in the workflow file or logs."
+          ]
+        },
+        "rate_limiting": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No rate limiting implementation found"
+          ],
+          "recommendations": [
+            "Implement rate limiting to protect against abuse"
+          ]
+        },
+        "input_validation": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No input validation implementation found"
+          ],
+          "recommendations": [
+            "Implement input validation to prevent injection attacks"
+          ]
+        },
+        "error_handling": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No error handling implementation found"
+          ],
+          "recommendations": [
+            "Implement proper error handling to prevent information disclosure"
+          ]
+        },
+        "https_tls": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No HTTPS/TLS implementation found"
+          ],
+          "recommendations": [
+            "Implement HTTPS/TLS to secure communications"
+          ]
+        }
+      }
+    },
+    {
+      "repo_url": "https://github.com/agentrpc/agentrpc",
+      "name": "AgentRPC",
+      "api_security": {
+        "overall_score": 0,
+        "file_stats": {
+          "total_files": 127,
+          "server_files": 1,
+          "route_files": 2,
+          "auth_files": 0,
+          "config_files": 4,
+          "middleware_files": 0,
+          "error_handling_files": 5,
+          "input_validation_files": 0,
+          "tls_files": 0
+        },
+        "authentication": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No authentication files found"
+          ],
+          "recommendations": [
+            "Implement proper authentication"
+          ]
+        },
+        "rate_limiting": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No rate limiting implementation found"
+          ],
+          "recommendations": [
+            "Implement rate limiting to protect against abuse"
+          ]
+        },
+        "input_validation": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No input validation implementation found"
+          ],
+          "recommendations": [
+            "Implement input validation to prevent injection attacks"
+          ]
+        },
+        "error_handling": {
+          "score": 3,
+          "mechanism": "The primary error handling mechanisms observed are:\n1.  **Custom Error Classes:** Both Python (`AgentRPCError`) and Node.js (`AgentRPCError`, `PollTimeoutError`, `AgentRPCAPIError`, `AnimalError`) define custom exception classes inheriting from base Error/Exception types. This allows for categorizing and potentially handling specific error scenarios differently.\n2.  **Error Serialization:** The `sdk-node/src/serialize-error.js` utility is used to convert JavaScript Error objects into plain, serializable objects. This is likely used to transmit error details across process boundaries or network calls (e.g., back to a client).\n3.  **Implicit Framework Handling:** The tests (`errors.test.ts`) imply that the underlying SDK framework (associated with `client.createJob` and `client.register`) catches errors thrown within registered handlers (`getNormalAnimal`, `getCustomAnimal`) and formats them into a specific response structure (`{ status: \"done\", resultType: \"rejection\", result: ... }`). Explicit try-catch blocks are not shown in the handler definitions themselves, suggesting framework-level interception.",
+          "findings": [
+            {
+              "id": "INFO_DISCLOSURE_SERIALIZE",
+              "severity": "High",
+              "description": "The `serializeError` function in `sdk-node/src/serialize-error.js`, particularly because it's called with `forceEnumerable: true`, includes potentially sensitive properties like `stack`, `cause`, `response`, and `request` in the serialized output. If this serialized error object is returned directly to the client (as suggested by the `result` field in the test response), it leads to significant information disclosure."
+            },
+            {
+              "id": "STACK_TRACE_EXPOSURE",
+              "severity": "High",
+              "description": "Related to the previous point, the `serializeError` function explicitly includes the `stack` property and makes it enumerable. The tests show the serialized error is placed in the `result` field of the response. Exposing stack traces to end-users is a security risk, revealing internal code structure and potentially library versions."
+            },
+            {
+              "id": "INFO_DISCLOSURE_API_ERROR",
+              "severity": "Medium",
+              "description": "The `AgentRPCAPIError` class in `sdk-node/src/errors.ts` appends details from the `response` object (stringified if it's an object) directly into the error message. If the `response` object contains sensitive internal data (e.g., internal URLs, keys, detailed database errors), this information could be leaked."
+            },
+            {
+              "id": "IMPROPER_HTTP_STATUS",
+              "severity": "Medium",
+              "description": "The tests (`errors.test.ts`) show that API calls resulting in application-level errors (`resultType: \"rejection\"`) still return an HTTP `200 OK` status code. This violates the semantics of HTTP status codes, where 2xx indicates success. Client-side handling is made more complex as it must inspect the response body to determine the true outcome, rather than relying on the standard HTTP status."
+            },
+            {
+              "id": "MISSING_LOGGING",
+              "severity": "Medium",
+              "description": "The provided code snippets lack any explicit server-side error logging mechanisms (e.g., using `console.error` or a dedicated logging library). While errors are caught and potentially returned, failing to log them server-side makes debugging, monitoring, and auditing failures extremely difficult."
+            },
+            {
+              "id": "INCONSISTENT_ERROR_FORMAT",
+              "severity": "Low",
+              "description": "The custom error structures differ slightly between the Python and Node.js SDKs (e.g., `status_code`/`response` in Python vs. `meta` in Node.js `AgentRPCError`). While the Node.js `serializeError` attempts to standardize output, the initial error objects have different potential properties."
+            },
+            {
+              "id": "LACK_OF_GRACEFUL_DEGRADATION",
+              "severity": "Low",
+              "description": "There is no evidence of mechanisms for graceful degradation. Errors seem to result in a hard failure reported back, rather than potentially falling back to safer defaults or providing partial functionality."
+            }
+          ],
+          "recommendations": [
+            {
+              "id": "SANITIZE_ERROR_OUTPUT",
+              "priority": "Critical",
+              "suggestion": "Modify the error handling pipeline (either `serializeError` itself or the code that uses its output before sending to the client) to strictly control which properties are included in error responses sent to users. **Never send stack traces or raw internal error details (like `cause`, `response`, `request`) to the client.** Use generic error messages for clients."
+            },
+            {
+              "id": "IMPLEMENT_SERVER_LOGGING",
+              "priority": "High",
+              "suggestion": "Implement comprehensive server-side logging for all caught errors. Log the full error details, including stack traces, timestamps, request context, and any relevant metadata, to a secure location (e.g., file, logging service). This is crucial for diagnostics and security monitoring."
+            },
+            {
+              "id": "USE_CORRECT_HTTP_STATUS",
+              "priority": "High",
+              "suggestion": "Return appropriate HTTP status codes to reflect the outcome of the operation. Use 4xx codes for client-side errors (e.g., bad input, authentication failure) and 5xx codes for server-side errors (e.g., unhandled exceptions, downstream service failures). Reserve 200 OK for successful operations only."
+            },
+            {
+              "id": "REVIEW_API_ERROR_MSG",
+              "priority": "Medium",
+              "suggestion": "Review the `AgentRPCAPIError` implementation. Avoid appending raw `response` data directly to the error message that might be exposed externally. Log the detailed `response` server-side instead."
+            },
+            {
+              "id": "STANDARDIZE_ERROR_STRUCTURE",
+              "priority": "Low",
+              "suggestion": "Consider standardizing the core properties of custom errors across different SDKs (Python, Node.js) for better consistency, especially if they interact or are handled by common tooling."
+            },
+            {
+              "id": "CONSIDER_GRACEFUL_DEGRADATION",
+              "priority": "Low",
+              "suggestion": "Evaluate critical code paths where errors might occur and consider implementing graceful degradation strategies where appropriate (e.g., returning cached data, default values, or partial results) instead of always failing completely."
+            }
+          ]
+        },
+        "https_tls": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No HTTPS/TLS implementation found"
+          ],
+          "recommendations": [
+            "Implement HTTPS/TLS to secure communications"
+          ]
+        }
+      }
+    }
+  ],
+  "aggregated_stats": {
+    "total_repos_scanned": 5,
+    "repos_with_critical": 0,
+    "repos_with_high": 0,
+    "repos_using_latest_tag": 0,
+    "repos_running_as_root": 0,
+    "avg_image_age_days": 0,
+    "most_common_vulnerabilities": [],
+    "most_vulnerable_base_images": []
+  }
+}
