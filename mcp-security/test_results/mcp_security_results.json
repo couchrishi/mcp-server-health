@@ -1,0 +1,2977 @@
+{
+  "scan_metadata": {
+    "timestamp": "2025-04-08T04:40:18.607281",
+    "scan_duration_seconds": 0,
+    "assessment_type": "mcp"
+  },
+  "repositories": [
+    {
+      "repo_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/brave-search",
+      "name": "Brave Search",
+      "mcp_security": {
+        "overall_score": 2.4,
+        "overall_risk_level": "high",
+        "top_findings": [
+          "[input_validation] No standard input validation libraries detected",
+          "[input_validation] No input sanitization mechanisms detected",
+          "[input_validation] No type checking detected",
+          "[input_validation] No input length validation detected",
+          "[input_validation] No error handling for invalid input detected"
+        ],
+        "top_recommendations": [
+          "[input_validation] Implement JSON Schema, Pydantic, or another validation library",
+          "[input_validation] Implement input sanitization for all user-provided data",
+          "[input_validation] Implement type checking for function parameters and return values",
+          "[input_validation] Implement input length validation to prevent buffer overflows and DoS attacks",
+          "[input_validation] Implement proper error handling for invalid input"
+        ],
+        "detailed_results": {
+          "tool_poisoning": {
+            "score": 4,
+            "risk_level": "medium",
+            "findings": [
+              "No mechanism to verify tool sources or integrity",
+              "No tool isolation mechanisms detected"
+            ],
+            "recommendations": [
+              "Implement tool signature verification or hash checking",
+              "Implement sandboxing or containerization for tool execution"
+            ]
+          },
+          "input_validation": {
+            "score": 0,
+            "risk_level": "high",
+            "findings": [
+              "No standard input validation libraries detected",
+              "No input sanitization mechanisms detected",
+              "No type checking detected",
+              "No input length validation detected",
+              "No error handling for invalid input detected",
+              "No input format validation detected"
+            ],
+            "recommendations": [
+              "Implement JSON Schema, Pydantic, or another validation library",
+              "Implement input sanitization for all user-provided data",
+              "Implement type checking for function parameters and return values",
+              "Implement input length validation to prevent buffer overflows and DoS attacks",
+              "Implement proper error handling for invalid input",
+              "Implement format validation using regular expressions or other methods"
+            ]
+          },
+          "authentication": {
+            "score": 0,
+            "risk_level": "high",
+            "findings": [
+              "No standard authentication libraries detected",
+              "No evidence of HTTPS enforcement",
+              "No secure storage mechanisms detected",
+              "No CSRF protection detected",
+              "No session management detected",
+              "No multi-factor authentication support detected"
+            ],
+            "recommendations": [
+              "Implement JWT, OAuth, or another standard authentication mechanism",
+              "Enforce HTTPS for all connections",
+              "Use proper hashing and encryption for sensitive data",
+              "Implement CSRF protection",
+              "Implement secure session management",
+              "Consider implementing MFA for sensitive operations"
+            ]
+          },
+          "data_exfiltration": {
+            "score": 5,
+            "risk_level": "medium",
+            "findings": [
+              "No evidence of data minimization or sanitization before processing",
+              "No detection or notification mechanisms for suspicious activities"
+            ],
+            "recommendations": [
+              "Implement data minimization to reduce sensitive data exposure",
+              "Implement monitoring and alerting for suspicious data access patterns"
+            ]
+          },
+          "dependency_security": {
+            "score": 3,
+            "risk_level": "medium",
+            "findings": [
+              "No dependency lock files found",
+              "No dependency scanning tools detected",
+              "No license file found"
+            ],
+            "recommendations": [
+              "Use lock files to pin dependency versions",
+              "Implement Dependabot, Snyk, or another dependency scanning tool",
+              "Add a license file and ensure all dependencies have compatible licenses"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "repo_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/everart",
+      "name": "EverArt",
+      "mcp_security": {
+        "overall_score": 2.4,
+        "overall_risk_level": "high",
+        "top_findings": [
+          "[input_validation] No standard input validation libraries detected",
+          "[input_validation] No input sanitization mechanisms detected",
+          "[input_validation] No type checking detected",
+          "[input_validation] No input length validation detected",
+          "[input_validation] No error handling for invalid input detected"
+        ],
+        "top_recommendations": [
+          "[input_validation] Implement JSON Schema, Pydantic, or another validation library",
+          "[input_validation] Implement input sanitization for all user-provided data",
+          "[input_validation] Implement type checking for function parameters and return values",
+          "[input_validation] Implement input length validation to prevent buffer overflows and DoS attacks",
+          "[input_validation] Implement proper error handling for invalid input"
+        ],
+        "detailed_results": {
+          "tool_poisoning": {
+            "score": 4,
+            "risk_level": "medium",
+            "findings": [
+              "No mechanism to verify tool sources or integrity",
+              "No tool isolation mechanisms detected"
+            ],
+            "recommendations": [
+              "Implement tool signature verification or hash checking",
+              "Implement sandboxing or containerization for tool execution"
+            ]
+          },
+          "input_validation": {
+            "score": 0,
+            "risk_level": "high",
+            "findings": [
+              "No standard input validation libraries detected",
+              "No input sanitization mechanisms detected",
+              "No type checking detected",
+              "No input length validation detected",
+              "No error handling for invalid input detected",
+              "No input format validation detected"
+            ],
+            "recommendations": [
+              "Implement JSON Schema, Pydantic, or another validation library",
+              "Implement input sanitization for all user-provided data",
+              "Implement type checking for function parameters and return values",
+              "Implement input length validation to prevent buffer overflows and DoS attacks",
+              "Implement proper error handling for invalid input",
+              "Implement format validation using regular expressions or other methods"
+            ]
+          },
+          "authentication": {
+            "score": 0,
+            "risk_level": "high",
+            "findings": [
+              "No standard authentication libraries detected",
+              "No evidence of HTTPS enforcement",
+              "No secure storage mechanisms detected",
+              "No CSRF protection detected",
+              "No session management detected",
+              "No multi-factor authentication support detected"
+            ],
+            "recommendations": [
+              "Implement JWT, OAuth, or another standard authentication mechanism",
+              "Enforce HTTPS for all connections",
+              "Use proper hashing and encryption for sensitive data",
+              "Implement CSRF protection",
+              "Implement secure session management",
+              "Consider implementing MFA for sensitive operations"
+            ]
+          },
+          "data_exfiltration": {
+            "score": 5,
+            "risk_level": "medium",
+            "findings": [
+              "No evidence of data minimization or sanitization before processing",
+              "No detection or notification mechanisms for suspicious activities"
+            ],
+            "recommendations": [
+              "Implement data minimization to reduce sensitive data exposure",
+              "Implement monitoring and alerting for suspicious data access patterns"
+            ]
+          },
+          "dependency_security": {
+            "score": 3,
+            "risk_level": "medium",
+            "findings": [
+              "No dependency lock files found",
+              "No dependency scanning tools detected",
+              "No license file found"
+            ],
+            "recommendations": [
+              "Use lock files to pin dependency versions",
+              "Implement Dependabot, Snyk, or another dependency scanning tool",
+              "Add a license file and ensure all dependencies have compatible licenses"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "repo_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/everything",
+      "name": "Everything",
+      "mcp_security": {
+        "overall_score": 2.4,
+        "overall_risk_level": "high",
+        "top_findings": [
+          "[input_validation] No standard input validation libraries detected",
+          "[input_validation] No input sanitization mechanisms detected",
+          "[input_validation] No type checking detected",
+          "[input_validation] No input length validation detected",
+          "[input_validation] No error handling for invalid input detected"
+        ],
+        "top_recommendations": [
+          "[input_validation] Implement JSON Schema, Pydantic, or another validation library",
+          "[input_validation] Implement input sanitization for all user-provided data",
+          "[input_validation] Implement type checking for function parameters and return values",
+          "[input_validation] Implement input length validation to prevent buffer overflows and DoS attacks",
+          "[input_validation] Implement proper error handling for invalid input"
+        ],
+        "detailed_results": {
+          "tool_poisoning": {
+            "score": 4,
+            "risk_level": "medium",
+            "findings": [
+              "No mechanism to verify tool sources or integrity",
+              "No tool isolation mechanisms detected"
+            ],
+            "recommendations": [
+              "Implement tool signature verification or hash checking",
+              "Implement sandboxing or containerization for tool execution"
+            ]
+          },
+          "input_validation": {
+            "score": 0,
+            "risk_level": "high",
+            "findings": [
+              "No standard input validation libraries detected",
+              "No input sanitization mechanisms detected",
+              "No type checking detected",
+              "No input length validation detected",
+              "No error handling for invalid input detected",
+              "No input format validation detected"
+            ],
+            "recommendations": [
+              "Implement JSON Schema, Pydantic, or another validation library",
+              "Implement input sanitization for all user-provided data",
+              "Implement type checking for function parameters and return values",
+              "Implement input length validation to prevent buffer overflows and DoS attacks",
+              "Implement proper error handling for invalid input",
+              "Implement format validation using regular expressions or other methods"
+            ]
+          },
+          "authentication": {
+            "score": 0,
+            "risk_level": "high",
+            "findings": [
+              "No standard authentication libraries detected",
+              "No evidence of HTTPS enforcement",
+              "No secure storage mechanisms detected",
+              "No CSRF protection detected",
+              "No session management detected",
+              "No multi-factor authentication support detected"
+            ],
+            "recommendations": [
+              "Implement JWT, OAuth, or another standard authentication mechanism",
+              "Enforce HTTPS for all connections",
+              "Use proper hashing and encryption for sensitive data",
+              "Implement CSRF protection",
+              "Implement secure session management",
+              "Consider implementing MFA for sensitive operations"
+            ]
+          },
+          "data_exfiltration": {
+            "score": 5,
+            "risk_level": "medium",
+            "findings": [
+              "No evidence of data minimization or sanitization before processing",
+              "No detection or notification mechanisms for suspicious activities"
+            ],
+            "recommendations": [
+              "Implement data minimization to reduce sensitive data exposure",
+              "Implement monitoring and alerting for suspicious data access patterns"
+            ]
+          },
+          "dependency_security": {
+            "score": 3,
+            "risk_level": "medium",
+            "findings": [
+              "No dependency lock files found",
+              "No dependency scanning tools detected",
+              "No license file found"
+            ],
+            "recommendations": [
+              "Use lock files to pin dependency versions",
+              "Implement Dependabot, Snyk, or another dependency scanning tool",
+              "Add a license file and ensure all dependencies have compatible licenses"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "repo_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/fetch",
+      "name": "Fetch",
+      "mcp_security": {
+        "overall_score": 2.4,
+        "overall_risk_level": "high",
+        "top_findings": [
+          "[input_validation] No standard input validation libraries detected",
+          "[input_validation] No input sanitization mechanisms detected",
+          "[input_validation] No type checking detected",
+          "[input_validation] No input length validation detected",
+          "[input_validation] No error handling for invalid input detected"
+        ],
+        "top_recommendations": [
+          "[input_validation] Implement JSON Schema, Pydantic, or another validation library",
+          "[input_validation] Implement input sanitization for all user-provided data",
+          "[input_validation] Implement type checking for function parameters and return values",
+          "[input_validation] Implement input length validation to prevent buffer overflows and DoS attacks",
+          "[input_validation] Implement proper error handling for invalid input"
+        ],
+        "detailed_results": {
+          "tool_poisoning": {
+            "score": 4,
+            "risk_level": "medium",
+            "findings": [
+              "No mechanism to verify tool sources or integrity",
+              "No tool isolation mechanisms detected"
+            ],
+            "recommendations": [
+              "Implement tool signature verification or hash checking",
+              "Implement sandboxing or containerization for tool execution"
+            ]
+          },
+          "input_validation": {
+            "score": 0,
+            "risk_level": "high",
+            "findings": [
+              "No standard input validation libraries detected",
+              "No input sanitization mechanisms detected",
+              "No type checking detected",
+              "No input length validation detected",
+              "No error handling for invalid input detected",
+              "No input format validation detected"
+            ],
+            "recommendations": [
+              "Implement JSON Schema, Pydantic, or another validation library",
+              "Implement input sanitization for all user-provided data",
+              "Implement type checking for function parameters and return values",
+              "Implement input length validation to prevent buffer overflows and DoS attacks",
+              "Implement proper error handling for invalid input",
+              "Implement format validation using regular expressions or other methods"
+            ]
+          },
+          "authentication": {
+            "score": 0,
+            "risk_level": "high",
+            "findings": [
+              "No standard authentication libraries detected",
+              "No evidence of HTTPS enforcement",
+              "No secure storage mechanisms detected",
+              "No CSRF protection detected",
+              "No session management detected",
+              "No multi-factor authentication support detected"
+            ],
+            "recommendations": [
+              "Implement JWT, OAuth, or another standard authentication mechanism",
+              "Enforce HTTPS for all connections",
+              "Use proper hashing and encryption for sensitive data",
+              "Implement CSRF protection",
+              "Implement secure session management",
+              "Consider implementing MFA for sensitive operations"
+            ]
+          },
+          "data_exfiltration": {
+            "score": 5,
+            "risk_level": "medium",
+            "findings": [
+              "No evidence of data minimization or sanitization before processing",
+              "No detection or notification mechanisms for suspicious activities"
+            ],
+            "recommendations": [
+              "Implement data minimization to reduce sensitive data exposure",
+              "Implement monitoring and alerting for suspicious data access patterns"
+            ]
+          },
+          "dependency_security": {
+            "score": 3,
+            "risk_level": "medium",
+            "findings": [
+              "No dependency lock files found",
+              "No dependency scanning tools detected",
+              "No license file found"
+            ],
+            "recommendations": [
+              "Use lock files to pin dependency versions",
+              "Implement Dependabot, Snyk, or another dependency scanning tool",
+              "Add a license file and ensure all dependencies have compatible licenses"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "repo_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem",
+      "name": "Filesystem",
+      "mcp_security": {
+        "overall_score": 2.4,
+        "overall_risk_level": "high",
+        "top_findings": [
+          "[input_validation] No standard input validation libraries detected",
+          "[input_validation] No input sanitization mechanisms detected",
+          "[input_validation] No type checking detected",
+          "[input_validation] No input length validation detected",
+          "[input_validation] No error handling for invalid input detected"
+        ],
+        "top_recommendations": [
+          "[input_validation] Implement JSON Schema, Pydantic, or another validation library",
+          "[input_validation] Implement input sanitization for all user-provided data",
+          "[input_validation] Implement type checking for function parameters and return values",
+          "[input_validation] Implement input length validation to prevent buffer overflows and DoS attacks",
+          "[input_validation] Implement proper error handling for invalid input"
+        ],
+        "detailed_results": {
+          "tool_poisoning": {
+            "score": 4,
+            "risk_level": "medium",
+            "findings": [
+              "No mechanism to verify tool sources or integrity",
+              "No tool isolation mechanisms detected"
+            ],
+            "recommendations": [
+              "Implement tool signature verification or hash checking",
+              "Implement sandboxing or containerization for tool execution"
+            ]
+          },
+          "input_validation": {
+            "score": 0,
+            "risk_level": "high",
+            "findings": [
+              "No standard input validation libraries detected",
+              "No input sanitization mechanisms detected",
+              "No type checking detected",
+              "No input length validation detected",
+              "No error handling for invalid input detected",
+              "No input format validation detected"
+            ],
+            "recommendations": [
+              "Implement JSON Schema, Pydantic, or another validation library",
+              "Implement input sanitization for all user-provided data",
+              "Implement type checking for function parameters and return values",
+              "Implement input length validation to prevent buffer overflows and DoS attacks",
+              "Implement proper error handling for invalid input",
+              "Implement format validation using regular expressions or other methods"
+            ]
+          },
+          "authentication": {
+            "score": 0,
+            "risk_level": "high",
+            "findings": [
+              "No standard authentication libraries detected",
+              "No evidence of HTTPS enforcement",
+              "No secure storage mechanisms detected",
+              "No CSRF protection detected",
+              "No session management detected",
+              "No multi-factor authentication support detected"
+            ],
+            "recommendations": [
+              "Implement JWT, OAuth, or another standard authentication mechanism",
+              "Enforce HTTPS for all connections",
+              "Use proper hashing and encryption for sensitive data",
+              "Implement CSRF protection",
+              "Implement secure session management",
+              "Consider implementing MFA for sensitive operations"
+            ]
+          },
+          "data_exfiltration": {
+            "score": 5,
+            "risk_level": "medium",
+            "findings": [
+              "No evidence of data minimization or sanitization before processing",
+              "No detection or notification mechanisms for suspicious activities"
+            ],
+            "recommendations": [
+              "Implement data minimization to reduce sensitive data exposure",
+              "Implement monitoring and alerting for suspicious data access patterns"
+            ]
+          },
+          "dependency_security": {
+            "score": 3,
+            "risk_level": "medium",
+            "findings": [
+              "No dependency lock files found",
+              "No dependency scanning tools detected",
+              "No license file found"
+            ],
+            "recommendations": [
+              "Use lock files to pin dependency versions",
+              "Implement Dependabot, Snyk, or another dependency scanning tool",
+              "Add a license file and ensure all dependencies have compatible licenses"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "repo_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/git",
+      "name": "Git",
+      "mcp_security": {
+        "overall_score": 2.4,
+        "overall_risk_level": "high",
+        "top_findings": [
+          "[input_validation] No standard input validation libraries detected",
+          "[input_validation] No input sanitization mechanisms detected",
+          "[input_validation] No type checking detected",
+          "[input_validation] No input length validation detected",
+          "[input_validation] No error handling for invalid input detected"
+        ],
+        "top_recommendations": [
+          "[input_validation] Implement JSON Schema, Pydantic, or another validation library",
+          "[input_validation] Implement input sanitization for all user-provided data",
+          "[input_validation] Implement type checking for function parameters and return values",
+          "[input_validation] Implement input length validation to prevent buffer overflows and DoS attacks",
+          "[input_validation] Implement proper error handling for invalid input"
+        ],
+        "detailed_results": {
+          "tool_poisoning": {
+            "score": 4,
+            "risk_level": "medium",
+            "findings": [
+              "No mechanism to verify tool sources or integrity",
+              "No tool isolation mechanisms detected"
+            ],
+            "recommendations": [
+              "Implement tool signature verification or hash checking",
+              "Implement sandboxing or containerization for tool execution"
+            ]
+          },
+          "input_validation": {
+            "score": 0,
+            "risk_level": "high",
+            "findings": [
+              "No standard input validation libraries detected",
+              "No input sanitization mechanisms detected",
+              "No type checking detected",
+              "No input length validation detected",
+              "No error handling for invalid input detected",
+              "No input format validation detected"
+            ],
+            "recommendations": [
+              "Implement JSON Schema, Pydantic, or another validation library",
+              "Implement input sanitization for all user-provided data",
+              "Implement type checking for function parameters and return values",
+              "Implement input length validation to prevent buffer overflows and DoS attacks",
+              "Implement proper error handling for invalid input",
+              "Implement format validation using regular expressions or other methods"
+            ]
+          },
+          "authentication": {
+            "score": 0,
+            "risk_level": "high",
+            "findings": [
+              "No standard authentication libraries detected",
+              "No evidence of HTTPS enforcement",
+              "No secure storage mechanisms detected",
+              "No CSRF protection detected",
+              "No session management detected",
+              "No multi-factor authentication support detected"
+            ],
+            "recommendations": [
+              "Implement JWT, OAuth, or another standard authentication mechanism",
+              "Enforce HTTPS for all connections",
+              "Use proper hashing and encryption for sensitive data",
+              "Implement CSRF protection",
+              "Implement secure session management",
+              "Consider implementing MFA for sensitive operations"
+            ]
+          },
+          "data_exfiltration": {
+            "score": 5,
+            "risk_level": "medium",
+            "findings": [
+              "No evidence of data minimization or sanitization before processing",
+              "No detection or notification mechanisms for suspicious activities"
+            ],
+            "recommendations": [
+              "Implement data minimization to reduce sensitive data exposure",
+              "Implement monitoring and alerting for suspicious data access patterns"
+            ]
+          },
+          "dependency_security": {
+            "score": 3,
+            "risk_level": "medium",
+            "findings": [
+              "No dependency lock files found",
+              "No dependency scanning tools detected",
+              "No license file found"
+            ],
+            "recommendations": [
+              "Use lock files to pin dependency versions",
+              "Implement Dependabot, Snyk, or another dependency scanning tool",
+              "Add a license file and ensure all dependencies have compatible licenses"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "repo_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/github",
+      "name": "GitHub",
+      "mcp_security": {
+        "overall_score": 2.4,
+        "overall_risk_level": "high",
+        "top_findings": [
+          "[input_validation] No standard input validation libraries detected",
+          "[input_validation] No input sanitization mechanisms detected",
+          "[input_validation] No type checking detected",
+          "[input_validation] No input length validation detected",
+          "[input_validation] No error handling for invalid input detected"
+        ],
+        "top_recommendations": [
+          "[input_validation] Implement JSON Schema, Pydantic, or another validation library",
+          "[input_validation] Implement input sanitization for all user-provided data",
+          "[input_validation] Implement type checking for function parameters and return values",
+          "[input_validation] Implement input length validation to prevent buffer overflows and DoS attacks",
+          "[input_validation] Implement proper error handling for invalid input"
+        ],
+        "detailed_results": {
+          "tool_poisoning": {
+            "score": 4,
+            "risk_level": "medium",
+            "findings": [
+              "No mechanism to verify tool sources or integrity",
+              "No tool isolation mechanisms detected"
+            ],
+            "recommendations": [
+              "Implement tool signature verification or hash checking",
+              "Implement sandboxing or containerization for tool execution"
+            ]
+          },
+          "input_validation": {
+            "score": 0,
+            "risk_level": "high",
+            "findings": [
+              "No standard input validation libraries detected",
+              "No input sanitization mechanisms detected",
+              "No type checking detected",
+              "No input length validation detected",
+              "No error handling for invalid input detected",
+              "No input format validation detected"
+            ],
+            "recommendations": [
+              "Implement JSON Schema, Pydantic, or another validation library",
+              "Implement input sanitization for all user-provided data",
+              "Implement type checking for function parameters and return values",
+              "Implement input length validation to prevent buffer overflows and DoS attacks",
+              "Implement proper error handling for invalid input",
+              "Implement format validation using regular expressions or other methods"
+            ]
+          },
+          "authentication": {
+            "score": 0,
+            "risk_level": "high",
+            "findings": [
+              "No standard authentication libraries detected",
+              "No evidence of HTTPS enforcement",
+              "No secure storage mechanisms detected",
+              "No CSRF protection detected",
+              "No session management detected",
+              "No multi-factor authentication support detected"
+            ],
+            "recommendations": [
+              "Implement JWT, OAuth, or another standard authentication mechanism",
+              "Enforce HTTPS for all connections",
+              "Use proper hashing and encryption for sensitive data",
+              "Implement CSRF protection",
+              "Implement secure session management",
+              "Consider implementing MFA for sensitive operations"
+            ]
+          },
+          "data_exfiltration": {
+            "score": 5,
+            "risk_level": "medium",
+            "findings": [
+              "No evidence of data minimization or sanitization before processing",
+              "No detection or notification mechanisms for suspicious activities"
+            ],
+            "recommendations": [
+              "Implement data minimization to reduce sensitive data exposure",
+              "Implement monitoring and alerting for suspicious data access patterns"
+            ]
+          },
+          "dependency_security": {
+            "score": 3,
+            "risk_level": "medium",
+            "findings": [
+              "No dependency lock files found",
+              "No dependency scanning tools detected",
+              "No license file found"
+            ],
+            "recommendations": [
+              "Use lock files to pin dependency versions",
+              "Implement Dependabot, Snyk, or another dependency scanning tool",
+              "Add a license file and ensure all dependencies have compatible licenses"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "repo_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/gitlab",
+      "name": "GitLab",
+      "mcp_security": {
+        "overall_score": 2.4,
+        "overall_risk_level": "high",
+        "top_findings": [
+          "[input_validation] No standard input validation libraries detected",
+          "[input_validation] No input sanitization mechanisms detected",
+          "[input_validation] No type checking detected",
+          "[input_validation] No input length validation detected",
+          "[input_validation] No error handling for invalid input detected"
+        ],
+        "top_recommendations": [
+          "[input_validation] Implement JSON Schema, Pydantic, or another validation library",
+          "[input_validation] Implement input sanitization for all user-provided data",
+          "[input_validation] Implement type checking for function parameters and return values",
+          "[input_validation] Implement input length validation to prevent buffer overflows and DoS attacks",
+          "[input_validation] Implement proper error handling for invalid input"
+        ],
+        "detailed_results": {
+          "tool_poisoning": {
+            "score": 4,
+            "risk_level": "medium",
+            "findings": [
+              "No mechanism to verify tool sources or integrity",
+              "No tool isolation mechanisms detected"
+            ],
+            "recommendations": [
+              "Implement tool signature verification or hash checking",
+              "Implement sandboxing or containerization for tool execution"
+            ]
+          },
+          "input_validation": {
+            "score": 0,
+            "risk_level": "high",
+            "findings": [
+              "No standard input validation libraries detected",
+              "No input sanitization mechanisms detected",
+              "No type checking detected",
+              "No input length validation detected",
+              "No error handling for invalid input detected",
+              "No input format validation detected"
+            ],
+            "recommendations": [
+              "Implement JSON Schema, Pydantic, or another validation library",
+              "Implement input sanitization for all user-provided data",
+              "Implement type checking for function parameters and return values",
+              "Implement input length validation to prevent buffer overflows and DoS attacks",
+              "Implement proper error handling for invalid input",
+              "Implement format validation using regular expressions or other methods"
+            ]
+          },
+          "authentication": {
+            "score": 0,
+            "risk_level": "high",
+            "findings": [
+              "No standard authentication libraries detected",
+              "No evidence of HTTPS enforcement",
+              "No secure storage mechanisms detected",
+              "No CSRF protection detected",
+              "No session management detected",
+              "No multi-factor authentication support detected"
+            ],
+            "recommendations": [
+              "Implement JWT, OAuth, or another standard authentication mechanism",
+              "Enforce HTTPS for all connections",
+              "Use proper hashing and encryption for sensitive data",
+              "Implement CSRF protection",
+              "Implement secure session management",
+              "Consider implementing MFA for sensitive operations"
+            ]
+          },
+          "data_exfiltration": {
+            "score": 5,
+            "risk_level": "medium",
+            "findings": [
+              "No evidence of data minimization or sanitization before processing",
+              "No detection or notification mechanisms for suspicious activities"
+            ],
+            "recommendations": [
+              "Implement data minimization to reduce sensitive data exposure",
+              "Implement monitoring and alerting for suspicious data access patterns"
+            ]
+          },
+          "dependency_security": {
+            "score": 3,
+            "risk_level": "medium",
+            "findings": [
+              "No dependency lock files found",
+              "No dependency scanning tools detected",
+              "No license file found"
+            ],
+            "recommendations": [
+              "Use lock files to pin dependency versions",
+              "Implement Dependabot, Snyk, or another dependency scanning tool",
+              "Add a license file and ensure all dependencies have compatible licenses"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "repo_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/gdrive",
+      "name": "Google Drive",
+      "mcp_security": {
+        "overall_score": 2.4,
+        "overall_risk_level": "high",
+        "top_findings": [
+          "[input_validation] No standard input validation libraries detected",
+          "[input_validation] No input sanitization mechanisms detected",
+          "[input_validation] No type checking detected",
+          "[input_validation] No input length validation detected",
+          "[input_validation] No error handling for invalid input detected"
+        ],
+        "top_recommendations": [
+          "[input_validation] Implement JSON Schema, Pydantic, or another validation library",
+          "[input_validation] Implement input sanitization for all user-provided data",
+          "[input_validation] Implement type checking for function parameters and return values",
+          "[input_validation] Implement input length validation to prevent buffer overflows and DoS attacks",
+          "[input_validation] Implement proper error handling for invalid input"
+        ],
+        "detailed_results": {
+          "tool_poisoning": {
+            "score": 4,
+            "risk_level": "medium",
+            "findings": [
+              "No mechanism to verify tool sources or integrity",
+              "No tool isolation mechanisms detected"
+            ],
+            "recommendations": [
+              "Implement tool signature verification or hash checking",
+              "Implement sandboxing or containerization for tool execution"
+            ]
+          },
+          "input_validation": {
+            "score": 0,
+            "risk_level": "high",
+            "findings": [
+              "No standard input validation libraries detected",
+              "No input sanitization mechanisms detected",
+              "No type checking detected",
+              "No input length validation detected",
+              "No error handling for invalid input detected",
+              "No input format validation detected"
+            ],
+            "recommendations": [
+              "Implement JSON Schema, Pydantic, or another validation library",
+              "Implement input sanitization for all user-provided data",
+              "Implement type checking for function parameters and return values",
+              "Implement input length validation to prevent buffer overflows and DoS attacks",
+              "Implement proper error handling for invalid input",
+              "Implement format validation using regular expressions or other methods"
+            ]
+          },
+          "authentication": {
+            "score": 0,
+            "risk_level": "high",
+            "findings": [
+              "No standard authentication libraries detected",
+              "No evidence of HTTPS enforcement",
+              "No secure storage mechanisms detected",
+              "No CSRF protection detected",
+              "No session management detected",
+              "No multi-factor authentication support detected"
+            ],
+            "recommendations": [
+              "Implement JWT, OAuth, or another standard authentication mechanism",
+              "Enforce HTTPS for all connections",
+              "Use proper hashing and encryption for sensitive data",
+              "Implement CSRF protection",
+              "Implement secure session management",
+              "Consider implementing MFA for sensitive operations"
+            ]
+          },
+          "data_exfiltration": {
+            "score": 5,
+            "risk_level": "medium",
+            "findings": [
+              "No evidence of data minimization or sanitization before processing",
+              "No detection or notification mechanisms for suspicious activities"
+            ],
+            "recommendations": [
+              "Implement data minimization to reduce sensitive data exposure",
+              "Implement monitoring and alerting for suspicious data access patterns"
+            ]
+          },
+          "dependency_security": {
+            "score": 3,
+            "risk_level": "medium",
+            "findings": [
+              "No dependency lock files found",
+              "No dependency scanning tools detected",
+              "No license file found"
+            ],
+            "recommendations": [
+              "Use lock files to pin dependency versions",
+              "Implement Dependabot, Snyk, or another dependency scanning tool",
+              "Add a license file and ensure all dependencies have compatible licenses"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "repo_url": "https://github.com/21st-dev/magic-mcp",
+      "name": "21st.dev Magic",
+      "mcp_security": {
+        "overall_score": 2.4,
+        "overall_risk_level": "high",
+        "top_findings": [
+          "[input_validation] No standard input validation libraries detected",
+          "[input_validation] No input sanitization mechanisms detected",
+          "[input_validation] No type checking detected",
+          "[input_validation] No input length validation detected",
+          "[input_validation] No error handling for invalid input detected"
+        ],
+        "top_recommendations": [
+          "[input_validation] Implement JSON Schema, Pydantic, or another validation library",
+          "[input_validation] Implement input sanitization for all user-provided data",
+          "[input_validation] Implement type checking for function parameters and return values",
+          "[input_validation] Implement input length validation to prevent buffer overflows and DoS attacks",
+          "[input_validation] Implement proper error handling for invalid input"
+        ],
+        "detailed_results": {
+          "tool_poisoning": {
+            "score": 4,
+            "risk_level": "medium",
+            "findings": [
+              "No mechanism to verify tool sources or integrity",
+              "No tool isolation mechanisms detected"
+            ],
+            "recommendations": [
+              "Implement tool signature verification or hash checking",
+              "Implement sandboxing or containerization for tool execution"
+            ]
+          },
+          "input_validation": {
+            "score": 0,
+            "risk_level": "high",
+            "findings": [
+              "No standard input validation libraries detected",
+              "No input sanitization mechanisms detected",
+              "No type checking detected",
+              "No input length validation detected",
+              "No error handling for invalid input detected",
+              "No input format validation detected"
+            ],
+            "recommendations": [
+              "Implement JSON Schema, Pydantic, or another validation library",
+              "Implement input sanitization for all user-provided data",
+              "Implement type checking for function parameters and return values",
+              "Implement input length validation to prevent buffer overflows and DoS attacks",
+              "Implement proper error handling for invalid input",
+              "Implement format validation using regular expressions or other methods"
+            ]
+          },
+          "authentication": {
+            "score": 0,
+            "risk_level": "high",
+            "findings": [
+              "No standard authentication libraries detected",
+              "No evidence of HTTPS enforcement",
+              "No secure storage mechanisms detected",
+              "No CSRF protection detected",
+              "No session management detected",
+              "No multi-factor authentication support detected"
+            ],
+            "recommendations": [
+              "Implement JWT, OAuth, or another standard authentication mechanism",
+              "Enforce HTTPS for all connections",
+              "Use proper hashing and encryption for sensitive data",
+              "Implement CSRF protection",
+              "Implement secure session management",
+              "Consider implementing MFA for sensitive operations"
+            ]
+          },
+          "data_exfiltration": {
+            "score": 5,
+            "risk_level": "medium",
+            "findings": [
+              "No evidence of data minimization or sanitization before processing",
+              "No detection or notification mechanisms for suspicious activities"
+            ],
+            "recommendations": [
+              "Implement data minimization to reduce sensitive data exposure",
+              "Implement monitoring and alerting for suspicious data access patterns"
+            ]
+          },
+          "dependency_security": {
+            "score": 3,
+            "risk_level": "medium",
+            "findings": [
+              "No dependency lock files found",
+              "No dependency scanning tools detected",
+              "No license file found"
+            ],
+            "recommendations": [
+              "Use lock files to pin dependency versions",
+              "Implement Dependabot, Snyk, or another dependency scanning tool",
+              "Add a license file and ensure all dependencies have compatible licenses"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "repo_url": "https://github.com/Adfin-Engineering/mcp-server-adfin",
+      "name": "Adfin",
+      "mcp_security": {
+        "overall_score": 2.4,
+        "overall_risk_level": "high",
+        "top_findings": [
+          "[input_validation] No standard input validation libraries detected",
+          "[input_validation] No input sanitization mechanisms detected",
+          "[input_validation] No type checking detected",
+          "[input_validation] No input length validation detected",
+          "[input_validation] No error handling for invalid input detected"
+        ],
+        "top_recommendations": [
+          "[input_validation] Implement JSON Schema, Pydantic, or another validation library",
+          "[input_validation] Implement input sanitization for all user-provided data",
+          "[input_validation] Implement type checking for function parameters and return values",
+          "[input_validation] Implement input length validation to prevent buffer overflows and DoS attacks",
+          "[input_validation] Implement proper error handling for invalid input"
+        ],
+        "detailed_results": {
+          "tool_poisoning": {
+            "score": 4,
+            "risk_level": "medium",
+            "findings": [
+              "No mechanism to verify tool sources or integrity",
+              "No tool isolation mechanisms detected"
+            ],
+            "recommendations": [
+              "Implement tool signature verification or hash checking",
+              "Implement sandboxing or containerization for tool execution"
+            ]
+          },
+          "input_validation": {
+            "score": 0,
+            "risk_level": "high",
+            "findings": [
+              "No standard input validation libraries detected",
+              "No input sanitization mechanisms detected",
+              "No type checking detected",
+              "No input length validation detected",
+              "No error handling for invalid input detected",
+              "No input format validation detected"
+            ],
+            "recommendations": [
+              "Implement JSON Schema, Pydantic, or another validation library",
+              "Implement input sanitization for all user-provided data",
+              "Implement type checking for function parameters and return values",
+              "Implement input length validation to prevent buffer overflows and DoS attacks",
+              "Implement proper error handling for invalid input",
+              "Implement format validation using regular expressions or other methods"
+            ]
+          },
+          "authentication": {
+            "score": 0,
+            "risk_level": "high",
+            "findings": [
+              "No standard authentication libraries detected",
+              "No evidence of HTTPS enforcement",
+              "No secure storage mechanisms detected",
+              "No CSRF protection detected",
+              "No session management detected",
+              "No multi-factor authentication support detected"
+            ],
+            "recommendations": [
+              "Implement JWT, OAuth, or another standard authentication mechanism",
+              "Enforce HTTPS for all connections",
+              "Use proper hashing and encryption for sensitive data",
+              "Implement CSRF protection",
+              "Implement secure session management",
+              "Consider implementing MFA for sensitive operations"
+            ]
+          },
+          "data_exfiltration": {
+            "score": 5,
+            "risk_level": "medium",
+            "findings": [
+              "No evidence of data minimization or sanitization before processing",
+              "No detection or notification mechanisms for suspicious activities"
+            ],
+            "recommendations": [
+              "Implement data minimization to reduce sensitive data exposure",
+              "Implement monitoring and alerting for suspicious data access patterns"
+            ]
+          },
+          "dependency_security": {
+            "score": 3,
+            "risk_level": "medium",
+            "findings": [
+              "No dependency lock files found",
+              "No dependency scanning tools detected",
+              "No license file found"
+            ],
+            "recommendations": [
+              "Use lock files to pin dependency versions",
+              "Implement Dependabot, Snyk, or another dependency scanning tool",
+              "Add a license file and ensure all dependencies have compatible licenses"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "repo_url": "https://www.adfin.com/",
+      "name": "Adfin",
+      "mcp_security": {
+        "overall_score": 2.4,
+        "overall_risk_level": "high",
+        "top_findings": [
+          "[input_validation] No standard input validation libraries detected",
+          "[input_validation] No input sanitization mechanisms detected",
+          "[input_validation] No type checking detected",
+          "[input_validation] No input length validation detected",
+          "[input_validation] No error handling for invalid input detected"
+        ],
+        "top_recommendations": [
+          "[input_validation] Implement JSON Schema, Pydantic, or another validation library",
+          "[input_validation] Implement input sanitization for all user-provided data",
+          "[input_validation] Implement type checking for function parameters and return values",
+          "[input_validation] Implement input length validation to prevent buffer overflows and DoS attacks",
+          "[input_validation] Implement proper error handling for invalid input"
+        ],
+        "detailed_results": {
+          "tool_poisoning": {
+            "score": 4,
+            "risk_level": "medium",
+            "findings": [
+              "No mechanism to verify tool sources or integrity",
+              "No tool isolation mechanisms detected"
+            ],
+            "recommendations": [
+              "Implement tool signature verification or hash checking",
+              "Implement sandboxing or containerization for tool execution"
+            ]
+          },
+          "input_validation": {
+            "score": 0,
+            "risk_level": "high",
+            "findings": [
+              "No standard input validation libraries detected",
+              "No input sanitization mechanisms detected",
+              "No type checking detected",
+              "No input length validation detected",
+              "No error handling for invalid input detected",
+              "No input format validation detected"
+            ],
+            "recommendations": [
+              "Implement JSON Schema, Pydantic, or another validation library",
+              "Implement input sanitization for all user-provided data",
+              "Implement type checking for function parameters and return values",
+              "Implement input length validation to prevent buffer overflows and DoS attacks",
+              "Implement proper error handling for invalid input",
+              "Implement format validation using regular expressions or other methods"
+            ]
+          },
+          "authentication": {
+            "score": 0,
+            "risk_level": "high",
+            "findings": [
+              "No standard authentication libraries detected",
+              "No evidence of HTTPS enforcement",
+              "No secure storage mechanisms detected",
+              "No CSRF protection detected",
+              "No session management detected",
+              "No multi-factor authentication support detected"
+            ],
+            "recommendations": [
+              "Implement JWT, OAuth, or another standard authentication mechanism",
+              "Enforce HTTPS for all connections",
+              "Use proper hashing and encryption for sensitive data",
+              "Implement CSRF protection",
+              "Implement secure session management",
+              "Consider implementing MFA for sensitive operations"
+            ]
+          },
+          "data_exfiltration": {
+            "score": 5,
+            "risk_level": "medium",
+            "findings": [
+              "No evidence of data minimization or sanitization before processing",
+              "No detection or notification mechanisms for suspicious activities"
+            ],
+            "recommendations": [
+              "Implement data minimization to reduce sensitive data exposure",
+              "Implement monitoring and alerting for suspicious data access patterns"
+            ]
+          },
+          "dependency_security": {
+            "score": 3,
+            "risk_level": "medium",
+            "findings": [
+              "No dependency lock files found",
+              "No dependency scanning tools detected",
+              "No license file found"
+            ],
+            "recommendations": [
+              "Use lock files to pin dependency versions",
+              "Implement Dependabot, Snyk, or another dependency scanning tool",
+              "Add a license file and ensure all dependencies have compatible licenses"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "repo_url": "https://github.com/tinyfish-io/agentql-mcp",
+      "name": "AgentQL",
+      "mcp_security": {
+        "overall_score": 2.4,
+        "overall_risk_level": "high",
+        "top_findings": [
+          "[input_validation] No standard input validation libraries detected",
+          "[input_validation] No input sanitization mechanisms detected",
+          "[input_validation] No type checking detected",
+          "[input_validation] No input length validation detected",
+          "[input_validation] No error handling for invalid input detected"
+        ],
+        "top_recommendations": [
+          "[input_validation] Implement JSON Schema, Pydantic, or another validation library",
+          "[input_validation] Implement input sanitization for all user-provided data",
+          "[input_validation] Implement type checking for function parameters and return values",
+          "[input_validation] Implement input length validation to prevent buffer overflows and DoS attacks",
+          "[input_validation] Implement proper error handling for invalid input"
+        ],
+        "detailed_results": {
+          "tool_poisoning": {
+            "score": 4,
+            "risk_level": "medium",
+            "findings": [
+              "No mechanism to verify tool sources or integrity",
+              "No tool isolation mechanisms detected"
+            ],
+            "recommendations": [
+              "Implement tool signature verification or hash checking",
+              "Implement sandboxing or containerization for tool execution"
+            ]
+          },
+          "input_validation": {
+            "score": 0,
+            "risk_level": "high",
+            "findings": [
+              "No standard input validation libraries detected",
+              "No input sanitization mechanisms detected",
+              "No type checking detected",
+              "No input length validation detected",
+              "No error handling for invalid input detected",
+              "No input format validation detected"
+            ],
+            "recommendations": [
+              "Implement JSON Schema, Pydantic, or another validation library",
+              "Implement input sanitization for all user-provided data",
+              "Implement type checking for function parameters and return values",
+              "Implement input length validation to prevent buffer overflows and DoS attacks",
+              "Implement proper error handling for invalid input",
+              "Implement format validation using regular expressions or other methods"
+            ]
+          },
+          "authentication": {
+            "score": 0,
+            "risk_level": "high",
+            "findings": [
+              "No standard authentication libraries detected",
+              "No evidence of HTTPS enforcement",
+              "No secure storage mechanisms detected",
+              "No CSRF protection detected",
+              "No session management detected",
+              "No multi-factor authentication support detected"
+            ],
+            "recommendations": [
+              "Implement JWT, OAuth, or another standard authentication mechanism",
+              "Enforce HTTPS for all connections",
+              "Use proper hashing and encryption for sensitive data",
+              "Implement CSRF protection",
+              "Implement secure session management",
+              "Consider implementing MFA for sensitive operations"
+            ]
+          },
+          "data_exfiltration": {
+            "score": 5,
+            "risk_level": "medium",
+            "findings": [
+              "No evidence of data minimization or sanitization before processing",
+              "No detection or notification mechanisms for suspicious activities"
+            ],
+            "recommendations": [
+              "Implement data minimization to reduce sensitive data exposure",
+              "Implement monitoring and alerting for suspicious data access patterns"
+            ]
+          },
+          "dependency_security": {
+            "score": 3,
+            "risk_level": "medium",
+            "findings": [
+              "No dependency lock files found",
+              "No dependency scanning tools detected",
+              "No license file found"
+            ],
+            "recommendations": [
+              "Use lock files to pin dependency versions",
+              "Implement Dependabot, Snyk, or another dependency scanning tool",
+              "Add a license file and ensure all dependencies have compatible licenses"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "repo_url": "https://www.agentql.com/",
+      "name": "AgentQL",
+      "mcp_security": {
+        "overall_score": 2.4,
+        "overall_risk_level": "high",
+        "top_findings": [
+          "[input_validation] No standard input validation libraries detected",
+          "[input_validation] No input sanitization mechanisms detected",
+          "[input_validation] No type checking detected",
+          "[input_validation] No input length validation detected",
+          "[input_validation] No error handling for invalid input detected"
+        ],
+        "top_recommendations": [
+          "[input_validation] Implement JSON Schema, Pydantic, or another validation library",
+          "[input_validation] Implement input sanitization for all user-provided data",
+          "[input_validation] Implement type checking for function parameters and return values",
+          "[input_validation] Implement input length validation to prevent buffer overflows and DoS attacks",
+          "[input_validation] Implement proper error handling for invalid input"
+        ],
+        "detailed_results": {
+          "tool_poisoning": {
+            "score": 4,
+            "risk_level": "medium",
+            "findings": [
+              "No mechanism to verify tool sources or integrity",
+              "No tool isolation mechanisms detected"
+            ],
+            "recommendations": [
+              "Implement tool signature verification or hash checking",
+              "Implement sandboxing or containerization for tool execution"
+            ]
+          },
+          "input_validation": {
+            "score": 0,
+            "risk_level": "high",
+            "findings": [
+              "No standard input validation libraries detected",
+              "No input sanitization mechanisms detected",
+              "No type checking detected",
+              "No input length validation detected",
+              "No error handling for invalid input detected",
+              "No input format validation detected"
+            ],
+            "recommendations": [
+              "Implement JSON Schema, Pydantic, or another validation library",
+              "Implement input sanitization for all user-provided data",
+              "Implement type checking for function parameters and return values",
+              "Implement input length validation to prevent buffer overflows and DoS attacks",
+              "Implement proper error handling for invalid input",
+              "Implement format validation using regular expressions or other methods"
+            ]
+          },
+          "authentication": {
+            "score": 0,
+            "risk_level": "high",
+            "findings": [
+              "No standard authentication libraries detected",
+              "No evidence of HTTPS enforcement",
+              "No secure storage mechanisms detected",
+              "No CSRF protection detected",
+              "No session management detected",
+              "No multi-factor authentication support detected"
+            ],
+            "recommendations": [
+              "Implement JWT, OAuth, or another standard authentication mechanism",
+              "Enforce HTTPS for all connections",
+              "Use proper hashing and encryption for sensitive data",
+              "Implement CSRF protection",
+              "Implement secure session management",
+              "Consider implementing MFA for sensitive operations"
+            ]
+          },
+          "data_exfiltration": {
+            "score": 5,
+            "risk_level": "medium",
+            "findings": [
+              "No evidence of data minimization or sanitization before processing",
+              "No detection or notification mechanisms for suspicious activities"
+            ],
+            "recommendations": [
+              "Implement data minimization to reduce sensitive data exposure",
+              "Implement monitoring and alerting for suspicious data access patterns"
+            ]
+          },
+          "dependency_security": {
+            "score": 3,
+            "risk_level": "medium",
+            "findings": [
+              "No dependency lock files found",
+              "No dependency scanning tools detected",
+              "No license file found"
+            ],
+            "recommendations": [
+              "Use lock files to pin dependency versions",
+              "Implement Dependabot, Snyk, or another dependency scanning tool",
+              "Add a license file and ensure all dependencies have compatible licenses"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "repo_url": "https://github.com/agentrpc/agentrpc",
+      "name": "AgentRPC",
+      "mcp_security": {
+        "overall_score": 2.4,
+        "overall_risk_level": "high",
+        "top_findings": [
+          "[input_validation] No standard input validation libraries detected",
+          "[input_validation] No input sanitization mechanisms detected",
+          "[input_validation] No type checking detected",
+          "[input_validation] No input length validation detected",
+          "[input_validation] No error handling for invalid input detected"
+        ],
+        "top_recommendations": [
+          "[input_validation] Implement JSON Schema, Pydantic, or another validation library",
+          "[input_validation] Implement input sanitization for all user-provided data",
+          "[input_validation] Implement type checking for function parameters and return values",
+          "[input_validation] Implement input length validation to prevent buffer overflows and DoS attacks",
+          "[input_validation] Implement proper error handling for invalid input"
+        ],
+        "detailed_results": {
+          "tool_poisoning": {
+            "score": 4,
+            "risk_level": "medium",
+            "findings": [
+              "No mechanism to verify tool sources or integrity",
+              "No tool isolation mechanisms detected"
+            ],
+            "recommendations": [
+              "Implement tool signature verification or hash checking",
+              "Implement sandboxing or containerization for tool execution"
+            ]
+          },
+          "input_validation": {
+            "score": 0,
+            "risk_level": "high",
+            "findings": [
+              "No standard input validation libraries detected",
+              "No input sanitization mechanisms detected",
+              "No type checking detected",
+              "No input length validation detected",
+              "No error handling for invalid input detected",
+              "No input format validation detected"
+            ],
+            "recommendations": [
+              "Implement JSON Schema, Pydantic, or another validation library",
+              "Implement input sanitization for all user-provided data",
+              "Implement type checking for function parameters and return values",
+              "Implement input length validation to prevent buffer overflows and DoS attacks",
+              "Implement proper error handling for invalid input",
+              "Implement format validation using regular expressions or other methods"
+            ]
+          },
+          "authentication": {
+            "score": 0,
+            "risk_level": "high",
+            "findings": [
+              "No standard authentication libraries detected",
+              "No evidence of HTTPS enforcement",
+              "No secure storage mechanisms detected",
+              "No CSRF protection detected",
+              "No session management detected",
+              "No multi-factor authentication support detected"
+            ],
+            "recommendations": [
+              "Implement JWT, OAuth, or another standard authentication mechanism",
+              "Enforce HTTPS for all connections",
+              "Use proper hashing and encryption for sensitive data",
+              "Implement CSRF protection",
+              "Implement secure session management",
+              "Consider implementing MFA for sensitive operations"
+            ]
+          },
+          "data_exfiltration": {
+            "score": 5,
+            "risk_level": "medium",
+            "findings": [
+              "No evidence of data minimization or sanitization before processing",
+              "No detection or notification mechanisms for suspicious activities"
+            ],
+            "recommendations": [
+              "Implement data minimization to reduce sensitive data exposure",
+              "Implement monitoring and alerting for suspicious data access patterns"
+            ]
+          },
+          "dependency_security": {
+            "score": 3,
+            "risk_level": "medium",
+            "findings": [
+              "No dependency lock files found",
+              "No dependency scanning tools detected",
+              "No license file found"
+            ],
+            "recommendations": [
+              "Use lock files to pin dependency versions",
+              "Implement Dependabot, Snyk, or another dependency scanning tool",
+              "Add a license file and ensure all dependencies have compatible licenses"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "repo_url": "https://www.agentrpc.com/",
+      "name": "AgentRPC",
+      "mcp_security": {
+        "overall_score": 2.4,
+        "overall_risk_level": "high",
+        "top_findings": [
+          "[input_validation] No standard input validation libraries detected",
+          "[input_validation] No input sanitization mechanisms detected",
+          "[input_validation] No type checking detected",
+          "[input_validation] No input length validation detected",
+          "[input_validation] No error handling for invalid input detected"
+        ],
+        "top_recommendations": [
+          "[input_validation] Implement JSON Schema, Pydantic, or another validation library",
+          "[input_validation] Implement input sanitization for all user-provided data",
+          "[input_validation] Implement type checking for function parameters and return values",
+          "[input_validation] Implement input length validation to prevent buffer overflows and DoS attacks",
+          "[input_validation] Implement proper error handling for invalid input"
+        ],
+        "detailed_results": {
+          "tool_poisoning": {
+            "score": 4,
+            "risk_level": "medium",
+            "findings": [
+              "No mechanism to verify tool sources or integrity",
+              "No tool isolation mechanisms detected"
+            ],
+            "recommendations": [
+              "Implement tool signature verification or hash checking",
+              "Implement sandboxing or containerization for tool execution"
+            ]
+          },
+          "input_validation": {
+            "score": 0,
+            "risk_level": "high",
+            "findings": [
+              "No standard input validation libraries detected",
+              "No input sanitization mechanisms detected",
+              "No type checking detected",
+              "No input length validation detected",
+              "No error handling for invalid input detected",
+              "No input format validation detected"
+            ],
+            "recommendations": [
+              "Implement JSON Schema, Pydantic, or another validation library",
+              "Implement input sanitization for all user-provided data",
+              "Implement type checking for function parameters and return values",
+              "Implement input length validation to prevent buffer overflows and DoS attacks",
+              "Implement proper error handling for invalid input",
+              "Implement format validation using regular expressions or other methods"
+            ]
+          },
+          "authentication": {
+            "score": 0,
+            "risk_level": "high",
+            "findings": [
+              "No standard authentication libraries detected",
+              "No evidence of HTTPS enforcement",
+              "No secure storage mechanisms detected",
+              "No CSRF protection detected",
+              "No session management detected",
+              "No multi-factor authentication support detected"
+            ],
+            "recommendations": [
+              "Implement JWT, OAuth, or another standard authentication mechanism",
+              "Enforce HTTPS for all connections",
+              "Use proper hashing and encryption for sensitive data",
+              "Implement CSRF protection",
+              "Implement secure session management",
+              "Consider implementing MFA for sensitive operations"
+            ]
+          },
+          "data_exfiltration": {
+            "score": 5,
+            "risk_level": "medium",
+            "findings": [
+              "No evidence of data minimization or sanitization before processing",
+              "No detection or notification mechanisms for suspicious activities"
+            ],
+            "recommendations": [
+              "Implement data minimization to reduce sensitive data exposure",
+              "Implement monitoring and alerting for suspicious data access patterns"
+            ]
+          },
+          "dependency_security": {
+            "score": 3,
+            "risk_level": "medium",
+            "findings": [
+              "No dependency lock files found",
+              "No dependency scanning tools detected",
+              "No license file found"
+            ],
+            "recommendations": [
+              "Use lock files to pin dependency versions",
+              "Implement Dependabot, Snyk, or another dependency scanning tool",
+              "Add a license file and ensure all dependencies have compatible licenses"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "repo_url": "https://github.com/Aiven-Open/mcp-aiven",
+      "name": "Aiven",
+      "mcp_security": {
+        "overall_score": 2.4,
+        "overall_risk_level": "high",
+        "top_findings": [
+          "[input_validation] No standard input validation libraries detected",
+          "[input_validation] No input sanitization mechanisms detected",
+          "[input_validation] No type checking detected",
+          "[input_validation] No input length validation detected",
+          "[input_validation] No error handling for invalid input detected"
+        ],
+        "top_recommendations": [
+          "[input_validation] Implement JSON Schema, Pydantic, or another validation library",
+          "[input_validation] Implement input sanitization for all user-provided data",
+          "[input_validation] Implement type checking for function parameters and return values",
+          "[input_validation] Implement input length validation to prevent buffer overflows and DoS attacks",
+          "[input_validation] Implement proper error handling for invalid input"
+        ],
+        "detailed_results": {
+          "tool_poisoning": {
+            "score": 4,
+            "risk_level": "medium",
+            "findings": [
+              "No mechanism to verify tool sources or integrity",
+              "No tool isolation mechanisms detected"
+            ],
+            "recommendations": [
+              "Implement tool signature verification or hash checking",
+              "Implement sandboxing or containerization for tool execution"
+            ]
+          },
+          "input_validation": {
+            "score": 0,
+            "risk_level": "high",
+            "findings": [
+              "No standard input validation libraries detected",
+              "No input sanitization mechanisms detected",
+              "No type checking detected",
+              "No input length validation detected",
+              "No error handling for invalid input detected",
+              "No input format validation detected"
+            ],
+            "recommendations": [
+              "Implement JSON Schema, Pydantic, or another validation library",
+              "Implement input sanitization for all user-provided data",
+              "Implement type checking for function parameters and return values",
+              "Implement input length validation to prevent buffer overflows and DoS attacks",
+              "Implement proper error handling for invalid input",
+              "Implement format validation using regular expressions or other methods"
+            ]
+          },
+          "authentication": {
+            "score": 0,
+            "risk_level": "high",
+            "findings": [
+              "No standard authentication libraries detected",
+              "No evidence of HTTPS enforcement",
+              "No secure storage mechanisms detected",
+              "No CSRF protection detected",
+              "No session management detected",
+              "No multi-factor authentication support detected"
+            ],
+            "recommendations": [
+              "Implement JWT, OAuth, or another standard authentication mechanism",
+              "Enforce HTTPS for all connections",
+              "Use proper hashing and encryption for sensitive data",
+              "Implement CSRF protection",
+              "Implement secure session management",
+              "Consider implementing MFA for sensitive operations"
+            ]
+          },
+          "data_exfiltration": {
+            "score": 5,
+            "risk_level": "medium",
+            "findings": [
+              "No evidence of data minimization or sanitization before processing",
+              "No detection or notification mechanisms for suspicious activities"
+            ],
+            "recommendations": [
+              "Implement data minimization to reduce sensitive data exposure",
+              "Implement monitoring and alerting for suspicious data access patterns"
+            ]
+          },
+          "dependency_security": {
+            "score": 3,
+            "risk_level": "medium",
+            "findings": [
+              "No dependency lock files found",
+              "No dependency scanning tools detected",
+              "No license file found"
+            ],
+            "recommendations": [
+              "Use lock files to pin dependency versions",
+              "Implement Dependabot, Snyk, or another dependency scanning tool",
+              "Add a license file and ensure all dependencies have compatible licenses"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "repo_url": "https://go.aiven.io/mcp-server",
+      "name": "Aiven projects",
+      "mcp_security": {
+        "overall_score": 2.4,
+        "overall_risk_level": "high",
+        "top_findings": [
+          "[input_validation] No standard input validation libraries detected",
+          "[input_validation] No input sanitization mechanisms detected",
+          "[input_validation] No type checking detected",
+          "[input_validation] No input length validation detected",
+          "[input_validation] No error handling for invalid input detected"
+        ],
+        "top_recommendations": [
+          "[input_validation] Implement JSON Schema, Pydantic, or another validation library",
+          "[input_validation] Implement input sanitization for all user-provided data",
+          "[input_validation] Implement type checking for function parameters and return values",
+          "[input_validation] Implement input length validation to prevent buffer overflows and DoS attacks",
+          "[input_validation] Implement proper error handling for invalid input"
+        ],
+        "detailed_results": {
+          "tool_poisoning": {
+            "score": 4,
+            "risk_level": "medium",
+            "findings": [
+              "No mechanism to verify tool sources or integrity",
+              "No tool isolation mechanisms detected"
+            ],
+            "recommendations": [
+              "Implement tool signature verification or hash checking",
+              "Implement sandboxing or containerization for tool execution"
+            ]
+          },
+          "input_validation": {
+            "score": 0,
+            "risk_level": "high",
+            "findings": [
+              "No standard input validation libraries detected",
+              "No input sanitization mechanisms detected",
+              "No type checking detected",
+              "No input length validation detected",
+              "No error handling for invalid input detected",
+              "No input format validation detected"
+            ],
+            "recommendations": [
+              "Implement JSON Schema, Pydantic, or another validation library",
+              "Implement input sanitization for all user-provided data",
+              "Implement type checking for function parameters and return values",
+              "Implement input length validation to prevent buffer overflows and DoS attacks",
+              "Implement proper error handling for invalid input",
+              "Implement format validation using regular expressions or other methods"
+            ]
+          },
+          "authentication": {
+            "score": 0,
+            "risk_level": "high",
+            "findings": [
+              "No standard authentication libraries detected",
+              "No evidence of HTTPS enforcement",
+              "No secure storage mechanisms detected",
+              "No CSRF protection detected",
+              "No session management detected",
+              "No multi-factor authentication support detected"
+            ],
+            "recommendations": [
+              "Implement JWT, OAuth, or another standard authentication mechanism",
+              "Enforce HTTPS for all connections",
+              "Use proper hashing and encryption for sensitive data",
+              "Implement CSRF protection",
+              "Implement secure session management",
+              "Consider implementing MFA for sensitive operations"
+            ]
+          },
+          "data_exfiltration": {
+            "score": 5,
+            "risk_level": "medium",
+            "findings": [
+              "No evidence of data minimization or sanitization before processing",
+              "No detection or notification mechanisms for suspicious activities"
+            ],
+            "recommendations": [
+              "Implement data minimization to reduce sensitive data exposure",
+              "Implement monitoring and alerting for suspicious data access patterns"
+            ]
+          },
+          "dependency_security": {
+            "score": 3,
+            "risk_level": "medium",
+            "findings": [
+              "No dependency lock files found",
+              "No dependency scanning tools detected",
+              "No license file found"
+            ],
+            "recommendations": [
+              "Use lock files to pin dependency versions",
+              "Implement Dependabot, Snyk, or another dependency scanning tool",
+              "Add a license file and ensure all dependencies have compatible licenses"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "repo_url": "https://github.com/apify/actors-mcp-server",
+      "name": "Apify",
+      "mcp_security": {
+        "overall_score": 2.4,
+        "overall_risk_level": "high",
+        "top_findings": [
+          "[input_validation] No standard input validation libraries detected",
+          "[input_validation] No input sanitization mechanisms detected",
+          "[input_validation] No type checking detected",
+          "[input_validation] No input length validation detected",
+          "[input_validation] No error handling for invalid input detected"
+        ],
+        "top_recommendations": [
+          "[input_validation] Implement JSON Schema, Pydantic, or another validation library",
+          "[input_validation] Implement input sanitization for all user-provided data",
+          "[input_validation] Implement type checking for function parameters and return values",
+          "[input_validation] Implement input length validation to prevent buffer overflows and DoS attacks",
+          "[input_validation] Implement proper error handling for invalid input"
+        ],
+        "detailed_results": {
+          "tool_poisoning": {
+            "score": 4,
+            "risk_level": "medium",
+            "findings": [
+              "No mechanism to verify tool sources or integrity",
+              "No tool isolation mechanisms detected"
+            ],
+            "recommendations": [
+              "Implement tool signature verification or hash checking",
+              "Implement sandboxing or containerization for tool execution"
+            ]
+          },
+          "input_validation": {
+            "score": 0,
+            "risk_level": "high",
+            "findings": [
+              "No standard input validation libraries detected",
+              "No input sanitization mechanisms detected",
+              "No type checking detected",
+              "No input length validation detected",
+              "No error handling for invalid input detected",
+              "No input format validation detected"
+            ],
+            "recommendations": [
+              "Implement JSON Schema, Pydantic, or another validation library",
+              "Implement input sanitization for all user-provided data",
+              "Implement type checking for function parameters and return values",
+              "Implement input length validation to prevent buffer overflows and DoS attacks",
+              "Implement proper error handling for invalid input",
+              "Implement format validation using regular expressions or other methods"
+            ]
+          },
+          "authentication": {
+            "score": 0,
+            "risk_level": "high",
+            "findings": [
+              "No standard authentication libraries detected",
+              "No evidence of HTTPS enforcement",
+              "No secure storage mechanisms detected",
+              "No CSRF protection detected",
+              "No session management detected",
+              "No multi-factor authentication support detected"
+            ],
+            "recommendations": [
+              "Implement JWT, OAuth, or another standard authentication mechanism",
+              "Enforce HTTPS for all connections",
+              "Use proper hashing and encryption for sensitive data",
+              "Implement CSRF protection",
+              "Implement secure session management",
+              "Consider implementing MFA for sensitive operations"
+            ]
+          },
+          "data_exfiltration": {
+            "score": 5,
+            "risk_level": "medium",
+            "findings": [
+              "No evidence of data minimization or sanitization before processing",
+              "No detection or notification mechanisms for suspicious activities"
+            ],
+            "recommendations": [
+              "Implement data minimization to reduce sensitive data exposure",
+              "Implement monitoring and alerting for suspicious data access patterns"
+            ]
+          },
+          "dependency_security": {
+            "score": 3,
+            "risk_level": "medium",
+            "findings": [
+              "No dependency lock files found",
+              "No dependency scanning tools detected",
+              "No license file found"
+            ],
+            "recommendations": [
+              "Use lock files to pin dependency versions",
+              "Implement Dependabot, Snyk, or another dependency scanning tool",
+              "Add a license file and ensure all dependencies have compatible licenses"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "repo_url": "https://github.com/Simon-Kansara/ableton-live-mcp-server",
+      "name": "Ableton Live",
+      "mcp_security": {
+        "overall_score": 2.4,
+        "overall_risk_level": "high",
+        "top_findings": [
+          "[input_validation] No standard input validation libraries detected",
+          "[input_validation] No input sanitization mechanisms detected",
+          "[input_validation] No type checking detected",
+          "[input_validation] No input length validation detected",
+          "[input_validation] No error handling for invalid input detected"
+        ],
+        "top_recommendations": [
+          "[input_validation] Implement JSON Schema, Pydantic, or another validation library",
+          "[input_validation] Implement input sanitization for all user-provided data",
+          "[input_validation] Implement type checking for function parameters and return values",
+          "[input_validation] Implement input length validation to prevent buffer overflows and DoS attacks",
+          "[input_validation] Implement proper error handling for invalid input"
+        ],
+        "detailed_results": {
+          "tool_poisoning": {
+            "score": 4,
+            "risk_level": "medium",
+            "findings": [
+              "No mechanism to verify tool sources or integrity",
+              "No tool isolation mechanisms detected"
+            ],
+            "recommendations": [
+              "Implement tool signature verification or hash checking",
+              "Implement sandboxing or containerization for tool execution"
+            ]
+          },
+          "input_validation": {
+            "score": 0,
+            "risk_level": "high",
+            "findings": [
+              "No standard input validation libraries detected",
+              "No input sanitization mechanisms detected",
+              "No type checking detected",
+              "No input length validation detected",
+              "No error handling for invalid input detected",
+              "No input format validation detected"
+            ],
+            "recommendations": [
+              "Implement JSON Schema, Pydantic, or another validation library",
+              "Implement input sanitization for all user-provided data",
+              "Implement type checking for function parameters and return values",
+              "Implement input length validation to prevent buffer overflows and DoS attacks",
+              "Implement proper error handling for invalid input",
+              "Implement format validation using regular expressions or other methods"
+            ]
+          },
+          "authentication": {
+            "score": 0,
+            "risk_level": "high",
+            "findings": [
+              "No standard authentication libraries detected",
+              "No evidence of HTTPS enforcement",
+              "No secure storage mechanisms detected",
+              "No CSRF protection detected",
+              "No session management detected",
+              "No multi-factor authentication support detected"
+            ],
+            "recommendations": [
+              "Implement JWT, OAuth, or another standard authentication mechanism",
+              "Enforce HTTPS for all connections",
+              "Use proper hashing and encryption for sensitive data",
+              "Implement CSRF protection",
+              "Implement secure session management",
+              "Consider implementing MFA for sensitive operations"
+            ]
+          },
+          "data_exfiltration": {
+            "score": 5,
+            "risk_level": "medium",
+            "findings": [
+              "No evidence of data minimization or sanitization before processing",
+              "No detection or notification mechanisms for suspicious activities"
+            ],
+            "recommendations": [
+              "Implement data minimization to reduce sensitive data exposure",
+              "Implement monitoring and alerting for suspicious data access patterns"
+            ]
+          },
+          "dependency_security": {
+            "score": 3,
+            "risk_level": "medium",
+            "findings": [
+              "No dependency lock files found",
+              "No dependency scanning tools detected",
+              "No license file found"
+            ],
+            "recommendations": [
+              "Use lock files to pin dependency versions",
+              "Implement Dependabot, Snyk, or another dependency scanning tool",
+              "Add a license file and ensure all dependencies have compatible licenses"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "repo_url": "https://github.com/openbnb-org/mcp-server-airbnb",
+      "name": "Airbnb",
+      "mcp_security": {
+        "overall_score": 2.4,
+        "overall_risk_level": "high",
+        "top_findings": [
+          "[input_validation] No standard input validation libraries detected",
+          "[input_validation] No input sanitization mechanisms detected",
+          "[input_validation] No type checking detected",
+          "[input_validation] No input length validation detected",
+          "[input_validation] No error handling for invalid input detected"
+        ],
+        "top_recommendations": [
+          "[input_validation] Implement JSON Schema, Pydantic, or another validation library",
+          "[input_validation] Implement input sanitization for all user-provided data",
+          "[input_validation] Implement type checking for function parameters and return values",
+          "[input_validation] Implement input length validation to prevent buffer overflows and DoS attacks",
+          "[input_validation] Implement proper error handling for invalid input"
+        ],
+        "detailed_results": {
+          "tool_poisoning": {
+            "score": 4,
+            "risk_level": "medium",
+            "findings": [
+              "No mechanism to verify tool sources or integrity",
+              "No tool isolation mechanisms detected"
+            ],
+            "recommendations": [
+              "Implement tool signature verification or hash checking",
+              "Implement sandboxing or containerization for tool execution"
+            ]
+          },
+          "input_validation": {
+            "score": 0,
+            "risk_level": "high",
+            "findings": [
+              "No standard input validation libraries detected",
+              "No input sanitization mechanisms detected",
+              "No type checking detected",
+              "No input length validation detected",
+              "No error handling for invalid input detected",
+              "No input format validation detected"
+            ],
+            "recommendations": [
+              "Implement JSON Schema, Pydantic, or another validation library",
+              "Implement input sanitization for all user-provided data",
+              "Implement type checking for function parameters and return values",
+              "Implement input length validation to prevent buffer overflows and DoS attacks",
+              "Implement proper error handling for invalid input",
+              "Implement format validation using regular expressions or other methods"
+            ]
+          },
+          "authentication": {
+            "score": 0,
+            "risk_level": "high",
+            "findings": [
+              "No standard authentication libraries detected",
+              "No evidence of HTTPS enforcement",
+              "No secure storage mechanisms detected",
+              "No CSRF protection detected",
+              "No session management detected",
+              "No multi-factor authentication support detected"
+            ],
+            "recommendations": [
+              "Implement JWT, OAuth, or another standard authentication mechanism",
+              "Enforce HTTPS for all connections",
+              "Use proper hashing and encryption for sensitive data",
+              "Implement CSRF protection",
+              "Implement secure session management",
+              "Consider implementing MFA for sensitive operations"
+            ]
+          },
+          "data_exfiltration": {
+            "score": 5,
+            "risk_level": "medium",
+            "findings": [
+              "No evidence of data minimization or sanitization before processing",
+              "No detection or notification mechanisms for suspicious activities"
+            ],
+            "recommendations": [
+              "Implement data minimization to reduce sensitive data exposure",
+              "Implement monitoring and alerting for suspicious data access patterns"
+            ]
+          },
+          "dependency_security": {
+            "score": 3,
+            "risk_level": "medium",
+            "findings": [
+              "No dependency lock files found",
+              "No dependency scanning tools detected",
+              "No license file found"
+            ],
+            "recommendations": [
+              "Use lock files to pin dependency versions",
+              "Implement Dependabot, Snyk, or another dependency scanning tool",
+              "Add a license file and ensure all dependencies have compatible licenses"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "repo_url": "https://github.com/GoPlausible/algorand-mcp",
+      "name": "Algorand",
+      "mcp_security": {
+        "overall_score": 2.4,
+        "overall_risk_level": "high",
+        "top_findings": [
+          "[input_validation] No standard input validation libraries detected",
+          "[input_validation] No input sanitization mechanisms detected",
+          "[input_validation] No type checking detected",
+          "[input_validation] No input length validation detected",
+          "[input_validation] No error handling for invalid input detected"
+        ],
+        "top_recommendations": [
+          "[input_validation] Implement JSON Schema, Pydantic, or another validation library",
+          "[input_validation] Implement input sanitization for all user-provided data",
+          "[input_validation] Implement type checking for function parameters and return values",
+          "[input_validation] Implement input length validation to prevent buffer overflows and DoS attacks",
+          "[input_validation] Implement proper error handling for invalid input"
+        ],
+        "detailed_results": {
+          "tool_poisoning": {
+            "score": 4,
+            "risk_level": "medium",
+            "findings": [
+              "No mechanism to verify tool sources or integrity",
+              "No tool isolation mechanisms detected"
+            ],
+            "recommendations": [
+              "Implement tool signature verification or hash checking",
+              "Implement sandboxing or containerization for tool execution"
+            ]
+          },
+          "input_validation": {
+            "score": 0,
+            "risk_level": "high",
+            "findings": [
+              "No standard input validation libraries detected",
+              "No input sanitization mechanisms detected",
+              "No type checking detected",
+              "No input length validation detected",
+              "No error handling for invalid input detected",
+              "No input format validation detected"
+            ],
+            "recommendations": [
+              "Implement JSON Schema, Pydantic, or another validation library",
+              "Implement input sanitization for all user-provided data",
+              "Implement type checking for function parameters and return values",
+              "Implement input length validation to prevent buffer overflows and DoS attacks",
+              "Implement proper error handling for invalid input",
+              "Implement format validation using regular expressions or other methods"
+            ]
+          },
+          "authentication": {
+            "score": 0,
+            "risk_level": "high",
+            "findings": [
+              "No standard authentication libraries detected",
+              "No evidence of HTTPS enforcement",
+              "No secure storage mechanisms detected",
+              "No CSRF protection detected",
+              "No session management detected",
+              "No multi-factor authentication support detected"
+            ],
+            "recommendations": [
+              "Implement JWT, OAuth, or another standard authentication mechanism",
+              "Enforce HTTPS for all connections",
+              "Use proper hashing and encryption for sensitive data",
+              "Implement CSRF protection",
+              "Implement secure session management",
+              "Consider implementing MFA for sensitive operations"
+            ]
+          },
+          "data_exfiltration": {
+            "score": 5,
+            "risk_level": "medium",
+            "findings": [
+              "No evidence of data minimization or sanitization before processing",
+              "No detection or notification mechanisms for suspicious activities"
+            ],
+            "recommendations": [
+              "Implement data minimization to reduce sensitive data exposure",
+              "Implement monitoring and alerting for suspicious data access patterns"
+            ]
+          },
+          "dependency_security": {
+            "score": 3,
+            "risk_level": "medium",
+            "findings": [
+              "No dependency lock files found",
+              "No dependency scanning tools detected",
+              "No license file found"
+            ],
+            "recommendations": [
+              "Use lock files to pin dependency versions",
+              "Implement Dependabot, Snyk, or another dependency scanning tool",
+              "Add a license file and ensure all dependencies have compatible licenses"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "repo_url": "https://github.com/yangkyeongmo/mcp-server-apache-airflow",
+      "name": "Airflow",
+      "mcp_security": {
+        "overall_score": 2.4,
+        "overall_risk_level": "high",
+        "top_findings": [
+          "[input_validation] No standard input validation libraries detected",
+          "[input_validation] No input sanitization mechanisms detected",
+          "[input_validation] No type checking detected",
+          "[input_validation] No input length validation detected",
+          "[input_validation] No error handling for invalid input detected"
+        ],
+        "top_recommendations": [
+          "[input_validation] Implement JSON Schema, Pydantic, or another validation library",
+          "[input_validation] Implement input sanitization for all user-provided data",
+          "[input_validation] Implement type checking for function parameters and return values",
+          "[input_validation] Implement input length validation to prevent buffer overflows and DoS attacks",
+          "[input_validation] Implement proper error handling for invalid input"
+        ],
+        "detailed_results": {
+          "tool_poisoning": {
+            "score": 4,
+            "risk_level": "medium",
+            "findings": [
+              "No mechanism to verify tool sources or integrity",
+              "No tool isolation mechanisms detected"
+            ],
+            "recommendations": [
+              "Implement tool signature verification or hash checking",
+              "Implement sandboxing or containerization for tool execution"
+            ]
+          },
+          "input_validation": {
+            "score": 0,
+            "risk_level": "high",
+            "findings": [
+              "No standard input validation libraries detected",
+              "No input sanitization mechanisms detected",
+              "No type checking detected",
+              "No input length validation detected",
+              "No error handling for invalid input detected",
+              "No input format validation detected"
+            ],
+            "recommendations": [
+              "Implement JSON Schema, Pydantic, or another validation library",
+              "Implement input sanitization for all user-provided data",
+              "Implement type checking for function parameters and return values",
+              "Implement input length validation to prevent buffer overflows and DoS attacks",
+              "Implement proper error handling for invalid input",
+              "Implement format validation using regular expressions or other methods"
+            ]
+          },
+          "authentication": {
+            "score": 0,
+            "risk_level": "high",
+            "findings": [
+              "No standard authentication libraries detected",
+              "No evidence of HTTPS enforcement",
+              "No secure storage mechanisms detected",
+              "No CSRF protection detected",
+              "No session management detected",
+              "No multi-factor authentication support detected"
+            ],
+            "recommendations": [
+              "Implement JWT, OAuth, or another standard authentication mechanism",
+              "Enforce HTTPS for all connections",
+              "Use proper hashing and encryption for sensitive data",
+              "Implement CSRF protection",
+              "Implement secure session management",
+              "Consider implementing MFA for sensitive operations"
+            ]
+          },
+          "data_exfiltration": {
+            "score": 5,
+            "risk_level": "medium",
+            "findings": [
+              "No evidence of data minimization or sanitization before processing",
+              "No detection or notification mechanisms for suspicious activities"
+            ],
+            "recommendations": [
+              "Implement data minimization to reduce sensitive data exposure",
+              "Implement monitoring and alerting for suspicious data access patterns"
+            ]
+          },
+          "dependency_security": {
+            "score": 3,
+            "risk_level": "medium",
+            "findings": [
+              "No dependency lock files found",
+              "No dependency scanning tools detected",
+              "No license file found"
+            ],
+            "recommendations": [
+              "Use lock files to pin dependency versions",
+              "Implement Dependabot, Snyk, or another dependency scanning tool",
+              "Add a license file and ensure all dependencies have compatible licenses"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "repo_url": "https://airflow.apache.org/",
+      "name": "Apache Airflow",
+      "mcp_security": {
+        "overall_score": 2.4,
+        "overall_risk_level": "high",
+        "top_findings": [
+          "[input_validation] No standard input validation libraries detected",
+          "[input_validation] No input sanitization mechanisms detected",
+          "[input_validation] No type checking detected",
+          "[input_validation] No input length validation detected",
+          "[input_validation] No error handling for invalid input detected"
+        ],
+        "top_recommendations": [
+          "[input_validation] Implement JSON Schema, Pydantic, or another validation library",
+          "[input_validation] Implement input sanitization for all user-provided data",
+          "[input_validation] Implement type checking for function parameters and return values",
+          "[input_validation] Implement input length validation to prevent buffer overflows and DoS attacks",
+          "[input_validation] Implement proper error handling for invalid input"
+        ],
+        "detailed_results": {
+          "tool_poisoning": {
+            "score": 4,
+            "risk_level": "medium",
+            "findings": [
+              "No mechanism to verify tool sources or integrity",
+              "No tool isolation mechanisms detected"
+            ],
+            "recommendations": [
+              "Implement tool signature verification or hash checking",
+              "Implement sandboxing or containerization for tool execution"
+            ]
+          },
+          "input_validation": {
+            "score": 0,
+            "risk_level": "high",
+            "findings": [
+              "No standard input validation libraries detected",
+              "No input sanitization mechanisms detected",
+              "No type checking detected",
+              "No input length validation detected",
+              "No error handling for invalid input detected",
+              "No input format validation detected"
+            ],
+            "recommendations": [
+              "Implement JSON Schema, Pydantic, or another validation library",
+              "Implement input sanitization for all user-provided data",
+              "Implement type checking for function parameters and return values",
+              "Implement input length validation to prevent buffer overflows and DoS attacks",
+              "Implement proper error handling for invalid input",
+              "Implement format validation using regular expressions or other methods"
+            ]
+          },
+          "authentication": {
+            "score": 0,
+            "risk_level": "high",
+            "findings": [
+              "No standard authentication libraries detected",
+              "No evidence of HTTPS enforcement",
+              "No secure storage mechanisms detected",
+              "No CSRF protection detected",
+              "No session management detected",
+              "No multi-factor authentication support detected"
+            ],
+            "recommendations": [
+              "Implement JWT, OAuth, or another standard authentication mechanism",
+              "Enforce HTTPS for all connections",
+              "Use proper hashing and encryption for sensitive data",
+              "Implement CSRF protection",
+              "Implement secure session management",
+              "Consider implementing MFA for sensitive operations"
+            ]
+          },
+          "data_exfiltration": {
+            "score": 5,
+            "risk_level": "medium",
+            "findings": [
+              "No evidence of data minimization or sanitization before processing",
+              "No detection or notification mechanisms for suspicious activities"
+            ],
+            "recommendations": [
+              "Implement data minimization to reduce sensitive data exposure",
+              "Implement monitoring and alerting for suspicious data access patterns"
+            ]
+          },
+          "dependency_security": {
+            "score": 3,
+            "risk_level": "medium",
+            "findings": [
+              "No dependency lock files found",
+              "No dependency scanning tools detected",
+              "No license file found"
+            ],
+            "recommendations": [
+              "Use lock files to pin dependency versions",
+              "Implement Dependabot, Snyk, or another dependency scanning tool",
+              "Add a license file and ensure all dependencies have compatible licenses"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "repo_url": "https://github.com/domdomegg/airtable-mcp-server",
+      "name": "Airtable",
+      "mcp_security": {
+        "overall_score": 2.4,
+        "overall_risk_level": "high",
+        "top_findings": [
+          "[input_validation] No standard input validation libraries detected",
+          "[input_validation] No input sanitization mechanisms detected",
+          "[input_validation] No type checking detected",
+          "[input_validation] No input length validation detected",
+          "[input_validation] No error handling for invalid input detected"
+        ],
+        "top_recommendations": [
+          "[input_validation] Implement JSON Schema, Pydantic, or another validation library",
+          "[input_validation] Implement input sanitization for all user-provided data",
+          "[input_validation] Implement type checking for function parameters and return values",
+          "[input_validation] Implement input length validation to prevent buffer overflows and DoS attacks",
+          "[input_validation] Implement proper error handling for invalid input"
+        ],
+        "detailed_results": {
+          "tool_poisoning": {
+            "score": 4,
+            "risk_level": "medium",
+            "findings": [
+              "No mechanism to verify tool sources or integrity",
+              "No tool isolation mechanisms detected"
+            ],
+            "recommendations": [
+              "Implement tool signature verification or hash checking",
+              "Implement sandboxing or containerization for tool execution"
+            ]
+          },
+          "input_validation": {
+            "score": 0,
+            "risk_level": "high",
+            "findings": [
+              "No standard input validation libraries detected",
+              "No input sanitization mechanisms detected",
+              "No type checking detected",
+              "No input length validation detected",
+              "No error handling for invalid input detected",
+              "No input format validation detected"
+            ],
+            "recommendations": [
+              "Implement JSON Schema, Pydantic, or another validation library",
+              "Implement input sanitization for all user-provided data",
+              "Implement type checking for function parameters and return values",
+              "Implement input length validation to prevent buffer overflows and DoS attacks",
+              "Implement proper error handling for invalid input",
+              "Implement format validation using regular expressions or other methods"
+            ]
+          },
+          "authentication": {
+            "score": 0,
+            "risk_level": "high",
+            "findings": [
+              "No standard authentication libraries detected",
+              "No evidence of HTTPS enforcement",
+              "No secure storage mechanisms detected",
+              "No CSRF protection detected",
+              "No session management detected",
+              "No multi-factor authentication support detected"
+            ],
+            "recommendations": [
+              "Implement JWT, OAuth, or another standard authentication mechanism",
+              "Enforce HTTPS for all connections",
+              "Use proper hashing and encryption for sensitive data",
+              "Implement CSRF protection",
+              "Implement secure session management",
+              "Consider implementing MFA for sensitive operations"
+            ]
+          },
+          "data_exfiltration": {
+            "score": 5,
+            "risk_level": "medium",
+            "findings": [
+              "No evidence of data minimization or sanitization before processing",
+              "No detection or notification mechanisms for suspicious activities"
+            ],
+            "recommendations": [
+              "Implement data minimization to reduce sensitive data exposure",
+              "Implement monitoring and alerting for suspicious data access patterns"
+            ]
+          },
+          "dependency_security": {
+            "score": 3,
+            "risk_level": "medium",
+            "findings": [
+              "No dependency lock files found",
+              "No dependency scanning tools detected",
+              "No license file found"
+            ],
+            "recommendations": [
+              "Use lock files to pin dependency versions",
+              "Implement Dependabot, Snyk, or another dependency scanning tool",
+              "Add a license file and ensure all dependencies have compatible licenses"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "repo_url": "https://airtable.com/",
+      "name": "Airtable",
+      "mcp_security": {
+        "overall_score": 2.4,
+        "overall_risk_level": "high",
+        "top_findings": [
+          "[input_validation] No standard input validation libraries detected",
+          "[input_validation] No input sanitization mechanisms detected",
+          "[input_validation] No type checking detected",
+          "[input_validation] No input length validation detected",
+          "[input_validation] No error handling for invalid input detected"
+        ],
+        "top_recommendations": [
+          "[input_validation] Implement JSON Schema, Pydantic, or another validation library",
+          "[input_validation] Implement input sanitization for all user-provided data",
+          "[input_validation] Implement type checking for function parameters and return values",
+          "[input_validation] Implement input length validation to prevent buffer overflows and DoS attacks",
+          "[input_validation] Implement proper error handling for invalid input"
+        ],
+        "detailed_results": {
+          "tool_poisoning": {
+            "score": 4,
+            "risk_level": "medium",
+            "findings": [
+              "No mechanism to verify tool sources or integrity",
+              "No tool isolation mechanisms detected"
+            ],
+            "recommendations": [
+              "Implement tool signature verification or hash checking",
+              "Implement sandboxing or containerization for tool execution"
+            ]
+          },
+          "input_validation": {
+            "score": 0,
+            "risk_level": "high",
+            "findings": [
+              "No standard input validation libraries detected",
+              "No input sanitization mechanisms detected",
+              "No type checking detected",
+              "No input length validation detected",
+              "No error handling for invalid input detected",
+              "No input format validation detected"
+            ],
+            "recommendations": [
+              "Implement JSON Schema, Pydantic, or another validation library",
+              "Implement input sanitization for all user-provided data",
+              "Implement type checking for function parameters and return values",
+              "Implement input length validation to prevent buffer overflows and DoS attacks",
+              "Implement proper error handling for invalid input",
+              "Implement format validation using regular expressions or other methods"
+            ]
+          },
+          "authentication": {
+            "score": 0,
+            "risk_level": "high",
+            "findings": [
+              "No standard authentication libraries detected",
+              "No evidence of HTTPS enforcement",
+              "No secure storage mechanisms detected",
+              "No CSRF protection detected",
+              "No session management detected",
+              "No multi-factor authentication support detected"
+            ],
+            "recommendations": [
+              "Implement JWT, OAuth, or another standard authentication mechanism",
+              "Enforce HTTPS for all connections",
+              "Use proper hashing and encryption for sensitive data",
+              "Implement CSRF protection",
+              "Implement secure session management",
+              "Consider implementing MFA for sensitive operations"
+            ]
+          },
+          "data_exfiltration": {
+            "score": 5,
+            "risk_level": "medium",
+            "findings": [
+              "No evidence of data minimization or sanitization before processing",
+              "No detection or notification mechanisms for suspicious activities"
+            ],
+            "recommendations": [
+              "Implement data minimization to reduce sensitive data exposure",
+              "Implement monitoring and alerting for suspicious data access patterns"
+            ]
+          },
+          "dependency_security": {
+            "score": 3,
+            "risk_level": "medium",
+            "findings": [
+              "No dependency lock files found",
+              "No dependency scanning tools detected",
+              "No license file found"
+            ],
+            "recommendations": [
+              "Use lock files to pin dependency versions",
+              "Implement Dependabot, Snyk, or another dependency scanning tool",
+              "Add a license file and ensure all dependencies have compatible licenses"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "repo_url": "https://github.com/felores/airtable-mcp",
+      "name": "Airtable",
+      "mcp_security": {
+        "overall_score": 2.4,
+        "overall_risk_level": "high",
+        "top_findings": [
+          "[input_validation] No standard input validation libraries detected",
+          "[input_validation] No input sanitization mechanisms detected",
+          "[input_validation] No type checking detected",
+          "[input_validation] No input length validation detected",
+          "[input_validation] No error handling for invalid input detected"
+        ],
+        "top_recommendations": [
+          "[input_validation] Implement JSON Schema, Pydantic, or another validation library",
+          "[input_validation] Implement input sanitization for all user-provided data",
+          "[input_validation] Implement type checking for function parameters and return values",
+          "[input_validation] Implement input length validation to prevent buffer overflows and DoS attacks",
+          "[input_validation] Implement proper error handling for invalid input"
+        ],
+        "detailed_results": {
+          "tool_poisoning": {
+            "score": 4,
+            "risk_level": "medium",
+            "findings": [
+              "No mechanism to verify tool sources or integrity",
+              "No tool isolation mechanisms detected"
+            ],
+            "recommendations": [
+              "Implement tool signature verification or hash checking",
+              "Implement sandboxing or containerization for tool execution"
+            ]
+          },
+          "input_validation": {
+            "score": 0,
+            "risk_level": "high",
+            "findings": [
+              "No standard input validation libraries detected",
+              "No input sanitization mechanisms detected",
+              "No type checking detected",
+              "No input length validation detected",
+              "No error handling for invalid input detected",
+              "No input format validation detected"
+            ],
+            "recommendations": [
+              "Implement JSON Schema, Pydantic, or another validation library",
+              "Implement input sanitization for all user-provided data",
+              "Implement type checking for function parameters and return values",
+              "Implement input length validation to prevent buffer overflows and DoS attacks",
+              "Implement proper error handling for invalid input",
+              "Implement format validation using regular expressions or other methods"
+            ]
+          },
+          "authentication": {
+            "score": 0,
+            "risk_level": "high",
+            "findings": [
+              "No standard authentication libraries detected",
+              "No evidence of HTTPS enforcement",
+              "No secure storage mechanisms detected",
+              "No CSRF protection detected",
+              "No session management detected",
+              "No multi-factor authentication support detected"
+            ],
+            "recommendations": [
+              "Implement JWT, OAuth, or another standard authentication mechanism",
+              "Enforce HTTPS for all connections",
+              "Use proper hashing and encryption for sensitive data",
+              "Implement CSRF protection",
+              "Implement secure session management",
+              "Consider implementing MFA for sensitive operations"
+            ]
+          },
+          "data_exfiltration": {
+            "score": 5,
+            "risk_level": "medium",
+            "findings": [
+              "No evidence of data minimization or sanitization before processing",
+              "No detection or notification mechanisms for suspicious activities"
+            ],
+            "recommendations": [
+              "Implement data minimization to reduce sensitive data exposure",
+              "Implement monitoring and alerting for suspicious data access patterns"
+            ]
+          },
+          "dependency_security": {
+            "score": 3,
+            "risk_level": "medium",
+            "findings": [
+              "No dependency lock files found",
+              "No dependency scanning tools detected",
+              "No license file found"
+            ],
+            "recommendations": [
+              "Use lock files to pin dependency versions",
+              "Implement Dependabot, Snyk, or another dependency scanning tool",
+              "Add a license file and ensure all dependencies have compatible licenses"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "repo_url": "https://github.com/calvernaz/alphavantage",
+      "name": "AlphaVantage",
+      "mcp_security": {
+        "overall_score": 2.4,
+        "overall_risk_level": "high",
+        "top_findings": [
+          "[input_validation] No standard input validation libraries detected",
+          "[input_validation] No input sanitization mechanisms detected",
+          "[input_validation] No type checking detected",
+          "[input_validation] No input length validation detected",
+          "[input_validation] No error handling for invalid input detected"
+        ],
+        "top_recommendations": [
+          "[input_validation] Implement JSON Schema, Pydantic, or another validation library",
+          "[input_validation] Implement input sanitization for all user-provided data",
+          "[input_validation] Implement type checking for function parameters and return values",
+          "[input_validation] Implement input length validation to prevent buffer overflows and DoS attacks",
+          "[input_validation] Implement proper error handling for invalid input"
+        ],
+        "detailed_results": {
+          "tool_poisoning": {
+            "score": 4,
+            "risk_level": "medium",
+            "findings": [
+              "No mechanism to verify tool sources or integrity",
+              "No tool isolation mechanisms detected"
+            ],
+            "recommendations": [
+              "Implement tool signature verification or hash checking",
+              "Implement sandboxing or containerization for tool execution"
+            ]
+          },
+          "input_validation": {
+            "score": 0,
+            "risk_level": "high",
+            "findings": [
+              "No standard input validation libraries detected",
+              "No input sanitization mechanisms detected",
+              "No type checking detected",
+              "No input length validation detected",
+              "No error handling for invalid input detected",
+              "No input format validation detected"
+            ],
+            "recommendations": [
+              "Implement JSON Schema, Pydantic, or another validation library",
+              "Implement input sanitization for all user-provided data",
+              "Implement type checking for function parameters and return values",
+              "Implement input length validation to prevent buffer overflows and DoS attacks",
+              "Implement proper error handling for invalid input",
+              "Implement format validation using regular expressions or other methods"
+            ]
+          },
+          "authentication": {
+            "score": 0,
+            "risk_level": "high",
+            "findings": [
+              "No standard authentication libraries detected",
+              "No evidence of HTTPS enforcement",
+              "No secure storage mechanisms detected",
+              "No CSRF protection detected",
+              "No session management detected",
+              "No multi-factor authentication support detected"
+            ],
+            "recommendations": [
+              "Implement JWT, OAuth, or another standard authentication mechanism",
+              "Enforce HTTPS for all connections",
+              "Use proper hashing and encryption for sensitive data",
+              "Implement CSRF protection",
+              "Implement secure session management",
+              "Consider implementing MFA for sensitive operations"
+            ]
+          },
+          "data_exfiltration": {
+            "score": 5,
+            "risk_level": "medium",
+            "findings": [
+              "No evidence of data minimization or sanitization before processing",
+              "No detection or notification mechanisms for suspicious activities"
+            ],
+            "recommendations": [
+              "Implement data minimization to reduce sensitive data exposure",
+              "Implement monitoring and alerting for suspicious data access patterns"
+            ]
+          },
+          "dependency_security": {
+            "score": 3,
+            "risk_level": "medium",
+            "findings": [
+              "No dependency lock files found",
+              "No dependency scanning tools detected",
+              "No license file found"
+            ],
+            "recommendations": [
+              "Use lock files to pin dependency versions",
+              "Implement Dependabot, Snyk, or another dependency scanning tool",
+              "Add a license file and ensure all dependencies have compatible licenses"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "repo_url": "https://www.alphavantage.co",
+      "name": "AlphaVantage",
+      "mcp_security": {
+        "overall_score": 2.4,
+        "overall_risk_level": "high",
+        "top_findings": [
+          "[input_validation] No standard input validation libraries detected",
+          "[input_validation] No input sanitization mechanisms detected",
+          "[input_validation] No type checking detected",
+          "[input_validation] No input length validation detected",
+          "[input_validation] No error handling for invalid input detected"
+        ],
+        "top_recommendations": [
+          "[input_validation] Implement JSON Schema, Pydantic, or another validation library",
+          "[input_validation] Implement input sanitization for all user-provided data",
+          "[input_validation] Implement type checking for function parameters and return values",
+          "[input_validation] Implement input length validation to prevent buffer overflows and DoS attacks",
+          "[input_validation] Implement proper error handling for invalid input"
+        ],
+        "detailed_results": {
+          "tool_poisoning": {
+            "score": 4,
+            "risk_level": "medium",
+            "findings": [
+              "No mechanism to verify tool sources or integrity",
+              "No tool isolation mechanisms detected"
+            ],
+            "recommendations": [
+              "Implement tool signature verification or hash checking",
+              "Implement sandboxing or containerization for tool execution"
+            ]
+          },
+          "input_validation": {
+            "score": 0,
+            "risk_level": "high",
+            "findings": [
+              "No standard input validation libraries detected",
+              "No input sanitization mechanisms detected",
+              "No type checking detected",
+              "No input length validation detected",
+              "No error handling for invalid input detected",
+              "No input format validation detected"
+            ],
+            "recommendations": [
+              "Implement JSON Schema, Pydantic, or another validation library",
+              "Implement input sanitization for all user-provided data",
+              "Implement type checking for function parameters and return values",
+              "Implement input length validation to prevent buffer overflows and DoS attacks",
+              "Implement proper error handling for invalid input",
+              "Implement format validation using regular expressions or other methods"
+            ]
+          },
+          "authentication": {
+            "score": 0,
+            "risk_level": "high",
+            "findings": [
+              "No standard authentication libraries detected",
+              "No evidence of HTTPS enforcement",
+              "No secure storage mechanisms detected",
+              "No CSRF protection detected",
+              "No session management detected",
+              "No multi-factor authentication support detected"
+            ],
+            "recommendations": [
+              "Implement JWT, OAuth, or another standard authentication mechanism",
+              "Enforce HTTPS for all connections",
+              "Use proper hashing and encryption for sensitive data",
+              "Implement CSRF protection",
+              "Implement secure session management",
+              "Consider implementing MFA for sensitive operations"
+            ]
+          },
+          "data_exfiltration": {
+            "score": 5,
+            "risk_level": "medium",
+            "findings": [
+              "No evidence of data minimization or sanitization before processing",
+              "No detection or notification mechanisms for suspicious activities"
+            ],
+            "recommendations": [
+              "Implement data minimization to reduce sensitive data exposure",
+              "Implement monitoring and alerting for suspicious data access patterns"
+            ]
+          },
+          "dependency_security": {
+            "score": 3,
+            "risk_level": "medium",
+            "findings": [
+              "No dependency lock files found",
+              "No dependency scanning tools detected",
+              "No license file found"
+            ],
+            "recommendations": [
+              "Use lock files to pin dependency versions",
+              "Implement Dependabot, Snyk, or another dependency scanning tool",
+              "Add a license file and ensure all dependencies have compatible licenses"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "aggregated_stats": {
+    "total_repos_scanned": 29,
+    "repos_with_critical": 0,
+    "repos_with_high": 0,
+    "repos_using_latest_tag": 0,
+    "repos_running_as_root": 0,
+    "avg_image_age_days": 0,
+    "most_common_vulnerabilities": [],
+    "most_vulnerable_base_images": []
+  }
+}

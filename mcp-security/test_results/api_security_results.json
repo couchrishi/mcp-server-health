@@ -1,0 +1,1087 @@
+{
+  "scan_metadata": {
+    "timestamp": "2025-04-08T04:37:02.583989",
+    "scan_duration_seconds": 192,
+    "assessment_type": "api"
+  },
+  "repositories": [
+    {
+      "repo_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/aws-kb-retrieval-server",
+      "name": "AWS KB Retrieval"
+    },
+    {
+      "repo_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/brave-search",
+      "name": "Brave Search"
+    },
+    {
+      "repo_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/everart",
+      "name": "EverArt"
+    },
+    {
+      "repo_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/everything",
+      "name": "Everything"
+    },
+    {
+      "repo_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/fetch",
+      "name": "Fetch"
+    },
+    {
+      "repo_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem",
+      "name": "Filesystem"
+    },
+    {
+      "repo_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/git",
+      "name": "Git"
+    },
+    {
+      "repo_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/github",
+      "name": "GitHub"
+    },
+    {
+      "repo_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/gitlab",
+      "name": "GitLab"
+    },
+    {
+      "repo_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/gdrive",
+      "name": "Google Drive"
+    },
+    {
+      "repo_url": "https://github.com/21st-dev/magic-mcp",
+      "name": "21st.dev Magic",
+      "api_security": {
+        "overall_score": 0,
+        "file_stats": {
+          "total_files": 96,
+          "server_files": 2,
+          "route_files": 0,
+          "auth_files": 0,
+          "config_files": 3,
+          "middleware_files": 0,
+          "error_handling_files": 1,
+          "input_validation_files": 1,
+          "tls_files": 0
+        },
+        "authentication": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No authentication files found"
+          ],
+          "recommendations": [
+            "Implement proper authentication"
+          ]
+        },
+        "rate_limiting": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No rate limiting implementation found"
+          ],
+          "recommendations": [
+            "Implement rate limiting to protect against abuse"
+          ]
+        },
+        "input_validation": {
+          "score": 9,
+          "mechanism": "The code implements the Zod library, a powerful TypeScript-first schema declaration and validation library. It primarily uses **Schema Validation**. This involves defining a structure (schema) that the input data must conform to. Key aspects include:\n1.  **Type Checking:** Rigorously checks if the input data matches the expected primitive (string, number, boolean, etc.) or complex (object, array, etc.) types defined in the schema.\n2.  **Constraint Validation:** Applies various constraints defined in the schema, such as minimum/maximum length for strings/arrays, numerical ranges, specific formats (email, URL, UUID, IP address, datetime using regex), enum membership, literal values, etc.\n3.  **Structural Validation:** Validates the shape of objects (expected keys, handling of unknown keys - strict, strip, passthrough) and arrays/tuples (element types, length).\n4.  **Custom Validation Logic:** Allows developers to add custom validation rules using `.refine()`, `.superRefine()`.\n5.  **Transformation/Normalization:** Supports transforming data during validation (e.g., `.trim()`, `.toLowerCase()`, `.toUpperCase()` for strings, `.coerce` for type coercion, custom `.transform()`). This can be seen as a form of sanitization integrated with validation.",
+          "findings": [
+            "**Comprehensive Validation:** Zod provides a very thorough set of built-in validators for common data types and formats (strings, numbers, dates, emails, URLs, UUIDs, IPs, etc.).",
+            "**Strong Type Checking:** Type validation is a core feature and is strictly enforced based on the defined schema.",
+            "**Structured Error Handling:** Validation failures produce detailed errors (`ZodError`) indicating the issue type, path within the data structure, and expected vs. received types/values.",
+            "**Extensibility:** The library is highly extensible through refinements and transformations, allowing for complex business logic validation.",
+            "**Object Key Handling:** Provides explicit mechanisms (`strict`, `strip`, `passthrough`) for handling unexpected keys in objects.",
+            "**Format Validation via Regex:** Uses regular expressions extensively and correctly for validating specific string formats like UUIDs (`R`), emails (`F`), IPs (`L`, `D`), datetimes (`W`, `q`), etc.",
+            "**Special Character Handling:** While basic `z.string()` allows any character, specific format validators (`.email()`, `.url()`, etc.) implicitly handle the special characters relevant to those formats. For arbitrary character restrictions, `.regex()` or `.refine()` must be used explicitly.",
+            "**No Built-in XSS Sanitization:** Zod validates data structure and format but does not automatically sanitize input for XSS prevention (e.g., escaping HTML entities). This is typically handled separately before rendering data.",
+            "**No Direct SQL Injection Prevention:** Zod validates data types and formats *before* they might be used in a query, reducing the attack surface (e.g., ensuring an ID is a number). However, it does not directly prevent SQL injection; that responsibility lies in using parameterized queries or proper escaping at the database interaction layer.",
+            "**No Direct Command Injection Prevention:** Similar to SQLi, Zod validates the data, but preventing command injection requires careful handling (e.g., avoiding shell execution with user input, using safe APIs) *after* the data has been validated.",
+            "**Completeness Depends on Usage:** The thoroughness of validation in any *specific application* using Zod depends entirely on how well the developer defines the schemas. Zod provides the tools, but doesn't prevent a developer from defining a weak schema (e.g., using `z.any()` or `z.string()` without necessary format constraints)."
+          ],
+          "recommendations": [
+            "**Define Strict Schemas:** Developers using Zod should define schemas as precisely as possible, utilizing specific types (`.email()`, `.uuid()`, `.number()`, etc.) and constraints (`.min()`, `.max()`, `.length()`) rather than overly permissive types like `z.string()` or `z.any()`.",
+            "**Validate All Untrusted Input:** Ensure that Zod schemas are applied to *all* data coming from untrusted sources (e.g., API request bodies, URL parameters, form submissions).",
+            "**Combine with Output Encoding/Sanitization:** Do not rely solely on Zod for XSS prevention. Always use appropriate output encoding or sanitization libraries (like DOMPurify) before rendering user-provided data in HTML contexts.",
+            "**Use Parameterized Queries:** For database interactions, always use parameterized queries (prepared statements) with the Zod-validated data as parameters to prevent SQL injection.",
+            "**Handle Command Injection Separately:** When interacting with the operating system, avoid constructing commands directly from user input, even after Zod validation. Use safe APIs or perform rigorous escaping if unavoidable.",
+            "**Use `.regex()` or `.refine()` for Custom Character Policies:** If specific character sets need to be enforced or disallowed beyond standard formats, use `.regex()` or `.refine()` for explicit validation.",
+            "**Keep Zod Updated:** Regularly update the Zod library to benefit from potential security fixes and improvements, although the core design is robust."
+          ]
+        },
+        "error_handling": {
+          "score": 5,
+          "mechanism": "The code snippet is a minified JavaScript chunk generated by Webpack for a Next.js application. The filename (`_error-....js`) and the registered route (`/_error`) indicate this chunk is responsible for loading Next.js's built-in error handling page (`pages/_error.js`). This acts as a framework-level global error handler for rendering errors that occur during server-side rendering or client-side navigation within the Next.js application.",
+          "findings": [
+            "Code Obfuscation: The provided code is minified and part of a build process, making direct analysis of the error handling logic difficult without the original source code.",
+            "Framework-Level Handling: Relies on the Next.js framework's default or custom `_error.js` page for handling exceptions.",
+            "Potential Information Disclosure (Environment Dependent): Default Next.js behavior shows detailed errors and stack traces in development mode but generic messages in production. Misconfiguration or custom implementations could potentially leak sensitive information in production.",
+            "Potential Stack Trace Exposure: Linked to information disclosure; stack traces might be exposed in non-production environments or due to faulty custom error handling.",
+            "Error Logging Not Visible: The snippet itself doesn't reveal whether errors handled by this page are being logged. Logging would need to be implemented within the `_error.js` component's logic or via external monitoring services.",
+            "Status Code Handling Not Visible: How HTTP status codes (e.g., 404, 500) are handled and set in the response depends on the implementation of the `_error.js` page, which is not visible here.",
+            "Graceful Degradation Provided: The existence of a dedicated error page (`_error.js`) represents a form of graceful degradation, preventing a completely broken user experience, although the quality of degradation depends on the page's content."
+          ],
+          "recommendations": [
+            "Review Source Code: Analyze the actual source code of `pages/_error.js` (if customized) or understand the default behavior for the specific Next.js version used.",
+            "Verify Production Behavior: Ensure that in the production environment, error pages do not display sensitive information like stack traces, file paths, or detailed internal error messages.",
+            "Implement Robust Logging: Ensure server-side and potentially client-side logging captures sufficient detail for debugging errors handled by the `_error.js` page, without logging sensitive user data.",
+            "Ensure Correct Status Codes: Verify that the `_error.js` implementation correctly receives and sets the appropriate HTTP status code (e.g., 404, 500) in the response.",
+            "Consistent User Experience: Design the production error page to provide a consistent, user-friendly message, potentially guiding the user or providing contact/support information.",
+            "Security Headers: Implement appropriate security headers (like `Content-Security-Policy`, `X-Content-Type-Options`) to mitigate risks associated with error page rendering."
+          ]
+        },
+        "https_tls": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No HTTPS/TLS implementation found"
+          ],
+          "recommendations": [
+            "Implement HTTPS/TLS to secure communications"
+          ]
+        }
+      }
+    },
+    {
+      "repo_url": "https://github.com/Adfin-Engineering/mcp-server-adfin",
+      "name": "Adfin",
+      "api_security": {
+        "overall_score": 0,
+        "file_stats": {
+          "total_files": 9,
+          "server_files": 0,
+          "route_files": 0,
+          "auth_files": 0,
+          "config_files": 0,
+          "middleware_files": 0,
+          "error_handling_files": 0,
+          "input_validation_files": 0,
+          "tls_files": 0
+        },
+        "authentication": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No authentication files found"
+          ],
+          "recommendations": [
+            "Implement proper authentication"
+          ]
+        },
+        "rate_limiting": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No rate limiting implementation found"
+          ],
+          "recommendations": [
+            "Implement rate limiting to protect against abuse"
+          ]
+        },
+        "input_validation": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No input validation implementation found"
+          ],
+          "recommendations": [
+            "Implement input validation to prevent injection attacks"
+          ]
+        },
+        "error_handling": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No error handling implementation found"
+          ],
+          "recommendations": [
+            "Implement proper error handling to prevent information disclosure"
+          ]
+        },
+        "https_tls": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No HTTPS/TLS implementation found"
+          ],
+          "recommendations": [
+            "Implement HTTPS/TLS to secure communications"
+          ]
+        }
+      }
+    },
+    {
+      "repo_url": "https://www.adfin.com/",
+      "name": "Adfin"
+    },
+    {
+      "repo_url": "https://github.com/tinyfish-io/agentql-mcp",
+      "name": "AgentQL",
+      "api_security": {
+        "overall_score": 0,
+        "file_stats": {
+          "total_files": 21,
+          "server_files": 1,
+          "route_files": 0,
+          "auth_files": 1,
+          "config_files": 1,
+          "middleware_files": 0,
+          "error_handling_files": 0,
+          "input_validation_files": 0,
+          "tls_files": 0
+        },
+        "authentication": {
+          "score": 9,
+          "mechanism": "API Key Authentication",
+          "findings": [
+            "The workflow uses an API key (`SNYK_TOKEN`) to authenticate with the Snyk service.",
+            "The API key is stored securely using GitHub Actions Secrets (`${{ secrets.SNYK_TOKEN }}`). This prevents hardcoding credentials directly in the workflow file.",
+            "The secret is passed to the Snyk CLI command via an environment variable, which is a standard practice in CI/CD environments.",
+            "The code does not exhibit insecure storage of the secret within the workflow definition itself.",
+            "The type of token (`SNYK_TOKEN`) is typically a long-lived API key specific to the Snyk service. Issues like expiration or refresh mechanisms are generally managed within the Snyk platform or through organizational key rotation policies, not within this workflow code."
+          ],
+          "recommendations": [
+            "Ensure the `SNYK_TOKEN` stored in GitHub Secrets is periodically rotated according to security best practices.",
+            "Verify that the `SNYK_TOKEN` used has the minimum necessary permissions (least privilege principle) required for running Snyk code scans.",
+            "Continue using GitHub Actions Secrets for managing sensitive credentials like API keys."
+          ]
+        },
+        "rate_limiting": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No rate limiting implementation found"
+          ],
+          "recommendations": [
+            "Implement rate limiting to protect against abuse"
+          ]
+        },
+        "input_validation": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No input validation implementation found"
+          ],
+          "recommendations": [
+            "Implement input validation to prevent injection attacks"
+          ]
+        },
+        "error_handling": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No error handling implementation found"
+          ],
+          "recommendations": [
+            "Implement proper error handling to prevent information disclosure"
+          ]
+        },
+        "https_tls": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No HTTPS/TLS implementation found"
+          ],
+          "recommendations": [
+            "Implement HTTPS/TLS to secure communications"
+          ]
+        }
+      }
+    },
+    {
+      "repo_url": "https://www.agentql.com/",
+      "name": "AgentQL"
+    },
+    {
+      "repo_url": "https://github.com/agentrpc/agentrpc",
+      "name": "AgentRPC",
+      "api_security": {
+        "overall_score": 0,
+        "file_stats": {
+          "total_files": 127,
+          "server_files": 1,
+          "route_files": 2,
+          "auth_files": 0,
+          "config_files": 4,
+          "middleware_files": 0,
+          "error_handling_files": 5,
+          "input_validation_files": 0,
+          "tls_files": 0
+        },
+        "authentication": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No authentication files found"
+          ],
+          "recommendations": [
+            "Implement proper authentication"
+          ]
+        },
+        "rate_limiting": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No rate limiting implementation found"
+          ],
+          "recommendations": [
+            "Implement rate limiting to protect against abuse"
+          ]
+        },
+        "input_validation": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No input validation implementation found"
+          ],
+          "recommendations": [
+            "Implement input validation to prevent injection attacks"
+          ]
+        },
+        "error_handling": {
+          "score": 4,
+          "mechanism": "The primary error handling mechanisms observed are:\n1.  **Custom Error Classes:** Both Python (`AgentRPCError`) and Node.js (`AgentRPCError`, `PollTimeoutError`, `AgentRPCAPIError`, `AnimalError`) define specific error classes inheriting from base Exception/Error types. This allows for more granular error identification and handling.\n2.  **Error Serialization:** The Node.js SDK utilizes a `serializeError` utility (based on `sindresorhus/serialize-error`) to convert potentially complex error objects into plain, serializable objects. This is likely used for transmitting error details, as seen in the test results where the `result` field contains a serialized error object (`{ name: '...', message: '...' }`).\n3.  **Implicit Try-Catch in Job Execution:** The tests (`errors.test.ts`) demonstrate that errors thrown within registered handlers (`getNormalAnimal`, `getCustomAnimal`) are caught by the framework. The framework then packages the *serialized* error information into the job response body (`resultType: 'rejection'`, `result: <serialized_error>`) instead of letting the error crash the process. This implies a `try...catch` block wrapping the handler execution within the `client.register` or job processing logic.\n\nNo explicit global error handlers or middleware patterns are visible in the provided snippets, suggesting error handling is localized, particularly around the execution of registered agent functions/tools.",
+          "findings": [
+            {
+              "issue": "Potential Information Disclosure / Stack Trace Exposure",
+              "details": "The `serializeError` function includes properties like `name`, `message`, and critically, `stack` by default in the serialized output. The `destroyCircular` function within it uses `forceEnumerable: true`, ensuring these properties are included. While the tests only assert `name` and `message`, the underlying mechanism serializes the stack trace. If this serialized object (including the stack trace) is returned directly to the end-user or client API consumer, it represents a significant information disclosure vulnerability, revealing internal paths, function names, and potentially library versions.",
+              "severity": "High"
+            },
+            {
+              "issue": "Potential Information Disclosure in `AgentRPCAPIError`",
+              "details": "The Node.js `AgentRPCAPIError` concatenates potentially detailed `response` information (stringified if object) directly into the error `message`. If the `response` contains sensitive internal details (e.g., downstream API errors, database messages), these could be exposed.",
+              "severity": "Medium"
+            },
+            {
+              "issue": "Improper HTTP Status Codes",
+              "details": "The tests (`errors.test.ts`) show that when a job handler throws an error, the API call (`client.createJob`) still returns an HTTP `200 OK` status code. The error information is embedded within the response body (`resultType: 'rejection'`). Returning 200 OK for operations that failed internally is misleading for HTTP clients and violates REST principles. A 4xx or 5xx status code would be more appropriate.",
+              "severity": "Medium"
+            },
+            {
+              "issue": "Missing Error Logging",
+              "details": "The provided code snippets show no evidence of server-side or agent-side error logging. While errors are caught and returned in the job response, they don't appear to be logged centrally (e.g., using `console.error`, Winston, Pino, or Python's `logging`). This hinders debugging, monitoring, and auditing.",
+              "severity": "High"
+            },
+            {
+              "issue": "Inconsistent Error Structures (Pre-Serialization)",
+              "details": "The custom error classes in Python (`message`, `status_code`, `response`) and Node.js (`message`, `meta` for `AgentRPCError`; `message`, `response` (used internally) for `AgentRPCAPIError`) have different structures and property names. While `serializeError` attempts normalization, the initial structures differ.",
+              "severity": "Low"
+            },
+            {
+              "issue": "Lack of Graceful Degradation Strategy",
+              "details": "While errors within handlers are caught, there's no indication of defined fallback behaviors or strategies beyond reporting the rejection. The system prevents crashes but doesn't show mechanisms for retries (within the handler context) or alternative processing paths.",
+              "severity": "Low"
+            }
+          ],
+          "recommendations": [
+            {
+              "suggestion": "Prevent Stack Trace Leakage",
+              "action": "Modify the use of `serializeError` or filter its output before sending error details to clients. Ensure that `stack` traces and other sensitive internal properties (`cause`, internal `meta`, raw `response` objects) are *never* included in API responses intended for end-users. Use generic error messages for clients."
+            },
+            {
+              "suggestion": "Implement Robust Server-Side Logging",
+              "action": "Introduce comprehensive logging on the agent/server side. Log all caught errors with full details, including stack traces, request context (e.g., job ID, user ID), and timestamps. Use structured logging libraries (e.g., Winston/Pino for Node.js, `logging` module for Python)."
+            },
+            {
+              "suggestion": "Use Correct HTTP Status Codes",
+              "action": "Refactor the API endpoint (`createJob` or similar) to return appropriate HTTP status codes when errors occur within the job execution. Use 5xx codes (e.g., 500 Internal Server Error) for unexpected server/handler errors and potentially 4xx codes if the error is due to invalid client input passed to the handler."
+            },
+            {
+              "suggestion": "Sanitize Error Messages",
+              "action": "Review `AgentRPCAPIError` and similar constructs. Avoid concatenating potentially sensitive raw response data directly into user-facing error messages. Log the detailed response internally but provide a sanitized, generic message to the client."
+            },
+            {
+              "suggestion": "Standardize Error Representation",
+              "action": "Define a consistent error structure/schema to be returned in API responses (e.g., `{ \"code\": \"ERROR_CODE\", \"message\": \"User-friendly message\", \"details\": { ... } }`). Ensure this structure is used across different SDKs and error types returned to the client."
+            },
+            {
+              "suggestion": "Consider Error Handling Configuration",
+              "action": "Allow configuration of error reporting detail (e.g., development vs. production). In development, more detail might be acceptable in responses (though still avoid leaking sensitive data), while production should strictly return generic messages and log details internally."
+            }
+          ]
+        },
+        "https_tls": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No HTTPS/TLS implementation found"
+          ],
+          "recommendations": [
+            "Implement HTTPS/TLS to secure communications"
+          ]
+        }
+      }
+    },
+    {
+      "repo_url": "https://www.agentrpc.com/",
+      "name": "AgentRPC"
+    },
+    {
+      "repo_url": "https://github.com/Aiven-Open/mcp-aiven",
+      "name": "Aiven",
+      "api_security": {
+        "overall_score": 0,
+        "file_stats": {
+          "total_files": 17,
+          "server_files": 2,
+          "route_files": 0,
+          "auth_files": 1,
+          "config_files": 2,
+          "middleware_files": 0,
+          "error_handling_files": 0,
+          "input_validation_files": 0,
+          "tls_files": 0
+        },
+        "authentication": {
+          "score": 0,
+          "mechanism": "Not Applicable - The provided text is a SECURITY.md file (security policy), not code implementing an authentication mechanism.",
+          "findings": [
+            "The provided input is a Markdown file (SECURITY.md) describing a security policy, not executable code.",
+            "No authentication mechanism (e.g., JWT, OAuth, API Keys) is defined or implemented in the provided text.",
+            "The file outlines policies regarding supported versions for security patches based on CVSS scores.",
+            "The file describes the process for reporting vulnerabilities through a bug bounty program.",
+            "No implementation details regarding authentication (e.g., hardcoded credentials, token validation, encryption, secret storage, token expiration, refresh mechanisms) can be assessed as no relevant code was provided."
+          ],
+          "recommendations": [
+            "Provide the relevant source code files that implement user authentication or API authorization for a security analysis.",
+            "While having a SECURITY.md file and a bug bounty program is a good security practice for managing vulnerabilities, it does not describe the actual authentication implementation.",
+            "Ensure that the actual authentication implementation (in the code not provided) follows security best practices, avoiding the issues listed in the prompt (hardcoded credentials, weak encryption, missing validation, etc.)."
+          ]
+        },
+        "rate_limiting": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No rate limiting implementation found"
+          ],
+          "recommendations": [
+            "Implement rate limiting to protect against abuse"
+          ]
+        },
+        "input_validation": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No input validation implementation found"
+          ],
+          "recommendations": [
+            "Implement input validation to prevent injection attacks"
+          ]
+        },
+        "error_handling": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No error handling implementation found"
+          ],
+          "recommendations": [
+            "Implement proper error handling to prevent information disclosure"
+          ]
+        },
+        "https_tls": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No HTTPS/TLS implementation found"
+          ],
+          "recommendations": [
+            "Implement HTTPS/TLS to secure communications"
+          ]
+        }
+      }
+    },
+    {
+      "repo_url": "https://go.aiven.io/mcp-server",
+      "name": "Aiven projects"
+    },
+    {
+      "repo_url": "https://github.com/apify/actors-mcp-server",
+      "name": "Apify",
+      "api_security": {
+        "overall_score": 0,
+        "file_stats": {
+          "total_files": 39,
+          "server_files": 3,
+          "route_files": 0,
+          "auth_files": 0,
+          "config_files": 3,
+          "middleware_files": 0,
+          "error_handling_files": 0,
+          "input_validation_files": 1,
+          "tls_files": 0
+        },
+        "authentication": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No authentication files found"
+          ],
+          "recommendations": [
+            "Implement proper authentication"
+          ]
+        },
+        "rate_limiting": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No rate limiting implementation found"
+          ],
+          "recommendations": [
+            "Implement rate limiting to protect against abuse"
+          ]
+        },
+        "input_validation": {
+          "score": 4,
+          "mechanism": "Schema Validation (using JSON Schema)",
+          "findings": [
+            "The primary validation mechanism is JSON Schema definition, which enforces the overall structure and basic data types (string, boolean, integer, array, object) of the input.",
+            "Type checking is present for top-level properties (`type` field in schema).",
+            "The `actors` array correctly specifies `type: \"array\"` and implies its elements should be strings via `editor: \"stringList\"` and `prefill`, although JSON Schema ideally uses `items: { \"type\": \"string\" }` for explicit element type validation.",
+            "The `debugActorInput` uses `type: \"object\"`, which is very loose. It validates that the input is *an* object, but places no constraints on its internal structure, properties, or their types.",
+            "There is no validation on the *content* or *format* of the strings provided for `actors` elements or `debugActor`. They are only validated as being strings.",
+            "No range validation is applied to the `maxActorMemoryBytes` integer field (e.g., minimum value).",
+            "No size constraints (min/max items) are applied to the `actors` array.",
+            "The schema itself does not perform sanitization. It allows potentially harmful characters (e.g., `<`, `>`, `'`, `\"`, `;`, `|`) within string fields (`actors` elements, `debugActor`).",
+            "Potential for downstream vulnerabilities: While the schema itself doesn't *cause* injection attacks, the lack of stricter validation (e.g., format checking on actor names, sanitization) means that if these inputs are used insecurely later in the actor's code (e.g., concatenated into SQL queries, shell commands, or rendered in HTML), it could lead to SQL Injection, Command Injection, or XSS vulnerabilities. The schema doesn't prevent malicious patterns from being submitted."
+          ],
+          "recommendations": [
+            "For the `actors` array, explicitly define the type of items using `\"items\": { \"type\": \"string\" }`.",
+            "Add `pattern` validation to the string elements within the `actors` array and the `debugActor` string field to enforce a specific format (e.g., `^[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+$`) if actor names follow a known pattern. This reduces the attack surface for injection.",
+            "Define a specific schema for `debugActorInput` instead of just `\"type\": \"object\"`. Specify required/optional properties and their types within a nested `properties` object.",
+            "Add a `minimum` value (e.g., 1 or a higher reasonable value) to the `maxActorMemoryBytes` field to prevent non-sensical or potentially problematic inputs.",
+            "Consider adding `minItems` and/or `maxItems` constraints to the `actors` array if there are logical limits to the number of actors.",
+            "Emphasize in documentation or code comments that the actor's runtime code *must* perform context-specific validation and sanitization/escaping on all inputs received (especially strings like actor names) before using them in sensitive operations (database queries, command execution, HTML rendering) to prevent injection vulnerabilities. Schema validation is only the first line of defense."
+          ]
+        },
+        "error_handling": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No error handling implementation found"
+          ],
+          "recommendations": [
+            "Implement proper error handling to prevent information disclosure"
+          ]
+        },
+        "https_tls": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No HTTPS/TLS implementation found"
+          ],
+          "recommendations": [
+            "Implement HTTPS/TLS to secure communications"
+          ]
+        }
+      }
+    },
+    {
+      "repo_url": "https://github.com/Simon-Kansara/ableton-live-mcp-server",
+      "name": "Ableton Live",
+      "api_security": {
+        "overall_score": 0,
+        "file_stats": {
+          "total_files": 7,
+          "server_files": 1,
+          "route_files": 0,
+          "auth_files": 0,
+          "config_files": 0,
+          "middleware_files": 0,
+          "error_handling_files": 0,
+          "input_validation_files": 0,
+          "tls_files": 0
+        },
+        "authentication": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No authentication files found"
+          ],
+          "recommendations": [
+            "Implement proper authentication"
+          ]
+        },
+        "rate_limiting": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No rate limiting implementation found"
+          ],
+          "recommendations": [
+            "Implement rate limiting to protect against abuse"
+          ]
+        },
+        "input_validation": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No input validation implementation found"
+          ],
+          "recommendations": [
+            "Implement input validation to prevent injection attacks"
+          ]
+        },
+        "error_handling": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No error handling implementation found"
+          ],
+          "recommendations": [
+            "Implement proper error handling to prevent information disclosure"
+          ]
+        },
+        "https_tls": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No HTTPS/TLS implementation found"
+          ],
+          "recommendations": [
+            "Implement HTTPS/TLS to secure communications"
+          ]
+        }
+      }
+    },
+    {
+      "repo_url": "https://github.com/openbnb-org/mcp-server-airbnb",
+      "name": "Airbnb",
+      "api_security": {
+        "overall_score": 0,
+        "file_stats": {
+          "total_files": 11,
+          "server_files": 1,
+          "route_files": 0,
+          "auth_files": 0,
+          "config_files": 1,
+          "middleware_files": 0,
+          "error_handling_files": 0,
+          "input_validation_files": 0,
+          "tls_files": 0
+        },
+        "authentication": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No authentication files found"
+          ],
+          "recommendations": [
+            "Implement proper authentication"
+          ]
+        },
+        "rate_limiting": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No rate limiting implementation found"
+          ],
+          "recommendations": [
+            "Implement rate limiting to protect against abuse"
+          ]
+        },
+        "input_validation": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No input validation implementation found"
+          ],
+          "recommendations": [
+            "Implement input validation to prevent injection attacks"
+          ]
+        },
+        "error_handling": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No error handling implementation found"
+          ],
+          "recommendations": [
+            "Implement proper error handling to prevent information disclosure"
+          ]
+        },
+        "https_tls": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No HTTPS/TLS implementation found"
+          ],
+          "recommendations": [
+            "Implement HTTPS/TLS to secure communications"
+          ]
+        }
+      }
+    },
+    {
+      "repo_url": "https://github.com/GoPlausible/algorand-mcp",
+      "name": "Algorand",
+      "api_security": {
+        "overall_score": 0,
+        "file_stats": {
+          "total_files": 123,
+          "server_files": 18,
+          "route_files": 0,
+          "auth_files": 0,
+          "config_files": 7,
+          "middleware_files": 0,
+          "error_handling_files": 0,
+          "input_validation_files": 0,
+          "tls_files": 0
+        },
+        "authentication": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No authentication files found"
+          ],
+          "recommendations": [
+            "Implement proper authentication"
+          ]
+        },
+        "rate_limiting": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No rate limiting implementation found"
+          ],
+          "recommendations": [
+            "Implement rate limiting to protect against abuse"
+          ]
+        },
+        "input_validation": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No input validation implementation found"
+          ],
+          "recommendations": [
+            "Implement input validation to prevent injection attacks"
+          ]
+        },
+        "error_handling": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No error handling implementation found"
+          ],
+          "recommendations": [
+            "Implement proper error handling to prevent information disclosure"
+          ]
+        },
+        "https_tls": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No HTTPS/TLS implementation found"
+          ],
+          "recommendations": [
+            "Implement HTTPS/TLS to secure communications"
+          ]
+        }
+      }
+    },
+    {
+      "repo_url": "https://github.com/yangkyeongmo/mcp-server-apache-airflow",
+      "name": "Airflow",
+      "api_security": {
+        "overall_score": 0,
+        "file_stats": {
+          "total_files": 34,
+          "server_files": 2,
+          "route_files": 0,
+          "auth_files": 0,
+          "config_files": 1,
+          "middleware_files": 0,
+          "error_handling_files": 1,
+          "input_validation_files": 0,
+          "tls_files": 0
+        },
+        "authentication": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No authentication files found"
+          ],
+          "recommendations": [
+            "Implement proper authentication"
+          ]
+        },
+        "rate_limiting": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No rate limiting implementation found"
+          ],
+          "recommendations": [
+            "Implement rate limiting to protect against abuse"
+          ]
+        },
+        "input_validation": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No input validation implementation found"
+          ],
+          "recommendations": [
+            "Implement input validation to prevent injection attacks"
+          ]
+        },
+        "error_handling": {
+          "score": 2,
+          "mechanism": "None/Implicit. The code lacks explicit error handling mechanisms like try-catch blocks around the API calls. It implicitly relies on the calling framework or higher-level handlers to catch exceptions raised by the `airflow_client` library or during response processing.",
+          "findings": [
+            "Missing Error Handling: No `try...except` blocks are used around the `import_error_api.get_import_errors()` and `import_error_api.get_import_error()` calls. If the API client raises an exception (e.g., network error, timeout, Airflow API error like 4xx or 5xx), it will propagate uncaught by these functions.",
+            "Potential Information Disclosure: Unhandled exceptions might be caught by a default framework handler (e.g., in FastAPI, Flask) which, especially in debug mode, could expose stack traces or sensitive configuration details from the underlying `airflow_client` or the exception itself.",
+            "Stack Traces Exposure: Directly related to the lack of handling, raw stack traces could be exposed to the client if the framework's top-level error handler is not configured securely for production environments.",
+            "Inconsistent Error Formats: On success, the functions return a specific structure: `[types.TextContent(...)]`. On failure (exception), the response format will be determined by the upstream handler and likely won't match the expected success format, leading to inconsistency.",
+            "Missing Error Logging: There is no logging within these functions to record when an error occurs during the API interaction. This makes diagnosing failures difficult, as the context (e.g., input parameters like `limit`, `offset`, `import_error_id`) is lost unless logged by a higher-level handler.",
+            "Improper HTTP Status Codes (Potential): While this code doesn't directly set HTTP status codes, the unhandled exceptions will likely result in a generic 500 Internal Server Error from the web framework. This hides the actual nature of the error (e.g., a 404 Not Found from the Airflow API for an invalid `import_error_id` should ideally be propagated as a 404 to the client of *this* service, not a 500).",
+            "Lack of Graceful Degradation: The functions do not handle failures gracefully. Instead of returning a meaningful error message within the expected response structure (e.g., `[types.TextContent(type='text', text='Error: Could not retrieve import errors.')]`), they will crash the request flow at their level."
+          ],
+          "recommendations": [
+            "Implement Explicit Error Handling: Wrap the `import_error_api` calls within `try...except` blocks.",
+            "Catch Specific Exceptions: Catch exceptions known to be raised by the `airflow_client` library (e.g., `ApiException`, network errors, timeouts - consult the library's documentation) and potentially `TypeError` or `AttributeError` during response processing (`response.to_dict()`).",
+            "Log Errors Contextually: Inside the `except` blocks, log the error along with relevant context (function name, parameters passed) using a standard logging library.",
+            "Return Structured Errors: In case of an error, return a response that conforms to the expected return type structure (`List[Union[types.TextContent, ...]]`), containing a user-friendly error message. Avoid exposing raw exception details in the response sent to the client.",
+            "Map Status Codes Appropriately: If this code is part of a web service, catch specific exceptions (like a 404 `ApiException` from the client) and either return a specific error structure or raise custom exceptions that higher-level framework handlers can map to appropriate HTTP status codes (e.g., 404, 503).",
+            "Sanitize Error Messages: Ensure that error messages returned to the client (e.g., within `types.TextContent`) do not contain sensitive information. Log detailed errors internally.",
+            "Refine Success Response Formatting: Consider if `str(response.to_dict())` is the best way to represent the data. Returning structured data within the `TextContent` or using other `types` might be more appropriate, although this is not strictly an error handling issue."
+          ]
+        },
+        "https_tls": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No HTTPS/TLS implementation found"
+          ],
+          "recommendations": [
+            "Implement HTTPS/TLS to secure communications"
+          ]
+        }
+      }
+    },
+    {
+      "repo_url": "https://airflow.apache.org/",
+      "name": "Apache Airflow"
+    },
+    {
+      "repo_url": "https://github.com/domdomegg/airtable-mcp-server",
+      "name": "Airtable",
+      "api_security": {
+        "overall_score": 0,
+        "file_stats": {
+          "total_files": 19,
+          "server_files": 2,
+          "route_files": 0,
+          "auth_files": 0,
+          "config_files": 1,
+          "middleware_files": 0,
+          "error_handling_files": 0,
+          "input_validation_files": 0,
+          "tls_files": 0
+        },
+        "authentication": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No authentication files found"
+          ],
+          "recommendations": [
+            "Implement proper authentication"
+          ]
+        },
+        "rate_limiting": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No rate limiting implementation found"
+          ],
+          "recommendations": [
+            "Implement rate limiting to protect against abuse"
+          ]
+        },
+        "input_validation": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No input validation implementation found"
+          ],
+          "recommendations": [
+            "Implement input validation to prevent injection attacks"
+          ]
+        },
+        "error_handling": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No error handling implementation found"
+          ],
+          "recommendations": [
+            "Implement proper error handling to prevent information disclosure"
+          ]
+        },
+        "https_tls": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No HTTPS/TLS implementation found"
+          ],
+          "recommendations": [
+            "Implement HTTPS/TLS to secure communications"
+          ]
+        }
+      }
+    },
+    {
+      "repo_url": "https://airtable.com/",
+      "name": "Airtable"
+    },
+    {
+      "repo_url": "https://github.com/felores/airtable-mcp",
+      "name": "Airtable",
+      "api_security": {
+        "overall_score": 0,
+        "file_stats": {
+          "total_files": 17,
+          "server_files": 1,
+          "route_files": 0,
+          "auth_files": 0,
+          "config_files": 1,
+          "middleware_files": 0,
+          "error_handling_files": 0,
+          "input_validation_files": 0,
+          "tls_files": 0
+        },
+        "authentication": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No authentication files found"
+          ],
+          "recommendations": [
+            "Implement proper authentication"
+          ]
+        },
+        "rate_limiting": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No rate limiting implementation found"
+          ],
+          "recommendations": [
+            "Implement rate limiting to protect against abuse"
+          ]
+        },
+        "input_validation": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No input validation implementation found"
+          ],
+          "recommendations": [
+            "Implement input validation to prevent injection attacks"
+          ]
+        },
+        "error_handling": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No error handling implementation found"
+          ],
+          "recommendations": [
+            "Implement proper error handling to prevent information disclosure"
+          ]
+        },
+        "https_tls": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No HTTPS/TLS implementation found"
+          ],
+          "recommendations": [
+            "Implement HTTPS/TLS to secure communications"
+          ]
+        }
+      }
+    },
+    {
+      "repo_url": "https://github.com/calvernaz/alphavantage",
+      "name": "AlphaVantage",
+      "api_security": {
+        "overall_score": 0,
+        "file_stats": {
+          "total_files": 14,
+          "server_files": 1,
+          "route_files": 0,
+          "auth_files": 0,
+          "config_files": 0,
+          "middleware_files": 0,
+          "error_handling_files": 0,
+          "input_validation_files": 0,
+          "tls_files": 0
+        },
+        "authentication": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No authentication files found"
+          ],
+          "recommendations": [
+            "Implement proper authentication"
+          ]
+        },
+        "rate_limiting": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No rate limiting implementation found"
+          ],
+          "recommendations": [
+            "Implement rate limiting to protect against abuse"
+          ]
+        },
+        "input_validation": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No input validation implementation found"
+          ],
+          "recommendations": [
+            "Implement input validation to prevent injection attacks"
+          ]
+        },
+        "error_handling": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No error handling implementation found"
+          ],
+          "recommendations": [
+            "Implement proper error handling to prevent information disclosure"
+          ]
+        },
+        "https_tls": {
+          "score": 0,
+          "mechanism": "unknown",
+          "findings": [
+            "No HTTPS/TLS implementation found"
+          ],
+          "recommendations": [
+            "Implement HTTPS/TLS to secure communications"
+          ]
+        }
+      }
+    },
+    {
+      "repo_url": "https://www.alphavantage.co",
+      "name": "AlphaVantage"
+    }
+  ],
+  "aggregated_stats": {
+    "total_repos_scanned": 30,
+    "repos_with_critical": 0,
+    "repos_with_high": 0,
+    "repos_using_latest_tag": 0,
+    "repos_running_as_root": 0,
+    "avg_image_age_days": 0,
+    "most_common_vulnerabilities": [],
+    "most_vulnerable_base_images": []
+  }
+}

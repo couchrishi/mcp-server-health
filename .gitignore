@@ -10,6 +10,7 @@ Thumbs.db
 
 # Generated output files
 *.json
+!mcp-security/test_results/*.json
 
 # Backup directories
 backup_*/

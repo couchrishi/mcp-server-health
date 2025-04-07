@@ -1,0 +1,993 @@
+{
+  "scan_metadata": {
+    "timestamp": "2025-04-08T05:09:19.354496",
+    "scan_duration_seconds": 29,
+    "assessment_type": "container"
+  },
+  "repositories": [
+    {
+      "repo_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/aws-kb-retrieval-server",
+      "name": "AWS KB Retrieval",
+      "container_security": {
+        "base_image": {
+          "name": "node:22.12-alpine",
+          "provenance": "Official (Docker Hub)",
+          "tag_type": "specific_version",
+          "tag": "22.12-alpine",
+          "tag_specificity": "Medium",
+          "last_updated": "2025-01-07T16:41:48.42228Z",
+          "age_days": 90,
+          "freshness_rating": "Stale",
+          "runs_as_root": true,
+          "user": "root"
+        },
+        "vulnerability_summary": {
+          "critical_count": 0,
+          "high_count": 3,
+          "total_count": 3,
+          "fixable_count": 3
+        },
+        "critical_vulnerabilities": [],
+        "high_vulnerabilities": [
+          {
+            "id": "CVE-2024-12797",
+            "package": "libcrypto3",
+            "installed_version": "3.3.2-r4",
+            "fixed_version": "3.3.3-r0",
+            "title": "openssl: RFC7250 handshakes with unauthenticated servers don't abort as expected",
+            "description": "Issue summary: Clients using RFC7250 Raw Public Keys (RPKs) to authenticate a\nserver may fail to notice that the server was not authenticated, because\nhandshakes don't abort as expected when the SSL_VERIFY_PEER verification mode\nis set.\n\nImpact summary: TLS and DTLS connections using raw public keys may be\nvulnerable to man-in-middle attacks when server authentication failure is not\ndetected by clients.\n\nRPKs are disabled by default in both TLS clients and TLS servers.  The issue\nonly arises when TLS clients explicitly enable RPK use by the server, and the\nserver, likewise, enables sending of an RPK instead of an X.509 certificate\nchain.  The affected clients are those that then rely on the handshake to\nfail when the server's RPK fails to match one of the expected public keys,\nby setting the verification mode to SSL_VERIFY_PEER.\n\nClients that enable server-side raw public keys can still find out that raw\npublic key verification failed by calling SSL_get_verify_result(), and those\nthat do, and take appropriate action, are not affected.  This issue was\nintroduced in the initial implementation of RPK support in OpenSSL 3.2.\n\nThe FIPS modules in 3.4, 3.3, 3.2, 3.1 and 3.0 are not affected by this issue.",
+            "fix_available": true
+          },
+          {
+            "id": "CVE-2024-12797",
+            "package": "libssl3",
+            "installed_version": "3.3.2-r4",
+            "fixed_version": "3.3.3-r0",
+            "title": "openssl: RFC7250 handshakes with unauthenticated servers don't abort as expected",
+            "description": "Issue summary: Clients using RFC7250 Raw Public Keys (RPKs) to authenticate a\nserver may fail to notice that the server was not authenticated, because\nhandshakes don't abort as expected when the SSL_VERIFY_PEER verification mode\nis set.\n\nImpact summary: TLS and DTLS connections using raw public keys may be\nvulnerable to man-in-middle attacks when server authentication failure is not\ndetected by clients.\n\nRPKs are disabled by default in both TLS clients and TLS servers.  The issue\nonly arises when TLS clients explicitly enable RPK use by the server, and the\nserver, likewise, enables sending of an RPK instead of an X.509 certificate\nchain.  The affected clients are those that then rely on the handshake to\nfail when the server's RPK fails to match one of the expected public keys,\nby setting the verification mode to SSL_VERIFY_PEER.\n\nClients that enable server-side raw public keys can still find out that raw\npublic key verification failed by calling SSL_get_verify_result(), and those\nthat do, and take appropriate action, are not affected.  This issue was\nintroduced in the initial implementation of RPK support in OpenSSL 3.2.\n\nThe FIPS modules in 3.4, 3.3, 3.2, 3.1 and 3.0 are not affected by this issue.",
+            "fix_available": true
+          },
+          {
+            "id": "CVE-2024-21538",
+            "package": "cross-spawn",
+            "installed_version": "7.0.3",
+            "fixed_version": "7.0.5, 6.0.6",
+            "title": "cross-spawn: regular expression denial of service",
+            "description": "Versions of the package cross-spawn before 7.0.5 are vulnerable to Regular Expression Denial of Service (ReDoS) due to improper input sanitization. An attacker can increase the CPU usage and crash the program by crafting a very large and well crafted string.",
+            "fix_available": true
+          }
+        ]
+      }
+    },
+    {
+      "repo_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/brave-search",
+      "name": "Brave Search",
+      "container_security": {
+        "base_image": {
+          "name": "node:22.12-alpine",
+          "provenance": "Official (Docker Hub)",
+          "tag_type": "specific_version",
+          "tag": "22.12-alpine",
+          "tag_specificity": "Medium",
+          "last_updated": "2025-01-07T16:41:48.42228Z",
+          "age_days": 90,
+          "freshness_rating": "Stale",
+          "runs_as_root": true,
+          "user": "root"
+        },
+        "vulnerability_summary": {
+          "critical_count": 0,
+          "high_count": 3,
+          "total_count": 3,
+          "fixable_count": 3
+        },
+        "critical_vulnerabilities": [],
+        "high_vulnerabilities": [
+          {
+            "id": "CVE-2024-12797",
+            "package": "libcrypto3",
+            "installed_version": "3.3.2-r4",
+            "fixed_version": "3.3.3-r0",
+            "title": "openssl: RFC7250 handshakes with unauthenticated servers don't abort as expected",
+            "description": "Issue summary: Clients using RFC7250 Raw Public Keys (RPKs) to authenticate a\nserver may fail to notice that the server was not authenticated, because\nhandshakes don't abort as expected when the SSL_VERIFY_PEER verification mode\nis set.\n\nImpact summary: TLS and DTLS connections using raw public keys may be\nvulnerable to man-in-middle attacks when server authentication failure is not\ndetected by clients.\n\nRPKs are disabled by default in both TLS clients and TLS servers.  The issue\nonly arises when TLS clients explicitly enable RPK use by the server, and the\nserver, likewise, enables sending of an RPK instead of an X.509 certificate\nchain.  The affected clients are those that then rely on the handshake to\nfail when the server's RPK fails to match one of the expected public keys,\nby setting the verification mode to SSL_VERIFY_PEER.\n\nClients that enable server-side raw public keys can still find out that raw\npublic key verification failed by calling SSL_get_verify_result(), and those\nthat do, and take appropriate action, are not affected.  This issue was\nintroduced in the initial implementation of RPK support in OpenSSL 3.2.\n\nThe FIPS modules in 3.4, 3.3, 3.2, 3.1 and 3.0 are not affected by this issue.",
+            "fix_available": true
+          },
+          {
+            "id": "CVE-2024-12797",
+            "package": "libssl3",
+            "installed_version": "3.3.2-r4",
+            "fixed_version": "3.3.3-r0",
+            "title": "openssl: RFC7250 handshakes with unauthenticated servers don't abort as expected",
+            "description": "Issue summary: Clients using RFC7250 Raw Public Keys (RPKs) to authenticate a\nserver may fail to notice that the server was not authenticated, because\nhandshakes don't abort as expected when the SSL_VERIFY_PEER verification mode\nis set.\n\nImpact summary: TLS and DTLS connections using raw public keys may be\nvulnerable to man-in-middle attacks when server authentication failure is not\ndetected by clients.\n\nRPKs are disabled by default in both TLS clients and TLS servers.  The issue\nonly arises when TLS clients explicitly enable RPK use by the server, and the\nserver, likewise, enables sending of an RPK instead of an X.509 certificate\nchain.  The affected clients are those that then rely on the handshake to\nfail when the server's RPK fails to match one of the expected public keys,\nby setting the verification mode to SSL_VERIFY_PEER.\n\nClients that enable server-side raw public keys can still find out that raw\npublic key verification failed by calling SSL_get_verify_result(), and those\nthat do, and take appropriate action, are not affected.  This issue was\nintroduced in the initial implementation of RPK support in OpenSSL 3.2.\n\nThe FIPS modules in 3.4, 3.3, 3.2, 3.1 and 3.0 are not affected by this issue.",
+            "fix_available": true
+          },
+          {
+            "id": "CVE-2024-21538",
+            "package": "cross-spawn",
+            "installed_version": "7.0.3",
+            "fixed_version": "7.0.5, 6.0.6",
+            "title": "cross-spawn: regular expression denial of service",
+            "description": "Versions of the package cross-spawn before 7.0.5 are vulnerable to Regular Expression Denial of Service (ReDoS) due to improper input sanitization. An attacker can increase the CPU usage and crash the program by crafting a very large and well crafted string.",
+            "fix_available": true
+          }
+        ]
+      }
+    },
+    {
+      "repo_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/everart",
+      "name": "EverArt",
+      "container_security": {
+        "base_image": {
+          "name": "node:22.12-alpine",
+          "provenance": "Official (Docker Hub)",
+          "tag_type": "specific_version",
+          "tag": "22.12-alpine",
+          "tag_specificity": "Medium",
+          "last_updated": "2025-01-07T16:41:48.42228Z",
+          "age_days": 90,
+          "freshness_rating": "Stale",
+          "runs_as_root": true,
+          "user": "root"
+        },
+        "vulnerability_summary": {
+          "critical_count": 0,
+          "high_count": 3,
+          "total_count": 3,
+          "fixable_count": 3
+        },
+        "critical_vulnerabilities": [],
+        "high_vulnerabilities": [
+          {
+            "id": "CVE-2024-12797",
+            "package": "libcrypto3",
+            "installed_version": "3.3.2-r4",
+            "fixed_version": "3.3.3-r0",
+            "title": "openssl: RFC7250 handshakes with unauthenticated servers don't abort as expected",
+            "description": "Issue summary: Clients using RFC7250 Raw Public Keys (RPKs) to authenticate a\nserver may fail to notice that the server was not authenticated, because\nhandshakes don't abort as expected when the SSL_VERIFY_PEER verification mode\nis set.\n\nImpact summary: TLS and DTLS connections using raw public keys may be\nvulnerable to man-in-middle attacks when server authentication failure is not\ndetected by clients.\n\nRPKs are disabled by default in both TLS clients and TLS servers.  The issue\nonly arises when TLS clients explicitly enable RPK use by the server, and the\nserver, likewise, enables sending of an RPK instead of an X.509 certificate\nchain.  The affected clients are those that then rely on the handshake to\nfail when the server's RPK fails to match one of the expected public keys,\nby setting the verification mode to SSL_VERIFY_PEER.\n\nClients that enable server-side raw public keys can still find out that raw\npublic key verification failed by calling SSL_get_verify_result(), and those\nthat do, and take appropriate action, are not affected.  This issue was\nintroduced in the initial implementation of RPK support in OpenSSL 3.2.\n\nThe FIPS modules in 3.4, 3.3, 3.2, 3.1 and 3.0 are not affected by this issue.",
+            "fix_available": true
+          },
+          {
+            "id": "CVE-2024-12797",
+            "package": "libssl3",
+            "installed_version": "3.3.2-r4",
+            "fixed_version": "3.3.3-r0",
+            "title": "openssl: RFC7250 handshakes with unauthenticated servers don't abort as expected",
+            "description": "Issue summary: Clients using RFC7250 Raw Public Keys (RPKs) to authenticate a\nserver may fail to notice that the server was not authenticated, because\nhandshakes don't abort as expected when the SSL_VERIFY_PEER verification mode\nis set.\n\nImpact summary: TLS and DTLS connections using raw public keys may be\nvulnerable to man-in-middle attacks when server authentication failure is not\ndetected by clients.\n\nRPKs are disabled by default in both TLS clients and TLS servers.  The issue\nonly arises when TLS clients explicitly enable RPK use by the server, and the\nserver, likewise, enables sending of an RPK instead of an X.509 certificate\nchain.  The affected clients are those that then rely on the handshake to\nfail when the server's RPK fails to match one of the expected public keys,\nby setting the verification mode to SSL_VERIFY_PEER.\n\nClients that enable server-side raw public keys can still find out that raw\npublic key verification failed by calling SSL_get_verify_result(), and those\nthat do, and take appropriate action, are not affected.  This issue was\nintroduced in the initial implementation of RPK support in OpenSSL 3.2.\n\nThe FIPS modules in 3.4, 3.3, 3.2, 3.1 and 3.0 are not affected by this issue.",
+            "fix_available": true
+          },
+          {
+            "id": "CVE-2024-21538",
+            "package": "cross-spawn",
+            "installed_version": "7.0.3",
+            "fixed_version": "7.0.5, 6.0.6",
+            "title": "cross-spawn: regular expression denial of service",
+            "description": "Versions of the package cross-spawn before 7.0.5 are vulnerable to Regular Expression Denial of Service (ReDoS) due to improper input sanitization. An attacker can increase the CPU usage and crash the program by crafting a very large and well crafted string.",
+            "fix_available": true
+          }
+        ]
+      }
+    },
+    {
+      "repo_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/everything",
+      "name": "Everything",
+      "container_security": {
+        "base_image": {
+          "name": "node:22.12-alpine",
+          "provenance": "Official (Docker Hub)",
+          "tag_type": "specific_version",
+          "tag": "22.12-alpine",
+          "tag_specificity": "Medium",
+          "last_updated": "2025-01-07T16:41:48.42228Z",
+          "age_days": 90,
+          "freshness_rating": "Stale",
+          "runs_as_root": true,
+          "user": "root"
+        },
+        "vulnerability_summary": {
+          "critical_count": 0,
+          "high_count": 3,
+          "total_count": 3,
+          "fixable_count": 3
+        },
+        "critical_vulnerabilities": [],
+        "high_vulnerabilities": [
+          {
+            "id": "CVE-2024-12797",
+            "package": "libcrypto3",
+            "installed_version": "3.3.2-r4",
+            "fixed_version": "3.3.3-r0",
+            "title": "openssl: RFC7250 handshakes with unauthenticated servers don't abort as expected",
+            "description": "Issue summary: Clients using RFC7250 Raw Public Keys (RPKs) to authenticate a\nserver may fail to notice that the server was not authenticated, because\nhandshakes don't abort as expected when the SSL_VERIFY_PEER verification mode\nis set.\n\nImpact summary: TLS and DTLS connections using raw public keys may be\nvulnerable to man-in-middle attacks when server authentication failure is not\ndetected by clients.\n\nRPKs are disabled by default in both TLS clients and TLS servers.  The issue\nonly arises when TLS clients explicitly enable RPK use by the server, and the\nserver, likewise, enables sending of an RPK instead of an X.509 certificate\nchain.  The affected clients are those that then rely on the handshake to\nfail when the server's RPK fails to match one of the expected public keys,\nby setting the verification mode to SSL_VERIFY_PEER.\n\nClients that enable server-side raw public keys can still find out that raw\npublic key verification failed by calling SSL_get_verify_result(), and those\nthat do, and take appropriate action, are not affected.  This issue was\nintroduced in the initial implementation of RPK support in OpenSSL 3.2.\n\nThe FIPS modules in 3.4, 3.3, 3.2, 3.1 and 3.0 are not affected by this issue.",
+            "fix_available": true
+          },
+          {
+            "id": "CVE-2024-12797",
+            "package": "libssl3",
+            "installed_version": "3.3.2-r4",
+            "fixed_version": "3.3.3-r0",
+            "title": "openssl: RFC7250 handshakes with unauthenticated servers don't abort as expected",
+            "description": "Issue summary: Clients using RFC7250 Raw Public Keys (RPKs) to authenticate a\nserver may fail to notice that the server was not authenticated, because\nhandshakes don't abort as expected when the SSL_VERIFY_PEER verification mode\nis set.\n\nImpact summary: TLS and DTLS connections using raw public keys may be\nvulnerable to man-in-middle attacks when server authentication failure is not\ndetected by clients.\n\nRPKs are disabled by default in both TLS clients and TLS servers.  The issue\nonly arises when TLS clients explicitly enable RPK use by the server, and the\nserver, likewise, enables sending of an RPK instead of an X.509 certificate\nchain.  The affected clients are those that then rely on the handshake to\nfail when the server's RPK fails to match one of the expected public keys,\nby setting the verification mode to SSL_VERIFY_PEER.\n\nClients that enable server-side raw public keys can still find out that raw\npublic key verification failed by calling SSL_get_verify_result(), and those\nthat do, and take appropriate action, are not affected.  This issue was\nintroduced in the initial implementation of RPK support in OpenSSL 3.2.\n\nThe FIPS modules in 3.4, 3.3, 3.2, 3.1 and 3.0 are not affected by this issue.",
+            "fix_available": true
+          },
+          {
+            "id": "CVE-2024-21538",
+            "package": "cross-spawn",
+            "installed_version": "7.0.3",
+            "fixed_version": "7.0.5, 6.0.6",
+            "title": "cross-spawn: regular expression denial of service",
+            "description": "Versions of the package cross-spawn before 7.0.5 are vulnerable to Regular Expression Denial of Service (ReDoS) due to improper input sanitization. An attacker can increase the CPU usage and crash the program by crafting a very large and well crafted string.",
+            "fix_available": true
+          }
+        ]
+      }
+    },
+    {
+      "repo_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/fetch",
+      "name": "Fetch",
+      "container_security": {
+        "base_image": {
+          "name": "node:22.12-alpine",
+          "provenance": "Official (Docker Hub)",
+          "tag_type": "specific_version",
+          "tag": "22.12-alpine",
+          "tag_specificity": "Medium",
+          "last_updated": "2025-01-07T16:41:48.42228Z",
+          "age_days": 90,
+          "freshness_rating": "Stale",
+          "runs_as_root": true,
+          "user": "root"
+        },
+        "vulnerability_summary": {
+          "critical_count": 0,
+          "high_count": 3,
+          "total_count": 3,
+          "fixable_count": 3
+        },
+        "critical_vulnerabilities": [],
+        "high_vulnerabilities": [
+          {
+            "id": "CVE-2024-12797",
+            "package": "libcrypto3",
+            "installed_version": "3.3.2-r4",
+            "fixed_version": "3.3.3-r0",
+            "title": "openssl: RFC7250 handshakes with unauthenticated servers don't abort as expected",
+            "description": "Issue summary: Clients using RFC7250 Raw Public Keys (RPKs) to authenticate a\nserver may fail to notice that the server was not authenticated, because\nhandshakes don't abort as expected when the SSL_VERIFY_PEER verification mode\nis set.\n\nImpact summary: TLS and DTLS connections using raw public keys may be\nvulnerable to man-in-middle attacks when server authentication failure is not\ndetected by clients.\n\nRPKs are disabled by default in both TLS clients and TLS servers.  The issue\nonly arises when TLS clients explicitly enable RPK use by the server, and the\nserver, likewise, enables sending of an RPK instead of an X.509 certificate\nchain.  The affected clients are those that then rely on the handshake to\nfail when the server's RPK fails to match one of the expected public keys,\nby setting the verification mode to SSL_VERIFY_PEER.\n\nClients that enable server-side raw public keys can still find out that raw\npublic key verification failed by calling SSL_get_verify_result(), and those\nthat do, and take appropriate action, are not affected.  This issue was\nintroduced in the initial implementation of RPK support in OpenSSL 3.2.\n\nThe FIPS modules in 3.4, 3.3, 3.2, 3.1 and 3.0 are not affected by this issue.",
+            "fix_available": true
+          },
+          {
+            "id": "CVE-2024-12797",
+            "package": "libssl3",
+            "installed_version": "3.3.2-r4",
+            "fixed_version": "3.3.3-r0",
+            "title": "openssl: RFC7250 handshakes with unauthenticated servers don't abort as expected",
+            "description": "Issue summary: Clients using RFC7250 Raw Public Keys (RPKs) to authenticate a\nserver may fail to notice that the server was not authenticated, because\nhandshakes don't abort as expected when the SSL_VERIFY_PEER verification mode\nis set.\n\nImpact summary: TLS and DTLS connections using raw public keys may be\nvulnerable to man-in-middle attacks when server authentication failure is not\ndetected by clients.\n\nRPKs are disabled by default in both TLS clients and TLS servers.  The issue\nonly arises when TLS clients explicitly enable RPK use by the server, and the\nserver, likewise, enables sending of an RPK instead of an X.509 certificate\nchain.  The affected clients are those that then rely on the handshake to\nfail when the server's RPK fails to match one of the expected public keys,\nby setting the verification mode to SSL_VERIFY_PEER.\n\nClients that enable server-side raw public keys can still find out that raw\npublic key verification failed by calling SSL_get_verify_result(), and those\nthat do, and take appropriate action, are not affected.  This issue was\nintroduced in the initial implementation of RPK support in OpenSSL 3.2.\n\nThe FIPS modules in 3.4, 3.3, 3.2, 3.1 and 3.0 are not affected by this issue.",
+            "fix_available": true
+          },
+          {
+            "id": "CVE-2024-21538",
+            "package": "cross-spawn",
+            "installed_version": "7.0.3",
+            "fixed_version": "7.0.5, 6.0.6",
+            "title": "cross-spawn: regular expression denial of service",
+            "description": "Versions of the package cross-spawn before 7.0.5 are vulnerable to Regular Expression Denial of Service (ReDoS) due to improper input sanitization. An attacker can increase the CPU usage and crash the program by crafting a very large and well crafted string.",
+            "fix_available": true
+          }
+        ]
+      }
+    },
+    {
+      "repo_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem",
+      "name": "Filesystem",
+      "container_security": {
+        "base_image": {
+          "name": "node:22.12-alpine",
+          "provenance": "Official (Docker Hub)",
+          "tag_type": "specific_version",
+          "tag": "22.12-alpine",
+          "tag_specificity": "Medium",
+          "last_updated": "2025-01-07T16:41:48.42228Z",
+          "age_days": 90,
+          "freshness_rating": "Stale",
+          "runs_as_root": true,
+          "user": "root"
+        },
+        "vulnerability_summary": {
+          "critical_count": 0,
+          "high_count": 3,
+          "total_count": 3,
+          "fixable_count": 3
+        },
+        "critical_vulnerabilities": [],
+        "high_vulnerabilities": [
+          {
+            "id": "CVE-2024-12797",
+            "package": "libcrypto3",
+            "installed_version": "3.3.2-r4",
+            "fixed_version": "3.3.3-r0",
+            "title": "openssl: RFC7250 handshakes with unauthenticated servers don't abort as expected",
+            "description": "Issue summary: Clients using RFC7250 Raw Public Keys (RPKs) to authenticate a\nserver may fail to notice that the server was not authenticated, because\nhandshakes don't abort as expected when the SSL_VERIFY_PEER verification mode\nis set.\n\nImpact summary: TLS and DTLS connections using raw public keys may be\nvulnerable to man-in-middle attacks when server authentication failure is not\ndetected by clients.\n\nRPKs are disabled by default in both TLS clients and TLS servers.  The issue\nonly arises when TLS clients explicitly enable RPK use by the server, and the\nserver, likewise, enables sending of an RPK instead of an X.509 certificate\nchain.  The affected clients are those that then rely on the handshake to\nfail when the server's RPK fails to match one of the expected public keys,\nby setting the verification mode to SSL_VERIFY_PEER.\n\nClients that enable server-side raw public keys can still find out that raw\npublic key verification failed by calling SSL_get_verify_result(), and those\nthat do, and take appropriate action, are not affected.  This issue was\nintroduced in the initial implementation of RPK support in OpenSSL 3.2.\n\nThe FIPS modules in 3.4, 3.3, 3.2, 3.1 and 3.0 are not affected by this issue.",
+            "fix_available": true
+          },
+          {
+            "id": "CVE-2024-12797",
+            "package": "libssl3",
+            "installed_version": "3.3.2-r4",
+            "fixed_version": "3.3.3-r0",
+            "title": "openssl: RFC7250 handshakes with unauthenticated servers don't abort as expected",
+            "description": "Issue summary: Clients using RFC7250 Raw Public Keys (RPKs) to authenticate a\nserver may fail to notice that the server was not authenticated, because\nhandshakes don't abort as expected when the SSL_VERIFY_PEER verification mode\nis set.\n\nImpact summary: TLS and DTLS connections using raw public keys may be\nvulnerable to man-in-middle attacks when server authentication failure is not\ndetected by clients.\n\nRPKs are disabled by default in both TLS clients and TLS servers.  The issue\nonly arises when TLS clients explicitly enable RPK use by the server, and the\nserver, likewise, enables sending of an RPK instead of an X.509 certificate\nchain.  The affected clients are those that then rely on the handshake to\nfail when the server's RPK fails to match one of the expected public keys,\nby setting the verification mode to SSL_VERIFY_PEER.\n\nClients that enable server-side raw public keys can still find out that raw\npublic key verification failed by calling SSL_get_verify_result(), and those\nthat do, and take appropriate action, are not affected.  This issue was\nintroduced in the initial implementation of RPK support in OpenSSL 3.2.\n\nThe FIPS modules in 3.4, 3.3, 3.2, 3.1 and 3.0 are not affected by this issue.",
+            "fix_available": true
+          },
+          {
+            "id": "CVE-2024-21538",
+            "package": "cross-spawn",
+            "installed_version": "7.0.3",
+            "fixed_version": "7.0.5, 6.0.6",
+            "title": "cross-spawn: regular expression denial of service",
+            "description": "Versions of the package cross-spawn before 7.0.5 are vulnerable to Regular Expression Denial of Service (ReDoS) due to improper input sanitization. An attacker can increase the CPU usage and crash the program by crafting a very large and well crafted string.",
+            "fix_available": true
+          }
+        ]
+      }
+    },
+    {
+      "repo_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/git",
+      "name": "Git",
+      "container_security": {
+        "base_image": {
+          "name": "node:22.12-alpine",
+          "provenance": "Official (Docker Hub)",
+          "tag_type": "specific_version",
+          "tag": "22.12-alpine",
+          "tag_specificity": "Medium",
+          "last_updated": "2025-01-07T16:41:48.42228Z",
+          "age_days": 90,
+          "freshness_rating": "Stale",
+          "runs_as_root": true,
+          "user": "root"
+        },
+        "vulnerability_summary": {
+          "critical_count": 0,
+          "high_count": 3,
+          "total_count": 3,
+          "fixable_count": 3
+        },
+        "critical_vulnerabilities": [],
+        "high_vulnerabilities": [
+          {
+            "id": "CVE-2024-12797",
+            "package": "libcrypto3",
+            "installed_version": "3.3.2-r4",
+            "fixed_version": "3.3.3-r0",
+            "title": "openssl: RFC7250 handshakes with unauthenticated servers don't abort as expected",
+            "description": "Issue summary: Clients using RFC7250 Raw Public Keys (RPKs) to authenticate a\nserver may fail to notice that the server was not authenticated, because\nhandshakes don't abort as expected when the SSL_VERIFY_PEER verification mode\nis set.\n\nImpact summary: TLS and DTLS connections using raw public keys may be\nvulnerable to man-in-middle attacks when server authentication failure is not\ndetected by clients.\n\nRPKs are disabled by default in both TLS clients and TLS servers.  The issue\nonly arises when TLS clients explicitly enable RPK use by the server, and the\nserver, likewise, enables sending of an RPK instead of an X.509 certificate\nchain.  The affected clients are those that then rely on the handshake to\nfail when the server's RPK fails to match one of the expected public keys,\nby setting the verification mode to SSL_VERIFY_PEER.\n\nClients that enable server-side raw public keys can still find out that raw\npublic key verification failed by calling SSL_get_verify_result(), and those\nthat do, and take appropriate action, are not affected.  This issue was\nintroduced in the initial implementation of RPK support in OpenSSL 3.2.\n\nThe FIPS modules in 3.4, 3.3, 3.2, 3.1 and 3.0 are not affected by this issue.",
+            "fix_available": true
+          },
+          {
+            "id": "CVE-2024-12797",
+            "package": "libssl3",
+            "installed_version": "3.3.2-r4",
+            "fixed_version": "3.3.3-r0",
+            "title": "openssl: RFC7250 handshakes with unauthenticated servers don't abort as expected",
+            "description": "Issue summary: Clients using RFC7250 Raw Public Keys (RPKs) to authenticate a\nserver may fail to notice that the server was not authenticated, because\nhandshakes don't abort as expected when the SSL_VERIFY_PEER verification mode\nis set.\n\nImpact summary: TLS and DTLS connections using raw public keys may be\nvulnerable to man-in-middle attacks when server authentication failure is not\ndetected by clients.\n\nRPKs are disabled by default in both TLS clients and TLS servers.  The issue\nonly arises when TLS clients explicitly enable RPK use by the server, and the\nserver, likewise, enables sending of an RPK instead of an X.509 certificate\nchain.  The affected clients are those that then rely on the handshake to\nfail when the server's RPK fails to match one of the expected public keys,\nby setting the verification mode to SSL_VERIFY_PEER.\n\nClients that enable server-side raw public keys can still find out that raw\npublic key verification failed by calling SSL_get_verify_result(), and those\nthat do, and take appropriate action, are not affected.  This issue was\nintroduced in the initial implementation of RPK support in OpenSSL 3.2.\n\nThe FIPS modules in 3.4, 3.3, 3.2, 3.1 and 3.0 are not affected by this issue.",
+            "fix_available": true
+          },
+          {
+            "id": "CVE-2024-21538",
+            "package": "cross-spawn",
+            "installed_version": "7.0.3",
+            "fixed_version": "7.0.5, 6.0.6",
+            "title": "cross-spawn: regular expression denial of service",
+            "description": "Versions of the package cross-spawn before 7.0.5 are vulnerable to Regular Expression Denial of Service (ReDoS) due to improper input sanitization. An attacker can increase the CPU usage and crash the program by crafting a very large and well crafted string.",
+            "fix_available": true
+          }
+        ]
+      }
+    },
+    {
+      "repo_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/github",
+      "name": "GitHub",
+      "container_security": {
+        "base_image": {
+          "name": "node:22.12-alpine",
+          "provenance": "Official (Docker Hub)",
+          "tag_type": "specific_version",
+          "tag": "22.12-alpine",
+          "tag_specificity": "Medium",
+          "last_updated": "2025-01-07T16:41:48.42228Z",
+          "age_days": 90,
+          "freshness_rating": "Stale",
+          "runs_as_root": true,
+          "user": "root"
+        },
+        "vulnerability_summary": {
+          "critical_count": 0,
+          "high_count": 3,
+          "total_count": 3,
+          "fixable_count": 3
+        },
+        "critical_vulnerabilities": [],
+        "high_vulnerabilities": [
+          {
+            "id": "CVE-2024-12797",
+            "package": "libcrypto3",
+            "installed_version": "3.3.2-r4",
+            "fixed_version": "3.3.3-r0",
+            "title": "openssl: RFC7250 handshakes with unauthenticated servers don't abort as expected",
+            "description": "Issue summary: Clients using RFC7250 Raw Public Keys (RPKs) to authenticate a\nserver may fail to notice that the server was not authenticated, because\nhandshakes don't abort as expected when the SSL_VERIFY_PEER verification mode\nis set.\n\nImpact summary: TLS and DTLS connections using raw public keys may be\nvulnerable to man-in-middle attacks when server authentication failure is not\ndetected by clients.\n\nRPKs are disabled by default in both TLS clients and TLS servers.  The issue\nonly arises when TLS clients explicitly enable RPK use by the server, and the\nserver, likewise, enables sending of an RPK instead of an X.509 certificate\nchain.  The affected clients are those that then rely on the handshake to\nfail when the server's RPK fails to match one of the expected public keys,\nby setting the verification mode to SSL_VERIFY_PEER.\n\nClients that enable server-side raw public keys can still find out that raw\npublic key verification failed by calling SSL_get_verify_result(), and those\nthat do, and take appropriate action, are not affected.  This issue was\nintroduced in the initial implementation of RPK support in OpenSSL 3.2.\n\nThe FIPS modules in 3.4, 3.3, 3.2, 3.1 and 3.0 are not affected by this issue.",
+            "fix_available": true
+          },
+          {
+            "id": "CVE-2024-12797",
+            "package": "libssl3",
+            "installed_version": "3.3.2-r4",
+            "fixed_version": "3.3.3-r0",
+            "title": "openssl: RFC7250 handshakes with unauthenticated servers don't abort as expected",
+            "description": "Issue summary: Clients using RFC7250 Raw Public Keys (RPKs) to authenticate a\nserver may fail to notice that the server was not authenticated, because\nhandshakes don't abort as expected when the SSL_VERIFY_PEER verification mode\nis set.\n\nImpact summary: TLS and DTLS connections using raw public keys may be\nvulnerable to man-in-middle attacks when server authentication failure is not\ndetected by clients.\n\nRPKs are disabled by default in both TLS clients and TLS servers.  The issue\nonly arises when TLS clients explicitly enable RPK use by the server, and the\nserver, likewise, enables sending of an RPK instead of an X.509 certificate\nchain.  The affected clients are those that then rely on the handshake to\nfail when the server's RPK fails to match one of the expected public keys,\nby setting the verification mode to SSL_VERIFY_PEER.\n\nClients that enable server-side raw public keys can still find out that raw\npublic key verification failed by calling SSL_get_verify_result(), and those\nthat do, and take appropriate action, are not affected.  This issue was\nintroduced in the initial implementation of RPK support in OpenSSL 3.2.\n\nThe FIPS modules in 3.4, 3.3, 3.2, 3.1 and 3.0 are not affected by this issue.",
+            "fix_available": true
+          },
+          {
+            "id": "CVE-2024-21538",
+            "package": "cross-spawn",
+            "installed_version": "7.0.3",
+            "fixed_version": "7.0.5, 6.0.6",
+            "title": "cross-spawn: regular expression denial of service",
+            "description": "Versions of the package cross-spawn before 7.0.5 are vulnerable to Regular Expression Denial of Service (ReDoS) due to improper input sanitization. An attacker can increase the CPU usage and crash the program by crafting a very large and well crafted string.",
+            "fix_available": true
+          }
+        ]
+      }
+    },
+    {
+      "repo_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/gitlab",
+      "name": "GitLab",
+      "container_security": {
+        "base_image": {
+          "name": "node:22.12-alpine",
+          "provenance": "Official (Docker Hub)",
+          "tag_type": "specific_version",
+          "tag": "22.12-alpine",
+          "tag_specificity": "Medium",
+          "last_updated": "2025-01-07T16:41:48.42228Z",
+          "age_days": 90,
+          "freshness_rating": "Stale",
+          "runs_as_root": true,
+          "user": "root"
+        },
+        "vulnerability_summary": {
+          "critical_count": 0,
+          "high_count": 3,
+          "total_count": 3,
+          "fixable_count": 3
+        },
+        "critical_vulnerabilities": [],
+        "high_vulnerabilities": [
+          {
+            "id": "CVE-2024-12797",
+            "package": "libcrypto3",
+            "installed_version": "3.3.2-r4",
+            "fixed_version": "3.3.3-r0",
+            "title": "openssl: RFC7250 handshakes with unauthenticated servers don't abort as expected",
+            "description": "Issue summary: Clients using RFC7250 Raw Public Keys (RPKs) to authenticate a\nserver may fail to notice that the server was not authenticated, because\nhandshakes don't abort as expected when the SSL_VERIFY_PEER verification mode\nis set.\n\nImpact summary: TLS and DTLS connections using raw public keys may be\nvulnerable to man-in-middle attacks when server authentication failure is not\ndetected by clients.\n\nRPKs are disabled by default in both TLS clients and TLS servers.  The issue\nonly arises when TLS clients explicitly enable RPK use by the server, and the\nserver, likewise, enables sending of an RPK instead of an X.509 certificate\nchain.  The affected clients are those that then rely on the handshake to\nfail when the server's RPK fails to match one of the expected public keys,\nby setting the verification mode to SSL_VERIFY_PEER.\n\nClients that enable server-side raw public keys can still find out that raw\npublic key verification failed by calling SSL_get_verify_result(), and those\nthat do, and take appropriate action, are not affected.  This issue was\nintroduced in the initial implementation of RPK support in OpenSSL 3.2.\n\nThe FIPS modules in 3.4, 3.3, 3.2, 3.1 and 3.0 are not affected by this issue.",
+            "fix_available": true
+          },
+          {
+            "id": "CVE-2024-12797",
+            "package": "libssl3",
+            "installed_version": "3.3.2-r4",
+            "fixed_version": "3.3.3-r0",
+            "title": "openssl: RFC7250 handshakes with unauthenticated servers don't abort as expected",
+            "description": "Issue summary: Clients using RFC7250 Raw Public Keys (RPKs) to authenticate a\nserver may fail to notice that the server was not authenticated, because\nhandshakes don't abort as expected when the SSL_VERIFY_PEER verification mode\nis set.\n\nImpact summary: TLS and DTLS connections using raw public keys may be\nvulnerable to man-in-middle attacks when server authentication failure is not\ndetected by clients.\n\nRPKs are disabled by default in both TLS clients and TLS servers.  The issue\nonly arises when TLS clients explicitly enable RPK use by the server, and the\nserver, likewise, enables sending of an RPK instead of an X.509 certificate\nchain.  The affected clients are those that then rely on the handshake to\nfail when the server's RPK fails to match one of the expected public keys,\nby setting the verification mode to SSL_VERIFY_PEER.\n\nClients that enable server-side raw public keys can still find out that raw\npublic key verification failed by calling SSL_get_verify_result(), and those\nthat do, and take appropriate action, are not affected.  This issue was\nintroduced in the initial implementation of RPK support in OpenSSL 3.2.\n\nThe FIPS modules in 3.4, 3.3, 3.2, 3.1 and 3.0 are not affected by this issue.",
+            "fix_available": true
+          },
+          {
+            "id": "CVE-2024-21538",
+            "package": "cross-spawn",
+            "installed_version": "7.0.3",
+            "fixed_version": "7.0.5, 6.0.6",
+            "title": "cross-spawn: regular expression denial of service",
+            "description": "Versions of the package cross-spawn before 7.0.5 are vulnerable to Regular Expression Denial of Service (ReDoS) due to improper input sanitization. An attacker can increase the CPU usage and crash the program by crafting a very large and well crafted string.",
+            "fix_available": true
+          }
+        ]
+      }
+    },
+    {
+      "repo_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/gdrive",
+      "name": "Google Drive",
+      "container_security": {
+        "base_image": {
+          "name": "node:22.12-alpine",
+          "provenance": "Official (Docker Hub)",
+          "tag_type": "specific_version",
+          "tag": "22.12-alpine",
+          "tag_specificity": "Medium",
+          "last_updated": "2025-01-07T16:41:48.42228Z",
+          "age_days": 90,
+          "freshness_rating": "Stale",
+          "runs_as_root": true,
+          "user": "root"
+        },
+        "vulnerability_summary": {
+          "critical_count": 0,
+          "high_count": 3,
+          "total_count": 3,
+          "fixable_count": 3
+        },
+        "critical_vulnerabilities": [],
+        "high_vulnerabilities": [
+          {
+            "id": "CVE-2024-12797",
+            "package": "libcrypto3",
+            "installed_version": "3.3.2-r4",
+            "fixed_version": "3.3.3-r0",
+            "title": "openssl: RFC7250 handshakes with unauthenticated servers don't abort as expected",
+            "description": "Issue summary: Clients using RFC7250 Raw Public Keys (RPKs) to authenticate a\nserver may fail to notice that the server was not authenticated, because\nhandshakes don't abort as expected when the SSL_VERIFY_PEER verification mode\nis set.\n\nImpact summary: TLS and DTLS connections using raw public keys may be\nvulnerable to man-in-middle attacks when server authentication failure is not\ndetected by clients.\n\nRPKs are disabled by default in both TLS clients and TLS servers.  The issue\nonly arises when TLS clients explicitly enable RPK use by the server, and the\nserver, likewise, enables sending of an RPK instead of an X.509 certificate\nchain.  The affected clients are those that then rely on the handshake to\nfail when the server's RPK fails to match one of the expected public keys,\nby setting the verification mode to SSL_VERIFY_PEER.\n\nClients that enable server-side raw public keys can still find out that raw\npublic key verification failed by calling SSL_get_verify_result(), and those\nthat do, and take appropriate action, are not affected.  This issue was\nintroduced in the initial implementation of RPK support in OpenSSL 3.2.\n\nThe FIPS modules in 3.4, 3.3, 3.2, 3.1 and 3.0 are not affected by this issue.",
+            "fix_available": true
+          },
+          {
+            "id": "CVE-2024-12797",
+            "package": "libssl3",
+            "installed_version": "3.3.2-r4",
+            "fixed_version": "3.3.3-r0",
+            "title": "openssl: RFC7250 handshakes with unauthenticated servers don't abort as expected",
+            "description": "Issue summary: Clients using RFC7250 Raw Public Keys (RPKs) to authenticate a\nserver may fail to notice that the server was not authenticated, because\nhandshakes don't abort as expected when the SSL_VERIFY_PEER verification mode\nis set.\n\nImpact summary: TLS and DTLS connections using raw public keys may be\nvulnerable to man-in-middle attacks when server authentication failure is not\ndetected by clients.\n\nRPKs are disabled by default in both TLS clients and TLS servers.  The issue\nonly arises when TLS clients explicitly enable RPK use by the server, and the\nserver, likewise, enables sending of an RPK instead of an X.509 certificate\nchain.  The affected clients are those that then rely on the handshake to\nfail when the server's RPK fails to match one of the expected public keys,\nby setting the verification mode to SSL_VERIFY_PEER.\n\nClients that enable server-side raw public keys can still find out that raw\npublic key verification failed by calling SSL_get_verify_result(), and those\nthat do, and take appropriate action, are not affected.  This issue was\nintroduced in the initial implementation of RPK support in OpenSSL 3.2.\n\nThe FIPS modules in 3.4, 3.3, 3.2, 3.1 and 3.0 are not affected by this issue.",
+            "fix_available": true
+          },
+          {
+            "id": "CVE-2024-21538",
+            "package": "cross-spawn",
+            "installed_version": "7.0.3",
+            "fixed_version": "7.0.5, 6.0.6",
+            "title": "cross-spawn: regular expression denial of service",
+            "description": "Versions of the package cross-spawn before 7.0.5 are vulnerable to Regular Expression Denial of Service (ReDoS) due to improper input sanitization. An attacker can increase the CPU usage and crash the program by crafting a very large and well crafted string.",
+            "fix_available": true
+          }
+        ]
+      }
+    },
+    {
+      "repo_url": "https://github.com/21st-dev/magic-mcp",
+      "name": "21st.dev Magic",
+      "container_security": {
+        "base_image": {
+          "name": "node:22.14.0-alpine",
+          "provenance": "Official (Docker Hub)",
+          "tag_type": "specific_version",
+          "tag": "22.14.0-alpine",
+          "tag_specificity": "High",
+          "last_updated": "2025-02-15T07:40:00.760191Z",
+          "age_days": 51,
+          "freshness_rating": "Moderate",
+          "runs_as_root": true,
+          "user": "root"
+        },
+        "vulnerability_summary": {
+          "critical_count": 0,
+          "high_count": 0,
+          "total_count": 0,
+          "fixable_count": 0
+        },
+        "critical_vulnerabilities": [],
+        "high_vulnerabilities": []
+      }
+    },
+    {
+      "repo_url": "https://github.com/Adfin-Engineering/mcp-server-adfin",
+      "name": "Adfin"
+    },
+    {
+      "repo_url": "https://www.adfin.com/",
+      "name": "Adfin"
+    },
+    {
+      "repo_url": "https://github.com/tinyfish-io/agentql-mcp",
+      "name": "AgentQL",
+      "container_security": {
+        "base_image": {
+          "name": "node:18-alpine",
+          "provenance": "Official (Docker Hub)",
+          "tag_type": "specific_version",
+          "tag": "18-alpine",
+          "tag_specificity": "Low",
+          "last_updated": "2025-03-27T18:38:34.907693Z",
+          "age_days": 11,
+          "freshness_rating": "Recent",
+          "runs_as_root": true,
+          "user": "root"
+        },
+        "vulnerability_summary": {
+          "critical_count": 0,
+          "high_count": 1,
+          "total_count": 1,
+          "fixable_count": 1
+        },
+        "critical_vulnerabilities": [],
+        "high_vulnerabilities": [
+          {
+            "id": "CVE-2024-21538",
+            "package": "cross-spawn",
+            "installed_version": "7.0.3",
+            "fixed_version": "7.0.5, 6.0.6",
+            "title": "cross-spawn: regular expression denial of service",
+            "description": "Versions of the package cross-spawn before 7.0.5 are vulnerable to Regular Expression Denial of Service (ReDoS) due to improper input sanitization. An attacker can increase the CPU usage and crash the program by crafting a very large and well crafted string.",
+            "fix_available": true
+          }
+        ]
+      }
+    },
+    {
+      "repo_url": "https://www.agentql.com/",
+      "name": "AgentQL"
+    },
+    {
+      "repo_url": "https://github.com/agentrpc/agentrpc",
+      "name": "AgentRPC"
+    },
+    {
+      "repo_url": "https://www.agentrpc.com/",
+      "name": "AgentRPC"
+    },
+    {
+      "repo_url": "https://github.com/Aiven-Open/mcp-aiven",
+      "name": "Aiven",
+      "container_security": {
+        "base_image": {
+          "name": "python:3.13-slim",
+          "provenance": "Official (Docker Hub)",
+          "tag_type": "specific_version",
+          "tag": "3.13-slim",
+          "tag_specificity": "Medium",
+          "last_updated": "2025-03-18T06:10:02.309886Z",
+          "age_days": 20,
+          "freshness_rating": "Recent",
+          "runs_as_root": true,
+          "user": "root"
+        },
+        "vulnerability_summary": {
+          "critical_count": 1,
+          "high_count": 2,
+          "total_count": 3,
+          "fixable_count": 1
+        },
+        "critical_vulnerabilities": [
+          {
+            "id": "CVE-2023-45853",
+            "package": "zlib1g",
+            "installed_version": "1:1.2.13.dfsg-1",
+            "fixed_version": null,
+            "title": "zlib: integer overflow and resultant heap-based buffer overflow in zipOpenNewFileInZip4_6",
+            "description": "MiniZip in zlib through 1.3 has an integer overflow and resultant heap-based buffer overflow in zipOpenNewFileInZip4_64 via a long filename, comment, or extra field. NOTE: MiniZip is not a supported part of the zlib product. NOTE: pyminizip through 0.2.6 is also vulnerable because it bundles an affected zlib version, and exposes the applicable MiniZip code through its compress API.",
+            "fix_available": false
+          }
+        ],
+        "high_vulnerabilities": [
+          {
+            "id": "CVE-2025-31115",
+            "package": "liblzma5",
+            "installed_version": "5.4.1-0.2",
+            "fixed_version": "5.4.1-1",
+            "title": "xz: XZ has a heap-use-after-free bug in threaded .xz decoder",
+            "description": "XZ Utils provide a general-purpose data-compression library plus command-line tools. In XZ Utils 5.3.3alpha to 5.8.0, the multithreaded .xz decoder in liblzma has a bug where invalid input can at least result in a crash. The effects include heap use after free and writing to an address based on the null pointer plus an offset. Applications and libraries that use the lzma_stream_decoder_mt function are affected. The bug has been fixed in XZ Utils 5.8.1, and the fix has been committed to the v5.4, v5.6, v5.8, and master branches in the xz Git repository. No new release packages will be made from the old stable branches, but a standalone patch is available that applies to all affected releases.",
+            "fix_available": true
+          },
+          {
+            "id": "CVE-2023-31484",
+            "package": "perl-base",
+            "installed_version": "5.36.0-7+deb12u1",
+            "fixed_version": null,
+            "title": "perl: CPAN.pm does not verify TLS certificates when downloading distributions over HTTPS",
+            "description": "CPAN.pm before 2.35 does not verify TLS certificates when downloading distributions over HTTPS.",
+            "fix_available": false
+          }
+        ]
+      }
+    },
+    {
+      "repo_url": "https://go.aiven.io/mcp-server",
+      "name": "Aiven projects"
+    },
+    {
+      "repo_url": "https://github.com/apify/actors-mcp-server",
+      "name": "Apify",
+      "container_security": {
+        "base_image": {
+          "name": "node:18-alpine",
+          "provenance": "Official (Docker Hub)",
+          "tag_type": "specific_version",
+          "tag": "18-alpine",
+          "tag_specificity": "Low",
+          "last_updated": "2025-03-27T18:38:34.907693Z",
+          "age_days": 11,
+          "freshness_rating": "Recent",
+          "runs_as_root": true,
+          "user": "root"
+        },
+        "vulnerability_summary": {
+          "critical_count": 0,
+          "high_count": 1,
+          "total_count": 1,
+          "fixable_count": 1
+        },
+        "critical_vulnerabilities": [],
+        "high_vulnerabilities": [
+          {
+            "id": "CVE-2024-21538",
+            "package": "cross-spawn",
+            "installed_version": "7.0.3",
+            "fixed_version": "7.0.5, 6.0.6",
+            "title": "cross-spawn: regular expression denial of service",
+            "description": "Versions of the package cross-spawn before 7.0.5 are vulnerable to Regular Expression Denial of Service (ReDoS) due to improper input sanitization. An attacker can increase the CPU usage and crash the program by crafting a very large and well crafted string.",
+            "fix_available": true
+          }
+        ]
+      }
+    },
+    {
+      "repo_url": "https://github.com/Simon-Kansara/ableton-live-mcp-server",
+      "name": "Ableton Live"
+    },
+    {
+      "repo_url": "https://github.com/openbnb-org/mcp-server-airbnb",
+      "name": "Airbnb",
+      "container_security": {
+        "base_image": {
+          "name": "node:lts-alpine",
+          "provenance": "Official (Docker Hub)",
+          "tag_type": "specific_version",
+          "tag": "lts-alpine",
+          "tag_specificity": "Medium",
+          "last_updated": "2025-02-15T07:41:10.934857Z",
+          "age_days": 51,
+          "freshness_rating": "Moderate",
+          "runs_as_root": true,
+          "user": "root"
+        },
+        "vulnerability_summary": {
+          "critical_count": 0,
+          "high_count": 0,
+          "total_count": 0,
+          "fixable_count": 0
+        },
+        "critical_vulnerabilities": [],
+        "high_vulnerabilities": []
+      }
+    },
+    {
+      "repo_url": "https://github.com/GoPlausible/algorand-mcp",
+      "name": "Algorand"
+    },
+    {
+      "repo_url": "https://github.com/yangkyeongmo/mcp-server-apache-airflow",
+      "name": "Airflow",
+      "container_security": {
+        "base_image": {
+          "name": "python:3.10-slim",
+          "provenance": "Official (Docker Hub)",
+          "tag_type": "specific_version",
+          "tag": "3.10-slim",
+          "tag_specificity": "Medium",
+          "last_updated": "2025-03-18T06:07:38.743881Z",
+          "age_days": 20,
+          "freshness_rating": "Recent",
+          "runs_as_root": true,
+          "user": "root"
+        },
+        "vulnerability_summary": {
+          "critical_count": 1,
+          "high_count": 3,
+          "total_count": 4,
+          "fixable_count": 2
+        },
+        "critical_vulnerabilities": [
+          {
+            "id": "CVE-2023-45853",
+            "package": "zlib1g",
+            "installed_version": "1:1.2.13.dfsg-1",
+            "fixed_version": null,
+            "title": "zlib: integer overflow and resultant heap-based buffer overflow in zipOpenNewFileInZip4_6",
+            "description": "MiniZip in zlib through 1.3 has an integer overflow and resultant heap-based buffer overflow in zipOpenNewFileInZip4_64 via a long filename, comment, or extra field. NOTE: MiniZip is not a supported part of the zlib product. NOTE: pyminizip through 0.2.6 is also vulnerable because it bundles an affected zlib version, and exposes the applicable MiniZip code through its compress API.",
+            "fix_available": false
+          }
+        ],
+        "high_vulnerabilities": [
+          {
+            "id": "CVE-2025-31115",
+            "package": "liblzma5",
+            "installed_version": "5.4.1-0.2",
+            "fixed_version": "5.4.1-1",
+            "title": "xz: XZ has a heap-use-after-free bug in threaded .xz decoder",
+            "description": "XZ Utils provide a general-purpose data-compression library plus command-line tools. In XZ Utils 5.3.3alpha to 5.8.0, the multithreaded .xz decoder in liblzma has a bug where invalid input can at least result in a crash. The effects include heap use after free and writing to an address based on the null pointer plus an offset. Applications and libraries that use the lzma_stream_decoder_mt function are affected. The bug has been fixed in XZ Utils 5.8.1, and the fix has been committed to the v5.4, v5.6, v5.8, and master branches in the xz Git repository. No new release packages will be made from the old stable branches, but a standalone patch is available that applies to all affected releases.",
+            "fix_available": true
+          },
+          {
+            "id": "CVE-2023-31484",
+            "package": "perl-base",
+            "installed_version": "5.36.0-7+deb12u1",
+            "fixed_version": null,
+            "title": "perl: CPAN.pm does not verify TLS certificates when downloading distributions over HTTPS",
+            "description": "CPAN.pm before 2.35 does not verify TLS certificates when downloading distributions over HTTPS.",
+            "fix_available": false
+          },
+          {
+            "id": "CVE-2024-6345",
+            "package": "setuptools",
+            "installed_version": "65.5.1",
+            "fixed_version": "70.0.0",
+            "title": "pypa/setuptools: Remote code execution via download functions in the package_index module in pypa/setuptools",
+            "description": "A vulnerability in the package_index module of pypa/setuptools versions up to 69.1.1 allows for remote code execution via its download functions. These functions, which are used to download packages from URLs provided by users or retrieved from package index servers, are susceptible to code injection. If these functions are exposed to user-controlled inputs, such as package URLs, they can execute arbitrary commands on the system. The issue is fixed in version 70.0.",
+            "fix_available": true
+          }
+        ]
+      }
+    },
+    {
+      "repo_url": "https://airflow.apache.org/",
+      "name": "Apache Airflow"
+    },
+    {
+      "repo_url": "https://github.com/domdomegg/airtable-mcp-server",
+      "name": "Airtable",
+      "container_security": {
+        "base_image": {
+          "name": "node:18-alpine",
+          "provenance": "Official (Docker Hub)",
+          "tag_type": "specific_version",
+          "tag": "18-alpine",
+          "tag_specificity": "Low",
+          "last_updated": "2025-03-27T18:38:34.907693Z",
+          "age_days": 11,
+          "freshness_rating": "Recent",
+          "runs_as_root": true,
+          "user": "root"
+        },
+        "vulnerability_summary": {
+          "critical_count": 0,
+          "high_count": 1,
+          "total_count": 1,
+          "fixable_count": 1
+        },
+        "critical_vulnerabilities": [],
+        "high_vulnerabilities": [
+          {
+            "id": "CVE-2024-21538",
+            "package": "cross-spawn",
+            "installed_version": "7.0.3",
+            "fixed_version": "7.0.5, 6.0.6",
+            "title": "cross-spawn: regular expression denial of service",
+            "description": "Versions of the package cross-spawn before 7.0.5 are vulnerable to Regular Expression Denial of Service (ReDoS) due to improper input sanitization. An attacker can increase the CPU usage and crash the program by crafting a very large and well crafted string.",
+            "fix_available": true
+          }
+        ]
+      }
+    },
+    {
+      "repo_url": "https://airtable.com/",
+      "name": "Airtable"
+    },
+    {
+      "repo_url": "https://github.com/felores/airtable-mcp",
+      "name": "Airtable"
+    },
+    {
+      "repo_url": "https://github.com/calvernaz/alphavantage",
+      "name": "AlphaVantage",
+      "container_security": {
+        "base_image": {
+          "name": "ghcr.io/astral-sh/uv:python3.12-bookworm-slim",
+          "provenance": "Vendor Official (GitHub)",
+          "tag_type": "specific_version",
+          "tag": "python3.12-bookworm-slim",
+          "tag_specificity": "Medium",
+          "last_updated": null,
+          "age_days": null,
+          "freshness_rating": "Unknown",
+          "runs_as_root": true,
+          "user": "root"
+        },
+        "vulnerability_summary": {
+          "critical_count": 1,
+          "high_count": 2,
+          "total_count": 3,
+          "fixable_count": 1
+        },
+        "critical_vulnerabilities": [
+          {
+            "id": "CVE-2023-45853",
+            "package": "zlib1g",
+            "installed_version": "1:1.2.13.dfsg-1",
+            "fixed_version": null,
+            "title": "zlib: integer overflow and resultant heap-based buffer overflow in zipOpenNewFileInZip4_6",
+            "description": "MiniZip in zlib through 1.3 has an integer overflow and resultant heap-based buffer overflow in zipOpenNewFileInZip4_64 via a long filename, comment, or extra field. NOTE: MiniZip is not a supported part of the zlib product. NOTE: pyminizip through 0.2.6 is also vulnerable because it bundles an affected zlib version, and exposes the applicable MiniZip code through its compress API.",
+            "fix_available": false
+          }
+        ],
+        "high_vulnerabilities": [
+          {
+            "id": "CVE-2025-31115",
+            "package": "liblzma5",
+            "installed_version": "5.4.1-0.2",
+            "fixed_version": "5.4.1-1",
+            "title": "xz: XZ has a heap-use-after-free bug in threaded .xz decoder",
+            "description": "XZ Utils provide a general-purpose data-compression library plus command-line tools. In XZ Utils 5.3.3alpha to 5.8.0, the multithreaded .xz decoder in liblzma has a bug where invalid input can at least result in a crash. The effects include heap use after free and writing to an address based on the null pointer plus an offset. Applications and libraries that use the lzma_stream_decoder_mt function are affected. The bug has been fixed in XZ Utils 5.8.1, and the fix has been committed to the v5.4, v5.6, v5.8, and master branches in the xz Git repository. No new release packages will be made from the old stable branches, but a standalone patch is available that applies to all affected releases.",
+            "fix_available": true
+          },
+          {
+            "id": "CVE-2023-31484",
+            "package": "perl-base",
+            "installed_version": "5.36.0-7+deb12u1",
+            "fixed_version": null,
+            "title": "perl: CPAN.pm does not verify TLS certificates when downloading distributions over HTTPS",
+            "description": "CPAN.pm before 2.35 does not verify TLS certificates when downloading distributions over HTTPS.",
+            "fix_available": false
+          }
+        ]
+      }
+    },
+    {
+      "repo_url": "https://www.alphavantage.co",
+      "name": "AlphaVantage"
+    }
+  ],
+  "aggregated_stats": {
+    "total_repos_scanned": 30,
+    "repos_with_critical": 3,
+    "repos_with_high": 16,
+    "repos_using_latest_tag": 0,
+    "repos_running_as_root": 18,
+    "avg_image_age_days": 63.23529411764706,
+    "most_common_vulnerabilities": [
+      {
+        "id": "CVE-2023-45853",
+        "count": 3,
+        "severity": "CRITICAL"
+      },
+      {
+        "id": "CVE-2024-12797",
+        "count": 20,
+        "severity": "HIGH"
+      },
+      {
+        "id": "CVE-2024-21538",
+        "count": 13,
+        "severity": "HIGH"
+      },
+      {
+        "id": "CVE-2025-31115",
+        "count": 3,
+        "severity": "HIGH"
+      },
+      {
+        "id": "CVE-2023-31484",
+        "count": 3,
+        "severity": "HIGH"
+      }
+    ],
+    "most_vulnerable_base_images": [
+      {
+        "name": "python:3.10-slim",
+        "critical_count": 1,
+        "high_count": 3
+      },
+      {
+        "name": "python:3.13-slim",
+        "critical_count": 1,
+        "high_count": 2
+      },
+      {
+        "name": "ghcr.io/astral-sh/uv:python3.12-bookworm-slim",
+        "critical_count": 1,
+        "high_count": 2
+      },
+      {
+        "name": "node:22.12-alpine",
+        "critical_count": 0,
+        "high_count": 30
+      },
+      {
+        "name": "node:18-alpine",
+        "critical_count": 0,
+        "high_count": 3
+      }
+    ]
+  }
+}
