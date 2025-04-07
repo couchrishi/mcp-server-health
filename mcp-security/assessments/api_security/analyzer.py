@@ -26,7 +26,44 @@ def clone_repository(repo_url, target_dir=None):
         target_dir = tempfile.mkdtemp()
     
     try:
-        # Extract owner and repo name from URL
+        # Check if this is a subdirectory of a repository
+        subdirectory_match = re.search(r'github\.com/([^/]+)/([^/]+)/tree/([^/]+)/(.+)', repo_url)
+        if subdirectory_match:
+            owner, repo, branch, subdirectory = subdirectory_match.groups()
+            repo = repo.replace('.git', '')
+            # Clone the main repository instead
+            main_repo_url = f"https://github.com/{owner}/{repo}.git"
+            logger.info(f"URL is a subdirectory. Cloning main repository: {main_repo_url}")
+            
+            # Clone the main repository
+            clone_cmd = ['git', 'clone', '--depth', '1', main_repo_url, target_dir]
+            logger.debug(f"Running command: {' '.join(clone_cmd)}")
+            
+            try:
+                result = subprocess.run(clone_cmd, capture_output=True, text=True, timeout=30)
+                if result.returncode != 0:
+                    logger.error(f"Failed to clone repository: {main_repo_url}")
+                    logger.error(f"Git error: {result.stderr}")
+                    return None
+                
+                # Check if the subdirectory exists
+                subdirectory_path = os.path.join(target_dir, subdirectory)
+                if not os.path.exists(subdirectory_path):
+                    logger.error(f"Subdirectory {subdirectory} does not exist in repository {main_repo_url}")
+                    return None
+                
+                logger.info(f"Successfully cloned {owner}/{repo} to {target_dir}")
+                logger.info(f"Using subdirectory: {subdirectory}")
+                
+                # Return the path to the subdirectory
+                return target_dir
+            except subprocess.TimeoutExpired:
+                logger.warning(f"Clone operation timed out for {main_repo_url}, likely requires authentication. Skipping.")
+                if os.path.exists(target_dir):
+                    shutil.rmtree(target_dir, ignore_errors=True)
+                return None
+        
+        # Regular repository URL
         match = re.search(r'github\.com/([^/]+)/([^/]+)', repo_url)
         if not match:
             logger.error(f"Invalid GitHub URL: {repo_url}")
