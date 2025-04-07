@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 
 # --- Gemini Analysis Functions ---
 
-async def analyze_file_list(gemini_model: GenerativeModel, file_list: list) -> dict:
+async def analyze_file_list(gemini_model: GenerativeModel, file_list: list, semaphore: asyncio.Semaphore = None) -> dict:
     """Uses Gemini to analyze a list of filenames."""
     # SDK availability check is handled by the calling script.
     logger.info("Analyzing file list with Gemini...")
@@ -66,7 +66,16 @@ async def analyze_file_list(gemini_model: GenerativeModel, file_list: list) -> d
         try:
             logger.debug(f"Sending file list analysis prompt to Gemini (Attempt {attempt + 1}/{max_retries}).")
             generation_config = {"response_mime_type": "application/json"}
-            response = await gemini_model.generate_content_async(prompt, generation_config=generation_config)
+            
+            # Use semaphore if provided
+            if semaphore:
+                async with semaphore:
+                    logger.debug("Acquiring semaphore for file list analysis")
+                    response = await gemini_model.generate_content_async(prompt, generation_config=generation_config)
+                    logger.debug("Released semaphore for file list analysis")
+            else:
+                response = await gemini_model.generate_content_async(prompt, generation_config=generation_config)
+                
             logger.debug("Received file list analysis response from Gemini.")
 
             if response.candidates and response.candidates[0].content.parts:
@@ -212,22 +221,27 @@ async def analyze_file_content(gemini_model: GenerativeModel, dep_content: str |
     # Should not be reached if logic is correct, but as a safeguard
     return analysis_result
 
-# --- NEW FUNCTION ---
-async def analyze_readme_for_discovery(gemini_model: GenerativeModel, prompt: str) -> str | None: # Removed model_name_for_log parameter
+# --- MODIFIED FUNCTION ---
+async def analyze_readme_for_discovery(gemini_model: GenerativeModel, prompt: str) -> dict: # Return dict
     """Uses Vertex AI Gemini to extract initial discovery data based on the provided prompt."""
     # SDK availability check and model logging is handled by the calling script.
     logger.info(f"Sending discovery prompt to Gemini model...") # Removed model name from log
     json_text = None
+    result_dict = {"json_string": None, "error": None} # Initialize result dict
     try:
-        generation_config = {"response_mime_type": "application/json"}
+        # Increase max_output_tokens to handle potentially large discovery JSON
+        generation_config = GenerationConfig(response_mime_type="application/json", max_output_tokens=16384) # Increased max_output_tokens
         # Use async version if available and needed, otherwise sync
         # Assuming the main script uses asyncio, we use async here.
+        # Log the size of the prompt
+        logger.info(f"Sending discovery prompt to Gemini model (approx. {len(prompt)} chars)...")
         response = await gemini_model.generate_content_async(prompt, generation_config=generation_config)
         logger.debug(f"Gemini discovery call returned. Response object: {response is not None}")
 
         if not response or not response.candidates:
             logger.warning("Gemini discovery response was empty or had no candidates.")
-            return None
+            result_dict["error"] = "Gemini response empty/malformed"
+            return result_dict # Return error dict
 
         first_candidate = response.candidates[0]
         if hasattr(first_candidate, 'finish_reason'):
@@ -236,26 +250,45 @@ async def analyze_readme_for_discovery(gemini_model: GenerativeModel, prompt: st
             logger.info(f"Gemini Discovery Safety Ratings: {[f'{r.category.name}: {r.probability.name}' for r in first_candidate.safety_ratings]}")
 
         if first_candidate.finish_reason.name not in ["STOP", "MAX_TOKENS"]:
-            logger.error(f"Gemini discovery generation stopped due to: {first_candidate.finish_reason.name}")
-            return None
+            error_msg = f"Gemini discovery generation stopped due to: {first_candidate.finish_reason.name}"
+            logger.error(error_msg)
+            result_dict["error"] = error_msg
+            return result_dict # Return error dict
 
-        if first_candidate.content and first_candidate.content.parts:
-            json_text = first_candidate.content.parts[0].text
+        # --- Robustness Check for Response Type ---
+        # Log the content before checking parts
+        logger.info(f"Gemini discovery candidate content: {first_candidate.content}") # Changed level to INFO
+        if not hasattr(first_candidate, 'content') or not first_candidate.content or not hasattr(first_candidate.content, 'parts') or not first_candidate.content.parts:
+             logger.warning("Gemini discovery response candidate has no content parts.")
+             result_dict["error"] = "Gemini response candidate has no content parts"
+             return result_dict # Return error dict
+
+        # Check if the part has a 'text' attribute
+        part = first_candidate.content.parts[0]
+        if hasattr(part, 'text'):
+            json_text = part.text
             json_text = json_text.strip().strip('```json').strip('```').strip()
             logger.debug("Extracted JSON text from Gemini discovery response.")
-            return json_text
+            result_dict["json_string"] = json_text # Store the string
+            result_dict["error"] = None # Success
+            # Log the value being returned
+            logger.debug(f"Returning successful discovery result. json_string (first 50 chars): '{json_text[:50]}...'")
+            return result_dict # Return success dict
         else:
-            logger.warning("Gemini discovery response candidate has no content parts.")
-            return None
+            logger.error(f"Gemini discovery response part does not have 'text' attribute. Part type: {type(part)}")
+            result_dict["error"] = "Gemini response part missing 'text' attribute"
+            return result_dict # Return error dict
+        # --- End Robustness Check ---
+
     except Exception as e:
-        logger.exception(f"An error occurred during Gemini discovery interaction: {e}")
-        # Avoid logging the full response object here as it might be large or sensitive
-        # if 'response' in locals() and response: logger.error(f"Gemini Discovery Response (raw on exception): {response}")
-        return None
-# --- END NEW FUNCTION ---
+        error_msg = f"An error occurred during Gemini discovery interaction: {e}"
+        logger.exception(error_msg)
+        result_dict["error"] = error_msg
+        return result_dict # Return error dict
+# --- END MODIFIED FUNCTION ---
 
 
-async def analyze_server_readme(gemini_model: GenerativeModel, readme_content: str) -> dict:
+async def analyze_server_readme(gemini_model: GenerativeModel, readme_content: str, semaphore: asyncio.Semaphore = None) -> dict:
     """
     Uses Gemini to analyze a server's README content to extract a description
     and a list of exposed tools.
@@ -312,7 +345,16 @@ async def analyze_server_readme(gemini_model: GenerativeModel, readme_content: s
         try:
             logger.debug(f"Sending server README analysis prompt to Gemini (Attempt {attempt + 1}/{max_retries}).")
             generation_config = {"response_mime_type": "application/json"}
-            response = await gemini_model.generate_content_async(prompt, generation_config=generation_config)
+            
+            # Use semaphore if provided
+            if semaphore:
+                async with semaphore:
+                    logger.debug("Acquiring semaphore for server README analysis")
+                    response = await gemini_model.generate_content_async(prompt, generation_config=generation_config)
+                    logger.debug("Released semaphore for server README analysis")
+            else:
+                response = await gemini_model.generate_content_async(prompt, generation_config=generation_config)
+                
             logger.debug("Received server README analysis response from Gemini.")
 
             if response.candidates and response.candidates[0].content.parts:

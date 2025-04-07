@@ -6,8 +6,8 @@ MODEL_NAME = "gemini-2.5-pro-exp-03-25"  # Primary Gemini model for analysis
 # Fallback models for initial discovery phase in case of errors/rate limits
 GEMINI_FALLBACK_MODELS = [
     "gemini-2.5-pro-exp-03-25",
-    "gemini-2.0-pro-exp-02-25",
-    "gemini-1.5-pro-002"
+    "gemini-2.0-flash-001",
+    "gemini-2.0-flash-lite-001"
 ]
 
 # Retry settings

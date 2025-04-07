@@ -40,35 +40,15 @@ async def get_repo_info(client: httpx.AsyncClient, owner: str, repo: str, base_u
         logger.exception(f"Traceback for {error_msg}") # Log traceback here
         return {"stars": None, "forks": None, "watchers": None, "last_commit": None, "error": error_msg}
 
-async def get_issue_count(client: httpx.AsyncClient, owner: str, repo: str, state: str, base_url: str, headers: dict, timeout: float) -> dict:
-    """Fetches open or closed issue count using search API."""
-    if state not in ["open", "closed"]: return {"count": None, "error": "Invalid state"}
-    search_query = f"repo:{owner}/{repo}+is:issue+is:{state}"
-    url = f"{base_url}/search/issues"
-    params = {"q": search_query, "per_page": 1}
-    logger.debug(f"API Call: GET {url} (issues state={state})")
-    try:
-        await asyncio.sleep(1) # Mitigate potential rate limits / 422 errors
-        response = await client.get(url, headers=headers, params=params, timeout=timeout)
-        if response.status_code == 422:
-             logger.warning(f"API returned 422 (Unprocessable Entity) for issue search ({state}) on {owner}/{repo}.")
-             return {"count": None, "error": f"API returned 422 for {state} issue search"}
-        response.raise_for_status()
-        data = response.json()
-        return {"count": data.get("total_count"), "error": None}
-    except httpx.HTTPStatusError as e:
-        error_msg = f"API error ({state} issues) for {owner}/{repo}: {e.response.status_code}"
-        logger.error(error_msg)
-        return {"count": None, "error": error_msg}
-    except Exception as e:
-        error_msg = f"Unexpected error ({state} issues) for {owner}/{repo}: {e}"
-        logger.exception(f"Traceback for {error_msg}")
-        return {"count": None, "error": error_msg}
-
 async def get_repo_contents(client: httpx.AsyncClient, owner: str, repo: str, path: str, branch: str, base_url: str, headers: dict, timeout: float) -> dict:
     """Fetches file list or single file content."""
-    url_path = f"/repos/{owner}/{repo}/contents"
-    if path: url_path += f"/{path}"
+    # Revised URL construction to avoid double slashes
+    url_path_base = f"/repos/{owner}/{repo}/contents"
+    if path:
+        api_path = path.replace(os.sep, '/').strip('/') # Ensure no leading/trailing slashes on path itself
+        url_path = f"{url_path_base}/{api_path}" # Combine base and path with a single slash
+    else:
+        url_path = url_path_base # Use base if no path
     url = f"{base_url}{url_path}?ref={branch}"
     logger.debug(f"API Call: GET {url} (contents)")
     try:

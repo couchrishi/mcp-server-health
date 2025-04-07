@@ -135,8 +135,23 @@ def assess_security(input_file="discovered_mcp_servers_with_metadata.json",
         logger.error(f"An unexpected error occurred loading the JSON: {e}")
         return None
     
-    if 'items' not in data or not isinstance(data['items'], list):
-        logger.error("Error: JSON structure invalid. 'items' key not found or not a list.")
+    # Handle different JSON structures
+    if 'items' in data and isinstance(data['items'], list):
+        # Original structure with 'items' key
+        items = data['items']
+    elif 'servers' in data and isinstance(data['servers'], dict):
+        # New structure with 'servers' key containing categories
+        # Flatten all server categories into a single list
+        items = []
+        for category, servers in data['servers'].items():
+            if isinstance(servers, list):
+                items.extend(servers)
+        
+        if not items:
+            logger.error("Error: No servers found in the JSON structure.")
+            return None
+    else:
+        logger.error("Error: JSON structure invalid. Neither 'items' nor 'servers' key found in expected format.")
         return None
     
     # Apply limit if specified
@@ -590,7 +605,7 @@ def main():
     Main function to run the security assessment from the command line.
     """
     parser = argparse.ArgumentParser(description="Assess security of MCP servers")
-    parser.add_argument("--input", default="discovered_mcp_servers_with_metadata.json", help="Input file containing MCP server metadata")
+    parser.add_argument("--input", default="output/discovered_mcp_servers_with_metadata.json", help="Input file containing MCP server metadata")
     parser.add_argument("--output", default="security_assessment_results.json", help="Output file for assessment results")
     parser.add_argument("--type", choices=["container", "api", "mcp", "all"], default="all", help="Type of assessment to perform")
     parser.add_argument("--limit", type=int, default=None, help="Maximum number of servers to process (default: process all)")
